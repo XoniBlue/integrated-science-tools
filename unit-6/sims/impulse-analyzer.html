@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Impulse Analyzer | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/impulse-analyzer.css">
+</head>
+<body data-site-root="../.." data-page="unit-6">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
+    <h1>Impulse Analyzer</h1>
+    <p class="subtitle">Connect applied force and contact time to momentum and speed change.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Mass (kg): <span class="value" id="mv">4.0</span></label><input id="mass" type="range" min="0.5" max="50" step="0.1" value="4">
+        <label>Initial Velocity (m/s): <span class="value" id="uiv">12.0</span></label><input id="ui" type="range" min="-30" max="30" step="0.5" value="12">
+        <label>Average Force (N): <span class="value" id="fv">-120</span></label><input id="force" type="range" min="-1000" max="1000" step="10" value="-120">
+        <label>Contact Time (s): <span class="value" id="tv">0.50</span></label><input id="time" type="range" min="0.01" max="3" step="0.01" value="0.5">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Impulse J = F*dt: <span class="value" id="j">0</span> N*s</p>
+        <p>Change in Momentum: <span class="value" id="dp">0</span> kg*m/s</p>
+        <p>Final Velocity: <span class="value" id="vf">0</span> m/s</p>
+        <p>Outcome: <span class="value" id="state">-</span></p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    function update() {
+      const m = Number(mass.value);
+      const u = Number(ui.value);
+      const F = Number(force.value);
+      const dt = Number(time.value);
+      mv.textContent = m.toFixed(1);
+      uiv.textContent = u.toFixed(1);
+      fv.textContent = F.toFixed(0);
+      tv.textContent = dt.toFixed(2);
+
+      const impulse = F * dt;
+      const deltaV = impulse / m;
+      const finalV = u + deltaV;
+
+      j.textContent = impulse.toFixed(2);
+      dp.textContent = impulse.toFixed(2);
+      vf.textContent = finalV.toFixed(2);
+      state.textContent = Math.abs(finalV) < 0.5 ? "Nearly stopped" : Math.sign(finalV) === Math.sign(u) ? "Same direction" : "Direction reversed";
+    }
+    [mass, ui, force, time].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

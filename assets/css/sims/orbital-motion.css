@@ -1,0 +1,13 @@
+
+.sim-wrap *{box-sizing:border-box}.sim-wrap{font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;padding:0;color:var(--sim-text)}
+.container{max-width:1100px;margin:0 auto;background:var(--sim-surface);border:1px solid var(--sim-panel-border);border-radius:20px;padding:30px}
+.top-actions{display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}.top-actions a{padding:.5rem .8rem;border-radius:8px;border:1px solid color-mix(in srgb,var(--sim-accent) 45%,transparent);color:var(--sim-title);background:color-mix(in srgb,var(--sim-accent) 12%,transparent)}
+h1{text-align:center;margin:0}.subtitle{text-align:center;color:var(--sim-muted);margin:.4rem 0 1.4rem}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.panel{border:2px solid var(--sim-panel-border);border-radius:14px;padding:1rem;background:var(--sim-surface)}label{display:block;margin-bottom:.3rem;color:var(--sim-muted)}input{width:100%;margin-bottom:.8rem}
+.result{background:var(--sim-surface-alt);border:1px solid var(--sim-panel-border);border-radius:10px;padding:1rem}.value{color:var(--sim-accent-2);font-weight:700}
+.instructions { background: var(--sim-surface); border-radius: 15px; padding: 20px; margin-bottom: 25px; border: 2px solid var(--sim-panel-border); }
+    .instructions h3 { color: var(--sim-title); margin-bottom: 12px; font-size: 18px; text-align: center; }
+    .instructions div { color: var(--sim-muted); line-height: 1.8; font-size: 14px; }
+    .instructions strong { color: var(--sim-accent-2); }
+    :root {--sim-text:var(--text);--sim-muted:var(--muted);--sim-title:var(--text);--sim-surface:var(--surface);--sim-surface-alt:var(--surface-2);--sim-panel-border:var(--border);--sim-accent:var(--accent);--sim-accent-2:var(--accent2)}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.container{padding:18px}}

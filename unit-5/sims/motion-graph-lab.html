@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Motion Graph Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/motion-graph-lab.css">
+</head>
+<body data-site-root="../.." data-page="unit-5">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
+    <h1>Motion Graph Lab</h1>
+    <p class="subtitle">Model position and velocity over time with constant acceleration.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Initial Position x0 (m): <span class="value" id="x0v">0.0</span></label><input id="x0" type="range" min="-50" max="50" step="1" value="0">
+        <label>Initial Velocity v0 (m/s): <span class="value" id="v0v">4.0</span></label><input id="v0" type="range" min="-20" max="20" step="0.5" value="4">
+        <label>Acceleration a (m/s^2): <span class="value" id="av">-1.0</span></label><input id="a" type="range" min="-10" max="10" step="0.5" value="-1">
+        <label>Elapsed Time t (s): <span class="value" id="tv">6.0</span></label><input id="t" type="range" min="0" max="20" step="0.5" value="6">
+      </div>
+      <div class="panel">
+        <div class="result">
+          <p>Position x(t): <span class="value" id="xt">0</span> m</p>
+          <p>Velocity v(t): <span class="value" id="vt">0</span> m/s</p>
+          <p>Displacement: <span class="value" id="dx">0</span> m</p>
+        </div>
+        <table>
+          <thead><tr><th>Time (s)</th><th>Position (m)</th><th>Velocity (m/s)</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    function stateAt(time, x0Val, v0Val, aVal) {
+      const x = x0Val + v0Val * time + 0.5 * aVal * time * time;
+      const v = v0Val + aVal * time;
+      return { x, v };
+    }
+    function update() {
+      const x0Val = Number(x0.value);
+      const v0Val = Number(v0.value);
+      const aVal = Number(a.value);
+      const tVal = Number(t.value);
+
+      x0v.textContent = x0Val.toFixed(1);
+      v0v.textContent = v0Val.toFixed(1);
+      av.textContent = aVal.toFixed(1);
+      tv.textContent = tVal.toFixed(1);
+
+      const now = stateAt(tVal, x0Val, v0Val, aVal);
+      xt.textContent = now.x.toFixed(2);
+      vt.textContent = now.v.toFixed(2);
+      dx.textContent = (now.x - x0Val).toFixed(2);
+
+      const sampleTimes = [0, Math.max(0, tVal / 3), Math.max(0, (2 * tVal) / 3), tVal];
+      rows.innerHTML = sampleTimes.map(time => {
+        const s = stateAt(time, x0Val, v0Val, aVal);
+        return `<tr><td>${time.toFixed(2)}</td><td>${s.x.toFixed(2)}</td><td>${s.v.toFixed(2)}</td></tr>`;
+      }).join("");
+    }
+    [x0, v0, a, t].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

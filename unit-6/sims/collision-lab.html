@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Collision Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/collision-lab.css">
+</head>
+<body data-site-root="../.." data-page="unit-6">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
+    <h1>Collision Lab</h1>
+    <p class="subtitle">Simulate a 1D collision with adjustable masses, velocities, and elasticity.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Mass 1 (kg): <span class="value" id="m1v">2.0</span></label><input id="m1" type="range" min="0.5" max="20" step="0.1" value="2">
+        <label>Velocity 1 (m/s): <span class="value" id="u1v">6.0</span></label><input id="u1" type="range" min="-20" max="20" step="0.5" value="6">
+        <label>Mass 2 (kg): <span class="value" id="m2v">3.0</span></label><input id="m2" type="range" min="0.5" max="20" step="0.1" value="3">
+        <label>Velocity 2 (m/s): <span class="value" id="u2v">-2.0</span></label><input id="u2" type="range" min="-20" max="20" step="0.5" value="-2">
+        <label>Elasticity e (0-1): <span class="value" id="ev">0.80</span></label><input id="e" type="range" min="0" max="1" step="0.01" value="0.8">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Final Velocity 1: <span class="value" id="v1">0</span> m/s</p>
+        <p>Final Velocity 2: <span class="value" id="v2">0</span> m/s</p>
+        <p>Initial Momentum: <span class="value" id="pi">0</span> kg*m/s</p>
+        <p>Final Momentum: <span class="value" id="pf">0</span> kg*m/s</p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    function update() {
+      const mass1 = Number(m1.value);
+      const mass2 = Number(m2.value);
+      const vel1 = Number(u1.value);
+      const vel2 = Number(u2.value);
+      const elasticity = Number(e.value);
+
+      m1v.textContent = mass1.toFixed(1);
+      m2v.textContent = mass2.toFixed(1);
+      u1v.textContent = vel1.toFixed(1);
+      u2v.textContent = vel2.toFixed(1);
+      ev.textContent = elasticity.toFixed(2);
+
+      const v1f = (mass1 * vel1 + mass2 * vel2 - mass2 * elasticity * (vel1 - vel2)) / (mass1 + mass2);
+      const v2f = (mass1 * vel1 + mass2 * vel2 + mass1 * elasticity * (vel1 - vel2)) / (mass1 + mass2);
+      const pInitial = mass1 * vel1 + mass2 * vel2;
+      const pFinal = mass1 * v1f + mass2 * v2f;
+
+      v1.textContent = v1f.toFixed(2);
+      v2.textContent = v2f.toFixed(2);
+      pi.textContent = pInitial.toFixed(2);
+      pf.textContent = pFinal.toFixed(2);
+    }
+    [m1, u1, m2, u2, e].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Field Superposition Explorer | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/field-superposition.css">
+</head>
+<body data-site-root="../.." data-page="unit-4">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
+        <h1>Field Superposition Explorer</h1>
+        <p class="subtitle">Compute net electric field at a target point from two source charges.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+        <div class="workspace">
+          <div class="panel">
+            <label>Charge 1 (microC): <span class="value" id="q1v">4.0</span></label><input id="q1" type="range" min="-10" max="10" step="0.1" value="4">
+            <label>Distance 1 (m): <span class="value" id="r1v">0.8</span></label><input id="r1" type="range" min="0.2" max="3" step="0.1" value="0.8">
+            <label>Charge 2 (microC): <span class="value" id="q2v">-3.0</span></label><input id="q2" type="range" min="-10" max="10" step="0.1" value="-3">
+            <label>Distance 2 (m): <span class="value" id="r2v">1.2</span></label><input id="r2" type="range" min="0.2" max="3" step="0.1" value="1.2">
+          </div>
+          <div class="panel">
+            <div class="result">
+              <p>Field from Charge 1: <span class="value" id="e1">0</span> N/C</p>
+              <p>Field from Charge 2: <span class="value" id="e2">0</span> N/C</p>
+              <p>Net Field: <span class="value" id="en">0</span> N/C</p>
+              <p>Direction at Point: <span class="value" id="dir">-</span></p>
+              <div class="meter"><div id="bar" class="fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const k = 8.99e9;
+    function update() {
+      const q1u = Number(q1.value);
+      const q2u = Number(q2.value);
+      const r1m = Number(r1.value);
+      const r2m = Number(r2.value);
+      q1v.textContent = q1u.toFixed(1);
+      q2v.textContent = q2u.toFixed(1);
+      r1v.textContent = r1m.toFixed(1);
+      r2v.textContent = r2m.toFixed(1);
+
+      const E1 = k * (q1u * 1e-6) / (r1m * r1m);
+      const E2 = k * (q2u * 1e-6) / (r2m * r2m);
+      const En = E1 + E2;
+
+      e1.textContent = E1.toFixed(1);
+      e2.textContent = E2.toFixed(1);
+      en.textContent = En.toFixed(1);
+      dir.textContent = En > 0 ? "Right / +x" : En < 0 ? "Left / -x" : "Balanced";
+      bar.style.width = `${Math.min(100, Math.abs(En) / 250000 * 100).toFixed(1)}%`;
+    }
+    [q1, q2, r1, r2].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

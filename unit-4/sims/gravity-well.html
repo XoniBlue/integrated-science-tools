@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Gravity Well Mapper | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/gravity-well.css">
+</head>
+<body data-site-root="../.." data-page="unit-4">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
+    <h1>Gravity Well Mapper</h1>
+    <p class="subtitle">Map how planet mass and radius change gravity, orbital speed, and escape velocity.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Planet Mass (x Earth): <span class="value" id="mv">1.0</span></label><input id="mass" type="range" min="0.2" max="20" step="0.1" value="1">
+        <label>Planet Radius (x Earth): <span class="value" id="rv">1.0</span></label><input id="radius" type="range" min="0.4" max="4" step="0.05" value="1">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Surface Gravity: <span class="value" id="gVal">9.8</span> m/s^2</p>
+        <p>Escape Velocity: <span class="value" id="ve">11.2</span> km/s</p>
+        <p>Low Orbit Velocity: <span class="value" id="vo">7.9</span> km/s</p>
+        <p>Gravity Class: <span class="value" id="label">Earth-like</span></p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const gEarth = 9.80665;
+    const muEarth = 398600.4418;
+    const rEarth = 6371;
+    function update() {
+      const m = Number(mass.value);
+      const r = Number(radius.value);
+      mv.textContent = m.toFixed(1);
+      rv.textContent = r.toFixed(2);
+
+      const g = gEarth * m / (r * r);
+      const mu = muEarth * m;
+      const rad = rEarth * r;
+      const vEscape = Math.sqrt(2 * mu / rad);
+      const vOrbit = Math.sqrt(mu / rad);
+
+      gVal.textContent = g.toFixed(2);
+      ve.textContent = vEscape.toFixed(2);
+      vo.textContent = vOrbit.toFixed(2);
+      label.textContent = g < 5 ? "Low-gravity world" : g < 15 ? "Earth-like" : "High-gravity world";
+    }
+    [mass, radius].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

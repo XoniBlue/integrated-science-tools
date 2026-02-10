@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Force Balance Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/force-balance.css">
+</head>
+<body data-site-root="../.." data-page="unit-5">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
+    <h1>Force Balance Lab</h1>
+    <p class="subtitle">Combine forces to determine net force and acceleration.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Mass (kg): <span class="value" id="mv">5.0</span></label><input id="mass" type="range" min="1" max="50" step="0.5" value="5">
+        <label>Applied Force Right (N): <span class="value" id="frv">40</span></label><input id="fr" type="range" min="0" max="200" step="1" value="40">
+        <label>Applied Force Left (N): <span class="value" id="flv">10</span></label><input id="fl" type="range" min="0" max="200" step="1" value="10">
+        <label>Friction Force (N): <span class="value" id="ffv">5</span></label><input id="ff" type="range" min="0" max="100" step="1" value="5">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Net Horizontal Force: <span class="value" id="fn">0</span> N</p>
+        <p>Acceleration: <span class="value" id="acc">0</span> m/s^2</p>
+        <p>Motion Prediction: <span class="value" id="motion">At rest or constant speed</span></p>
+        <div class="meter"><div id="bar" class="fill"></div></div>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    function update() {
+      const m = Number(mass.value);
+      const right = Number(fr.value);
+      const left = Number(fl.value);
+      const friction = Number(ff.value);
+      mv.textContent = m.toFixed(1);
+      frv.textContent = right.toFixed(0);
+      flv.textContent = left.toFixed(0);
+      ffv.textContent = friction.toFixed(0);
+
+      const push = right - left;
+      const frictionDirection = push > 0 ? -1 : push < 0 ? 1 : 0;
+      const net = push + frictionDirection * Math.min(Math.abs(push), friction);
+      const a = net / m;
+
+      fn.textContent = net.toFixed(2);
+      acc.textContent = a.toFixed(3);
+      motion.textContent = Math.abs(net) < 0.01 ? "At rest or constant speed" : net > 0 ? "Accelerates right" : "Accelerates left";
+      bar.style.width = `${Math.min(100, Math.abs(a) / 12 * 100).toFixed(1)}%`;
+    }
+    [mass, fr, fl, ff].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

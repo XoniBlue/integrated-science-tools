@@ -1,0 +1,410 @@
+
+    :root { --sim-text: var(--text); --sim-muted: var(--muted); --sim-title: var(--text); --sim-surface: var(--surface); --sim-surface-alt: var(--surface-2); --sim-panel-border: var(--border); --sim-accent: var(--accent); --sim-accent-2: var(--accent2); --sim-btn: color-mix(in srgb, var(--sim-accent) 25%, var(--sim-surface)); --sim-btn-hover: color-mix(in srgb, var(--sim-accent) 38%, var(--sim-surface)); --sim-btn-active-text: var(--button-text); --sim-canvas-bg: color-mix(in srgb, var(--sim-surface-alt) 75%, #000); --sim-canvas-border: color-mix(in srgb, var(--sim-accent) 30%, var(--sim-accent-2)); }
+    .sim-wrap * { box-sizing: border-box; margin: 0; padding: 0; }
+    .sim-wrap { 
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; 
+      padding: 0; 
+      color: var(--sim-text); 
+    }
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      background: var(--sim-surface); 
+      border-radius: 20px; 
+      padding: 30px; 
+      border: 1px solid var(--sim-panel-border); 
+      box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55); 
+    }
+    .top-actions { 
+      display: flex; 
+      justify-content: space-between; 
+      gap: 0.5rem; 
+      margin-bottom: 1rem; 
+      flex-wrap: wrap; 
+    }
+    .top-actions a { 
+      padding: 0.5rem 0.8rem; 
+      border-radius: 8px; 
+      border: 1px solid var(--sim-panel-border); 
+      color: var(--sim-title); 
+      background: var(--sim-btn);
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .top-actions a:hover {
+      background: var(--sim-btn-hover);
+      transform: translateY(-2px);
+    }
+    h1 { 
+      text-align: center; 
+      color: var(--sim-title); 
+      margin: 0 0 10px 0; 
+    }
+    .subtitle { 
+      text-align: center; 
+      color: var(--sim-muted); 
+      margin: 0.4rem 0 1.6rem; 
+    }
+    
+    .instructions {
+      background: var(--sim-surface);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      border: 2px solid var(--sim-panel-border);
+    }
+    .instructions h3 {
+      color: var(--sim-title);
+      margin-bottom: 12px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .instructions div {
+      color: var(--sim-muted);
+      line-height: 1.8;
+      font-size: 14px;
+    }
+    .instructions strong {
+      color: var(--sim-accent-2);
+    }
+    
+    .molecule-selector {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .molecule-btn {
+      padding: 12px 24px;
+      background: var(--sim-btn);
+      color: var(--sim-text);
+      border: 1px solid var(--sim-panel-border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.25s;
+    }
+    .molecule-btn:hover {
+      background: var(--sim-btn-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 94, 168, 0.18);
+    }
+    .molecule-btn.active {
+      background: var(--sim-accent);
+      color: var(--sim-btn-active-text);
+    }
+    
+    .workspace { 
+      display: grid; 
+      grid-template-columns: 1fr 1.3fr; 
+      gap: 25px; 
+    }
+    .panel { 
+      background: var(--sim-surface); 
+      border: 2px solid var(--sim-panel-border); 
+      border-radius: 15px; 
+      padding: 25px; 
+    }
+    .panel-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--sim-title);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    label { 
+      font-weight: 600; 
+      color: var(--sim-muted); 
+      display: block; 
+      margin-bottom: 8px; 
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--sim-panel-border);
+      background: var(--sim-surface-alt);
+      color: var(--sim-text);
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    input[type="range"] {
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: var(--sim-surface-alt);
+      outline: none;
+      -webkit-appearance: none;
+      margin-bottom: 20px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--sim-accent);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(255, 94, 168, 0.4);
+      transition: all 0.2s;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 4px 12px rgba(255, 94, 168, 0.6);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--sim-accent);
+      cursor: pointer;
+      border: none;
+    }
+    
+    .visualization-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .molecule-viz {
+      background: var(--sim-canvas-bg);
+      border-radius: 12px;
+      padding: 30px;
+      min-height: 280px;
+      border: 3px dashed var(--sim-canvas-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .molecule-display {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      flex-wrap: nowrap;
+      padding: 20px;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+    
+    .atom {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      position: relative;
+      transition: all 0.4s ease;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .atom.central {
+      width: 90px;
+      height: 90px;
+      font-size: 36px;
+      background: radial-gradient(circle, var(--sim-accent), #c43d7d);
+      color: #fff;
+      box-shadow: 0 0 30px rgba(255, 94, 168, 0.5);
+      z-index: 10;
+    }
+    
+    .atom.outer {
+      background: radial-gradient(circle, var(--sim-accent-2), #3d8fb8);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(109, 207, 255, 0.4);
+    }
+    
+    .bond-visual {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--sim-accent-2), var(--sim-accent-2));
+      position: relative;
+      flex: 0 0 auto;
+      animation: glow 1.5s ease-in-out infinite;
+    }
+    .bond-visual.bond-mid {
+      width: 40px;
+    }
+    .bond-visual.bond-short {
+      width: 30px;
+    }
+    
+    @keyframes glow {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; box-shadow: 0 0 15px rgba(255, 141, 198, 0.6); }
+    }
+    
+    .dipole-arrow {
+      position: absolute;
+      left: 50%;
+      top: 58%;
+      font-size: 48px;
+      opacity: 0;
+      transition: all 0.5s ease;
+      animation: float 2s ease-in-out infinite;
+    }
+    
+    .dipole-arrow.show {
+      opacity: 1;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(-50%, -50%); }
+      50% { transform: translate(-50%, calc(-50% - 8px)); }
+    }
+    
+    .electron-cloud {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    
+    .electron {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--sim-accent-2);
+      border-radius: 50%;
+      animation: orbit 3s linear infinite;
+      box-shadow: 0 0 10px rgba(255, 141, 198, 0.8);
+    }
+    
+    @keyframes orbit {
+      from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+      to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+    }
+    
+    .electron-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--sim-accent-2);
+      border-radius: 50%;
+      position: absolute;
+      box-shadow: 0 2px 6px rgba(255, 141, 198, 0.6);
+      animation: electronGlow 2s ease-in-out infinite;
+    }
+    
+    @keyframes electronGlow {
+      0%, 100% { 
+        box-shadow: 0 2px 6px rgba(255, 141, 198, 0.6);
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 0 12px rgba(255, 141, 198, 0.9);
+        transform: scale(1.1);
+      }
+    }
+    
+    .results-panel {
+      background: var(--sim-surface-alt);
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid var(--sim-panel-border);
+    }
+    
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--sim-panel-border);
+    }
+    .result-row:last-child {
+      border-bottom: none;
+    }
+    .result-label {
+      color: var(--sim-muted);
+      font-weight: 600;
+    }
+    .result-value {
+      color: var(--sim-accent-2);
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .result-value.polar {
+      color: var(--sim-accent-2);
+    }
+    .result-value.nonpolar {
+      color: var(--sim-title);
+    }
+    
+    .polarity-meter {
+      margin-top: 20px;
+      padding: 15px;
+      background: var(--sim-canvas-bg);
+      border-radius: 10px;
+      border: 1px solid var(--sim-panel-border);
+    }
+    .meter-label {
+      text-align: center;
+      color: var(--sim-muted);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    .meter-track {
+      height: 20px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--sim-title) 0%, var(--sim-accent-2) 50%, var(--sim-accent-2) 100%);
+      position: relative;
+      overflow: visible;
+    }
+    .meter-indicator {
+      position: absolute;
+      top: -5px;
+      width: 8px;
+      height: 30px;
+      background: #fff;
+      border: 2px solid var(--sim-btn-active-text);
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      transition: left 0.5s ease;
+    }
+    
+    @media (max-width: 900px) { 
+      .workspace { grid-template-columns: 1fr; } 
+      .container { padding: 18px; }
+    }
+    @media (max-width: 700px) {
+      .atom {
+        width: 56px;
+        height: 56px;
+        font-size: 22px;
+      }
+      .atom.central {
+        width: 72px;
+        height: 72px;
+        font-size: 30px;
+      }
+      .molecule-display {
+        gap: 12px;
+        padding: 12px;
+      }
+      .bond-visual {
+        width: 32px;
+      }
+      .bond-visual.bond-mid {
+        width: 24px;
+      }
+      .bond-visual.bond-short {
+        width: 18px;
+      }
+    }
+  

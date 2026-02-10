@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Cosmic Expansion Model | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/cosmic-expansion.css">
+</head>
+<body data-site-root="../.." data-page="unit-4">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
+    <h1>Cosmic Expansion Model</h1>
+    <p class="subtitle">Use a Hubble-law model to estimate recession velocity and travel-time scale.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Distance to Galaxy (Mpc): <span class="value" id="dv">100</span></label><input id="dist" type="range" min="1" max="5000" step="1" value="100">
+        <label>Hubble Constant (km/s/Mpc): <span class="value" id="hv">70</span></label><input id="h0" type="range" min="50" max="90" step="1" value="70">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Recession Velocity: <span class="value" id="vel">0</span> km/s</p>
+        <p>Fraction of Light Speed: <span class="value" id="frac">0.000</span> c</p>
+        <p>Hubble Time Scale: <span class="value" id="age">0</span> billion years</p>
+        <p>Model Note: <span class="value" id="note">Local linear regime</span></p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const c = 299792.458;
+    function update() {
+      const d = Number(dist.value);
+      const H0 = Number(h0.value);
+      const v = H0 * d;
+      const cFrac = v / c;
+      const hubbleTimeGyr = 978 / H0;
+
+      dv.textContent = d.toFixed(0);
+      hv.textContent = H0.toFixed(0);
+      vel.textContent = v.toFixed(0);
+      frac.textContent = cFrac.toFixed(3);
+      age.textContent = hubbleTimeGyr.toFixed(2);
+      note.textContent = d < 300 ? "Local linear regime" : d < 1500 ? "Intermediate expansion range" : "Distant-universe approximation";
+    }
+    [dist, h0].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

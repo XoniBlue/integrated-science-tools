@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+    <script src="../../assets/js/theme-init.js"></script>
+    <title>Lewis Dot Structure Builder | Integrated Science Tools</title>
+    <meta name="description" content="Interactive Lewis Dot Structure Builder simulation.">
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <script src="../../assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/sims/lewis-dot.css">
+</head>
+<body data-site-root="../.." data-page="unit-1">
+    <header id="site-header" class="site-header"></header>
+
+    <main class="page-main">
+      <section class="sim-wrap">
+        <div class="container">
+          <div class="top-actions">
+            <a href="../index.html">Back to Unit 1</a>
+            <a href="../../index.html">Home</a>
+          </div>
+          <h1>Interactive Lewis Dot Structure Builder</h1>
+          <div class="subtitle">Practice drawing Lewis structures by placing atoms and electrons.</div>
+
+          <div class="controls">
+              <div class="molecule-selector">
+                  <button class="molecule-btn active" data-molecule="H2">H2</button>
+                  <button class="molecule-btn" data-molecule="H2O">H2O</button>
+                  <button class="molecule-btn" data-molecule="NH3">NH3</button>
+                  <button class="molecule-btn" data-molecule="CH4">CH4</button>
+                  <button class="molecule-btn" data-molecule="CO2">CO2</button>
+                  <button class="molecule-btn" data-molecule="O2">O2</button>
+                  <button class="molecule-btn" data-molecule="N2">N2</button>
+              </div>
+          </div>
+
+          <div class="workspace">
+              <div class="panel">
+                  <div class="panel-title">Molecule Information</div>
+
+                  <div class="info-box">
+                      <div class="info-label">Current Molecule:</div>
+                      <div id="molecule-name" class="sim-molecule-name">H2 (Hydrogen Gas)</div>
+                  </div>
+
+                  <div class="info-box">
+                      <div class="info-label">Total Valence Electrons:</div>
+                      <div id="total-electrons" class="sim-total-electrons">2 electrons</div>
+                  </div>
+
+                  <div class="instruction">
+                      <strong>Instructions:</strong><br>
+                      1. Select atoms (H, C, N, O) or electrons (e-) from the palette<br>
+                      2. Click on the canvas to place them<br>
+                      3. Drag to reposition atoms and electrons<br>
+                      4. Double-click an atom to add 4 electrons around it<br>
+                      5. Double-click an electron to remove it<br>
+                      6. Click "Check Answer" when done
+                  </div>
+
+                  <div class="info-box">
+                      <div class="info-label">Step-by-Step Guide:</div>
+                      <ol class="sim-ordered-list">
+                          <li>Place the central atom first</li>
+                          <li>Add surrounding atoms</li>
+                          <li>Add bonds (shared electrons)</li>
+                          <li>Add lone pairs to complete octets</li>
+                      </ol>
+                  </div>
+
+                  <div class="hint-box" id="hint-box">
+                      <strong>Hint:</strong>
+                      <p id="hint-text"></p>
+                  </div>
+
+                  <div class="action-buttons">
+                      <button class="btn btn-hint" onclick="showHint()">Show Hint</button>
+                      <button class="btn btn-clear" onclick="clearCanvas()">Clear</button>
+                  </div>
+              </div>
+
+              <div class="panel">
+                  <div class="panel-title">Drawing Canvas</div>
+
+                  <div class="atom-palette">
+                      <div class="atom-option" data-atom="H">H</div>
+                      <div class="atom-option" data-atom="C">C</div>
+                      <div class="atom-option" data-atom="N">N</div>
+                      <div class="atom-option" data-atom="O">O</div>
+                      <div class="atom-option selected" data-atom="electron">e-</div>
+                  </div>
+
+                  <div class="step-counter">
+                      <span id="atoms-placed">Atoms: 0</span> |
+                      <span id="electrons-placed">Electrons: 0</span>
+                  </div>
+
+                  <div class="canvas-container" id="canvas"></div>
+
+                  <div class="action-buttons">
+                      <button class="btn btn-check" onclick="checkAnswer()">Check Answer</button>
+                  </div>
+
+                  <div class="feedback" id="feedback"></div>
+              </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer" class="site-footer"></footer>
+
+    <script>
+        const molecules = {
+            H2: {
+                name: "H2 (Hydrogen Gas)",
+                totalElectrons: 2,
+                atoms: { H: 2 },
+                bonds: 1,
+                hint: "Two hydrogen atoms share their electrons to form one single bond. Each H gets 2 electrons total.",
+                structure: { atoms: ["H", "H"], bondingPairs: 1, lonePairs: 0 }
+            },
+            H2O: {
+                name: "H2O (Water)",
+                totalElectrons: 8,
+                atoms: { H: 2, O: 1 },
+                bonds: 2,
+                hint: "Oxygen goes in the center. Two H-O bonds use 4 electrons. The remaining 4 electrons go as 2 lone pairs on oxygen.",
+                structure: { atoms: ["H", "O", "H"], bondingPairs: 2, lonePairs: 2 }
+            },
+            NH3: {
+                name: "NH3 (Ammonia)",
+                totalElectrons: 8,
+                atoms: { N: 1, H: 3 },
+                bonds: 3,
+                hint: "Nitrogen in the center, three hydrogens around it. Three N-H bonds use 6 electrons. Remaining 2 electrons form 1 lone pair on nitrogen.",
+                structure: { atoms: ["H", "N", "H", "H"], bondingPairs: 3, lonePairs: 1 }
+            },
+            CH4: {
+                name: "CH4 (Methane)",
+                totalElectrons: 8,
+                atoms: { C: 1, H: 4 },
+                bonds: 4,
+                hint: "Carbon in the center with 4 hydrogens around it. Four C-H bonds use all 8 electrons. No lone pairs.",
+                structure: { atoms: ["H", "C", "H", "H", "H"], bondingPairs: 4, lonePairs: 0 }
+            },
+            CO2: {
+                name: "CO2 (Carbon Dioxide)",
+                totalElectrons: 16,
+                atoms: { C: 1, O: 2 },
+                bonds: 4,
+                hint: "Carbon in center, oxygens on sides. Carbon needs double bonds to each oxygen (O=C=O). Each oxygen gets 2 lone pairs.",
+                structure: { atoms: ["O", "C", "O"], bondingPairs: 4, lonePairs: 4 }
+            },
+            O2: {
+                name: "O2 (Oxygen Gas)",
+                totalElectrons: 12,
+                atoms: { O: 2 },
+                bonds: 2,
+                hint: "Two oxygen atoms share a double bond (O=O). Each oxygen also has 2 lone pairs (4 electrons each).",
+                structure: { atoms: ["O", "O"], bondingPairs: 2, lonePairs: 4 }
+            },
+            N2: {
+                name: "N2 (Nitrogen Gas)",
+                totalElectrons: 10,
+                atoms: { N: 2 },
+                bonds: 3,
+                hint: "Two nitrogen atoms share a triple bond (N≡N). Each nitrogen has 1 lone pair (2 electrons).",
+                structure: { atoms: ["N", "N"], bondingPairs: 3, lonePairs: 2 }
+            }
+        };
+
+        let currentMolecule = "H2";
+        let selectedAtom = "electron";
+        let placedAtoms = [];
+        let placedElectrons = [];
+        let isDragging = false;
+        let draggedElement = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateMoleculeInfo();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.querySelectorAll(".molecule-btn").forEach(btn => {
+                btn.addEventListener("click", e => {
+                    document.querySelectorAll(".molecule-btn").forEach(b => b.classList.remove("active"));
+                    e.target.classList.add("active");
+                    currentMolecule = e.target.dataset.molecule;
+                    updateMoleculeInfo();
+                    clearCanvas();
+                });
+            });
+
+            document.querySelectorAll(".atom-option").forEach(option => {
+                option.addEventListener("click", e => {
+                    document.querySelectorAll(".atom-option").forEach(o => o.classList.remove("selected"));
+                    e.target.classList.add("selected");
+                    selectedAtom = e.target.dataset.atom;
+                });
+            });
+
+            document.getElementById("canvas").addEventListener("click", e => {
+                if (e.target.id === "canvas" || e.target.classList.contains("canvas-container")) {
+                    placeAtom(e.offsetX, e.offsetY);
+                }
+            });
+        }
+
+        function updateMoleculeInfo() {
+            const mol = molecules[currentMolecule];
+            document.getElementById("molecule-name").textContent = mol.name;
+            document.getElementById("total-electrons").textContent = `${mol.totalElectrons} electrons`;
+            document.getElementById("hint-box").classList.remove("show");
+            document.getElementById("feedback").classList.remove("show");
+        }
+
+        function placeAtom(x, y) {
+            if (selectedAtom === "electron") {
+                addElectron(x, y);
+                return;
+            }
+
+            const canvas = document.getElementById("canvas");
+            const atom = document.createElement("div");
+            atom.className = "atom-placed";
+            atom.textContent = selectedAtom;
+            atom.style.left = (x - 20) + "px";
+            atom.style.top = (y - 20) + "px";
+
+            const colors = { H: "#7ec4ff", C: "#f4eeff", N: "#e4b3ff", O: "#ff9dbd" };
+            atom.style.color = colors[selectedAtom];
+
+            atom.addEventListener("mousedown", startDrag);
+            atom.addEventListener("dblclick", () => {
+                addElectronsAroundAtom(atom);
+            });
+
+            canvas.appendChild(atom);
+            placedAtoms.push({ element: atom, type: selectedAtom, x: x, y: y });
+            updateCounter();
+        }
+
+        function addElectronsAroundAtom(atom) {
+            const rect = atom.getBoundingClientRect();
+            const canvasRect = document.getElementById("canvas").getBoundingClientRect();
+            const centerX = rect.left - canvasRect.left + rect.width / 2;
+            const centerY = rect.top - canvasRect.top + rect.height / 2;
+
+            const positions = [
+                { x: centerX - 40, y: centerY - 40 },
+                { x: centerX + 40, y: centerY - 40 },
+                { x: centerX - 40, y: centerY + 40 },
+                { x: centerX + 40, y: centerY + 40 }
+            ];
+
+            positions.forEach(pos => {
+                addElectron(pos.x, pos.y);
+            });
+        }
+
+        function addElectron(x, y) {
+            const canvas = document.getElementById("canvas");
+            const electron = document.createElement("div");
+            electron.className = "electron-dot";
+            electron.style.left = (x - 8) + "px";
+            electron.style.top = (y - 8) + "px";
+
+            electron.addEventListener("mousedown", startDrag);
+            electron.addEventListener("dblclick", () => {
+                electron.remove();
+                placedElectrons = placedElectrons.filter(e => e.element !== electron);
+                updateCounter();
+            });
+
+            canvas.appendChild(electron);
+            placedElectrons.push({ element: electron, x: x, y: y });
+            updateCounter();
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            draggedElement = e.target;
+            draggedElement.style.zIndex = "1000";
+        }
+
+        document.addEventListener("mousemove", e => {
+            if (isDragging && draggedElement) {
+                const canvas = document.getElementById("canvas");
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                if (draggedElement.classList.contains("atom-placed")) {
+                    draggedElement.style.left = (x - 20) + "px";
+                    draggedElement.style.top = (y - 20) + "px";
+                } else if (draggedElement.classList.contains("electron-dot")) {
+                    draggedElement.style.left = (x - 8) + "px";
+                    draggedElement.style.top = (y - 8) + "px";
+                }
+            }
+        });
+
+        document.addEventListener("mouseup", () => {
+            if (draggedElement) {
+                draggedElement.style.zIndex = "auto";
+            }
+            isDragging = false;
+            draggedElement = null;
+        });
+
+        function updateCounter() {
+            document.getElementById("atoms-placed").textContent = `Atoms: ${placedAtoms.length}`;
+            document.getElementById("electrons-placed").textContent = `Electrons: ${placedElectrons.length}`;
+        }
+
+        function clearCanvas() {
+            document.getElementById("canvas").innerHTML = "";
+            placedAtoms = [];
+            placedElectrons = [];
+            updateCounter();
+            document.getElementById("feedback").classList.remove("show");
+            document.getElementById("hint-box").classList.remove("show");
+        }
+
+        function showHint() {
+            const mol = molecules[currentMolecule];
+            document.getElementById("hint-text").textContent = mol.hint;
+            document.getElementById("hint-box").classList.add("show");
+        }
+
+        function checkAnswer() {
+            const mol = molecules[currentMolecule];
+            const feedback = document.getElementById("feedback");
+
+            const atomCounts = {};
+            placedAtoms.forEach(a => {
+                atomCounts[a.type] = (atomCounts[a.type] || 0) + 1;
+            });
+
+            let atomsCorrect = true;
+            for (let atom in mol.atoms) {
+                if (atomCounts[atom] !== mol.atoms[atom]) {
+                    atomsCorrect = false;
+                    break;
+                }
+            }
+
+            const electronsCorrect = placedElectrons.length === mol.totalElectrons;
+
+            if (atomsCorrect && electronsCorrect) {
+                feedback.className = "feedback correct show";
+                feedback.innerHTML = "Excellent. Your Lewis structure looks great.<br>All atoms and electrons are accounted for.";
+            } else {
+                feedback.className = "feedback incorrect show";
+                let message = "Not quite right. ";
+                if (!atomsCorrect) {
+                    message += "Check the number and types of atoms. ";
+                }
+                if (!electronsCorrect) {
+                    message += `You need exactly ${mol.totalElectrons} electrons total (you have ${placedElectrons.length}). `;
+                }
+                message += "<br>Try the hint button for help.";
+                feedback.innerHTML = message;
+            }
+        }
+    </script>
+</body>
+</html>

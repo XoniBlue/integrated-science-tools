@@ -1,0 +1,385 @@
+
+        .sim-wrap * { margin: 0; padding: 0; box-sizing: border-box; }
+        .sim-wrap {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            padding: 0;
+            color: #f3ecff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(31, 14, 50, 0.92);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 158, 212, 0.3);
+            box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55);
+        }
+        .sim-wrap h1 { text-align: center; color: #ffd7f0; margin-bottom: 10px; font-size: 36px; }
+        .sim-wrap .subtitle { text-align: center; color: #c6b5de; margin-bottom: 30px; font-size: 18px; }
+        .sim-wrap .top-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .sim-wrap .top-actions a {
+            display: inline-block;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 158, 212, 0.4);
+            color: #ffd7f0;
+            background: rgba(255, 94, 168, 0.1);
+        }
+        .sim-wrap .top-actions a:hover {
+            background: rgba(255, 94, 168, 0.2);
+            color: #fff2f9;
+        }
+        .equation-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .equation-btn {
+            padding: 15px;
+            background: #3a1a59;
+            color: #f8edff;
+            border: 1px solid rgba(255, 158, 212, 0.35);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.25s;
+            text-align: center;
+        }
+        .equation-btn:hover {
+            background: #55277d;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 94, 168, 0.18);
+        }
+        .equation-btn.active { background: #ff5ea8; color: #200a2d; }
+        .panel {
+            background: #23113a;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #3d215f;
+            margin-bottom: 30px;
+        }
+        .panel-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffd7f0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .equation-display {
+            background: #13081f;
+            padding: 35px 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 3px dashed #5e3b88;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .equation-content {
+            font-size: 26px;
+            color: #ffd7f0;
+            text-align: center;
+            line-height: 2;
+        }
+        .coefficient-input {
+            width: 55px;
+            height: 48px;
+            background: #3a1a59;
+            color: #ffd7f0;
+            border: 2px solid #ff8dc6;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 4px;
+            transition: all 0.3s;
+        }
+        .coefficient-input:focus {
+            outline: none;
+            border-color: #ff5ea8;
+            box-shadow: 0 0 10px rgba(255, 94, 168, 0.5);
+            background: #4a2a69;
+        }
+        .coefficient-input.correct {
+            border-color: #6deca4;
+            background: rgba(109, 236, 164, 0.1);
+        }
+        .coefficient-input.incorrect {
+            border-color: #ff7c93;
+            background: rgba(255, 124, 147, 0.1);
+        }
+        .molecule { display: inline-block; color: #ff8dc6; font-weight: bold; margin: 0 6px; }
+        .plus { color: #c6b5de; margin: 0 12px; font-size: 30px; }
+        .arrow { color: #9f7cd4; margin: 0 18px; font-size: 34px; }
+        .atom-counter {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .counter-panel {
+            background: #160a25;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ff5ea8;
+        }
+        .counter-title {
+            font-weight: bold;
+            color: #ffd7f0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .atom-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: #23113a;
+            border-radius: 8px;
+            border: 2px solid #3d215f;
+        }
+        .atom-row.balanced {
+            border-color: #6deca4;
+            background: rgba(109, 236, 164, 0.05);
+        }
+        .atom-row.unbalanced {
+            border-color: #ff7c93;
+            background: rgba(255, 124, 147, 0.05);
+        }
+        .atom-symbol { font-weight: bold; color: #e4d7f5; }
+        .atom-count { font-weight: bold; color: #ff8dc6; font-size: 18px; }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-check { background: #ff5ea8; color: #220b2f; }
+        .btn-check:hover { background: #ff7dba; transform: translateY(-2px); }
+        .btn-clear { background: #9f7cd4; color: #12061f; }
+        .btn-clear:hover { background: #b594e4; }
+        .btn-hint { background: #ffd0ea; color: #280d39; }
+        .btn-hint:hover { background: #ffe3f2; }
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 17px;
+            font-weight: bold;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct {
+            background: rgba(109, 236, 164, 0.18);
+            color: #b7ffd9;
+            border: 2px solid #6deca4;
+        }
+        .feedback.incorrect {
+            background: rgba(255, 124, 147, 0.16);
+            color: #ffced8;
+            border: 2px solid #ff7c93;
+        }
+        .feedback.hint {
+            background: rgba(159, 124, 212, 0.15);
+            border: 2px solid #9f7cd4;
+            color: #e4d7f5;
+        }
+        .stoich-calculator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .stoich-input-group {
+            background: #160a25;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #9f7cd4;
+        }
+        .stoich-label {
+            font-weight: bold;
+            color: #e4d7f5;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .stoich-input {
+            width: 100%;
+            padding: 12px;
+            background: #3a1a59;
+            color: #ffd7f0;
+            border: 2px solid #ff8dc6;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .stoich-input:focus {
+            outline: none;
+            border-color: #ff5ea8;
+            box-shadow: 0 0 10px rgba(255, 94, 168, 0.5);
+        }
+        .stoich-result {
+            background: #160a25;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #ff5ea8;
+            text-align: center;
+            display: none;
+        }
+        .stoich-result.show { display: block; }
+        .stoich-result-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #ff8dc6;
+            margin: 10px 0;
+        }
+        .reaction-type {
+            background: linear-gradient(135deg, #2a1545 0%, #1f0f33 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid #5e3b88;
+            text-align: center;
+        }
+        .reaction-type-label { color: #c6b5de; font-size: 13px; margin-bottom: 5px; }
+        .reaction-type-value { color: #ffd7f0; font-weight: bold; font-size: 18px; }
+        @media (max-width: 700px) {
+            .equation-content {
+                font-size: 18px;
+                line-height: 1.55;
+            }
+            .plus,
+            .arrow {
+                margin: 0 8px;
+                font-size: 24px;
+            }
+            .coefficient-input {
+                width: 42px;
+                height: 40px;
+                font-size: 18px;
+            }
+            .equation-selector,
+            .atom-counter,
+            .stoich-calculator {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        :root {
+            --sim-bg-start: var(--bg-top);
+            --sim-bg-end: var(--bg-mid);
+            --sim-text: var(--text);
+            --sim-muted: var(--muted);
+            --sim-title: var(--text);
+            --sim-surface: var(--surface);
+            --sim-surface-alt: var(--surface-2);
+            --sim-panel-border: var(--border);
+            --sim-accent: var(--accent);
+            --sim-accent-2: var(--accent2);
+            --sim-soft: var(--accent2);
+            --sim-btn: color-mix(in srgb, var(--surface-2) 88%, black 12%);
+            --sim-btn-hover: color-mix(in srgb, var(--surface-2) 72%, var(--accent2) 28%);
+            --sim-btn-active-text: var(--button-text);
+            --sim-success: #6deca4;
+            --sim-danger: #ff7c93;
+            --sim-canvas-border: color-mix(in srgb, var(--accent2) 45%, var(--border) 55%);
+            --sim-canvas-bg: color-mix(in srgb, var(--surface) 70%, black 30%);
+            --sim-canvas-stroke: color-mix(in srgb, var(--accent2) 55%, white 45%);
+            --sim-lone-pair: color-mix(in srgb, var(--accent2) 20%, transparent);
+        }
+        .sim-wrap {
+            color: var(--sim-text) !important;
+        }
+        .sim-wrap h1,
+        .sim-wrap .panel-title,
+        .sim-wrap .counter-title,
+        .sim-wrap .reaction-type-value {
+            color: var(--sim-title) !important;
+        }
+        .sim-wrap .subtitle,
+        .sim-wrap .reaction-type-label,
+        .sim-wrap .atom-symbol,
+        .sim-wrap .stoich-label {
+            color: var(--sim-muted) !important;
+        }
+        .sim-wrap .container,
+        .sim-wrap .panel,
+        .sim-wrap .instructions,
+        .sim-wrap .counter-panel,
+        .sim-wrap .stoich-input-group,
+        .sim-wrap .reaction-type,
+        .sim-wrap .stoich-result {
+            background: var(--sim-surface) !important;
+            border-color: var(--sim-panel-border) !important;
+        }
+        .sim-wrap .equation-display,
+        .sim-wrap .stoich-input,
+        .sim-wrap .coefficient-input,
+        .sim-wrap .atom-row {
+            background: var(--sim-surface-alt) !important;
+            border-color: var(--sim-canvas-border) !important;
+        }
+        .sim-wrap .equation-btn,
+        .sim-wrap .btn {
+            background: var(--sim-btn) !important;
+            color: var(--sim-text) !important;
+            border-color: var(--sim-panel-border) !important;
+        }
+        .sim-wrap .equation-btn:hover,
+        .sim-wrap .btn:hover {
+            background: var(--sim-btn-hover) !important;
+        }
+        .sim-wrap .equation-btn.active,
+        .sim-wrap .btn-check {
+            background: var(--sim-accent) !important;
+            color: var(--sim-btn-active-text) !important;
+        }
+        .sim-wrap .btn-clear,
+        .sim-wrap .btn-hint {
+            background: var(--sim-soft) !important;
+            color: var(--sim-btn-active-text) !important;
+        }
+        .sim-wrap .molecule,
+        .sim-wrap .atom-count,
+        .sim-wrap .stoich-result-value {
+            color: var(--sim-accent-2) !important;
+        }
+        .sim-wrap .feedback.correct,
+        .sim-wrap .atom-row.balanced,
+        .sim-wrap .coefficient-input.correct {
+            border-color: var(--sim-success) !important;
+        }
+        .sim-wrap .feedback.incorrect,
+        .sim-wrap .atom-row.unbalanced,
+        .sim-wrap .coefficient-input.incorrect {
+            border-color: var(--sim-danger) !important;
+        }
+        .sim-wrap .top-actions a {
+            border-color: color-mix(in srgb, var(--sim-accent) 45%, transparent) !important;
+            color: var(--sim-title) !important;
+            background: color-mix(in srgb, var(--sim-accent) 12%, transparent) !important;
+        }
+        .sim-wrap .top-actions a:hover {
+            background: color-mix(in srgb, var(--sim-accent) 22%, transparent) !important;
+            color: var(--sim-text) !important;
+        }
+    

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+    <script src="../../assets/js/theme-init.js"></script>
+    <title>Equation Balancer & Stoichiometry | Integrated Science Tools</title>
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <script src="../../assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/sims/equation-balancer.css">
+</head>
+<body data-site-root="../.." data-page="unit-1">
+    <header id="site-header" class="site-header"></header>
+
+    <main class="page-main">
+      <section class="sim-wrap">
+        <div class="container">
+          <div class="top-actions">
+            <a href="../index.html">Back to Unit 1</a>
+            <a href="../../index.html">Home</a>
+          </div>
+        <h1>Chemical Equation Balancer</h1>
+        <p class="subtitle">Balance equations and calculate stoichiometry</p>
+
+        <div class="instructions sim-instructions-panel">
+            <h3 class="sim-instructions-title">📖 How to Use This Simulator</h3>
+            <div class="sim-instructions-body">
+                <strong>1. Select a Reaction:</strong> Click one of the four reaction buttons to choose which equation to balance.<br>
+                <strong>2. Enter Coefficients:</strong> Type numbers into the boxes before each chemical formula to balance the equation.<br>
+                <strong>3. Watch Atom Counts:</strong> The panels below show atom counts on each side. Green = balanced, Red = unbalanced.<br>
+                <strong>4. Check Your Answer:</strong> Click "Check Balance" to see if your coefficients are correct (green borders = correct).<br>
+                <strong>5. Get Help:</strong> Click "Show Hint" for step-by-step guidance on balancing the equation.<br>
+                <strong>6. Use Stoichiometry:</strong> Once balanced, use the calculator to convert between moles of different substances.
+            </div>
+        </div>
+
+        <div class="equation-selector" id="equationSelector"></div>
+        <div class="panel">
+            <h3 class="panel-title">Balance the Equation</h3>
+            <p class="sim-muted-intro-lg">
+                Enter coefficients to balance the chemical equation
+            </p>
+            <div class="equation-display">
+                <div class="equation-content" id="equationDisplay"></div>
+            </div>
+            <div class="reaction-type">
+                <div class="reaction-type-label">Reaction Type</div>
+                <div class="reaction-type-value" id="reactionType">Combustion</div>
+            </div>
+            <div class="atom-counter">
+                <div class="counter-panel">
+                    <div class="counter-title">Reactants</div>
+                    <div id="reactantCounts"></div>
+                </div>
+                <div class="counter-panel">
+                    <div class="counter-title">Products</div>
+                    <div id="productCounts"></div>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-check" id="checkBtn">Check Balance</button>
+                <button class="btn btn-clear" id="clearBtn">Clear</button>
+                <button class="btn btn-hint" id="hintBtn">Show Hint</button>
+            </div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+        <div class="panel">
+            <h3 class="panel-title">Stoichiometry Calculator</h3>
+            <p class="sim-muted-intro-lg">
+                Calculate quantities using the balanced equation
+            </p>
+            <div class="stoich-calculator">
+                <div class="stoich-input-group">
+                    <div class="stoich-label">Given Amount (moles)</div>
+                    <select id="givenSubstance" class="stoich-input sim-select-spacing"></select>
+                    <input type="number" id="givenAmount" class="stoich-input" placeholder="Enter moles" step="0.01">
+                </div>
+                <div class="stoich-input-group">
+                    <div class="stoich-label">Find Amount (moles)</div>
+                    <select id="findSubstance" class="stoich-input"></select>
+                    <button class="btn btn-check sim-btn-block" id="calcBtn">Calculate</button>
+                </div>
+            </div>
+            <div class="stoich-result" id="stoichResult">
+                <div class="stoich-label">Result</div>
+                <div class="stoich-result-value" id="stoichValue">—</div>
+                <div class="sim-help-text" id="stoichExplanation"></div>
+            </div>
+        </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer" class="site-footer"></footer>
+
+    <script>
+        const equations = {
+            combustion: {
+                name: "Combustion of Methane",
+                type: "Combustion",
+                reactants: [
+                    { formula: "CH₄", atoms: { C: 1, H: 4 } },
+                    { formula: "O₂", atoms: { O: 2 } }
+                ],
+                products: [
+                    { formula: "CO₂", atoms: { C: 1, O: 2 } },
+                    { formula: "H₂O", atoms: { H: 2, O: 1 } }
+                ],
+                answer: [1, 2, 1, 2],
+                hint: "Balance C first (1 CH₄ → 1 CO₂), then H (4 H → 2 H₂O), finally O (need 4 O on right = 2 O₂)."
+            },
+            synthesis: {
+                name: "Synthesis of Water",
+                type: "Synthesis",
+                reactants: [
+                    { formula: "H₂", atoms: { H: 2 } },
+                    { formula: "O₂", atoms: { O: 2 } }
+                ],
+                products: [{ formula: "H₂O", atoms: { H: 2, O: 1 } }],
+                answer: [2, 1, 2],
+                hint: "Balance O first: 2 O from O₂ needs 2 H₂O. Then H: 4 H total needs 2 H₂."
+            },
+            decomposition: {
+                name: "Decomposition of H₂O₂",
+                type: "Decomposition",
+                reactants: [{ formula: "H₂O₂", atoms: { H: 2, O: 2 } }],
+                products: [
+                    { formula: "H₂O", atoms: { H: 2, O: 1 } },
+                    { formula: "O₂", atoms: { O: 2 } }
+                ],
+                answer: [2, 2, 1],
+                hint: "Try 2 H₂O₂ → gives 4 H and 4 O. Make 2 H₂O (uses 4 H, 2 O) and 1 O₂ (uses 2 O)."
+            },
+            photosynthesis: {
+                name: "Photosynthesis",
+                type: "Synthesis",
+                reactants: [
+                    { formula: "CO₂", atoms: { C: 1, O: 2 } },
+                    { formula: "H₂O", atoms: { H: 2, O: 1 } }
+                ],
+                products: [
+                    { formula: "C₆H₁₂O₆", atoms: { C: 6, H: 12, O: 6 } },
+                    { formula: "O₂", atoms: { O: 2 } }
+                ],
+                answer: [6, 6, 1, 6],
+                hint: "1 glucose needs 6 C (6 CO₂) and 12 H (6 H₂O). Total O on left: 18. O on right: 6 in glucose + 12 in 6 O₂."
+            }
+        };
+        let currentEquation = "combustion";
+
+        function createEquationButtons() {
+            const selector = document.getElementById("equationSelector");
+            Object.keys(equations).forEach((key, idx) => {
+                const eq = equations[key];
+                const btn = document.createElement("button");
+                btn.className = "equation-btn" + (idx === 0 ? " active" : "");
+                btn.textContent = eq.name;
+                btn.onclick = function() {
+                    currentEquation = key;
+                    document.querySelectorAll(".equation-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById("reactionType").textContent = eq.type;
+                    clearCoefficients();
+                    renderEquation();
+                    updateAtomCounts();
+                    updateStoichSelects();
+                };
+                selector.appendChild(btn);
+            });
+        }
+
+        function renderEquation() {
+            const eq = equations[currentEquation];
+            const display = document.getElementById("equationDisplay");
+            let html = "";
+            eq.reactants.forEach((r, i) => {
+                html += `<input type="number" class="coefficient-input" id="coef-r${i}" value="1" min="1" max="20">`;
+                html += `<span class="molecule">${r.formula}</span>`;
+                if (i < eq.reactants.length - 1) html += `<span class="plus">+</span>`;
+            });
+            html += `<span class="arrow">→</span>`;
+            eq.products.forEach((p, i) => {
+                html += `<input type="number" class="coefficient-input" id="coef-p${i}" value="1" min="1" max="20">`;
+                html += `<span class="molecule">${p.formula}</span>`;
+                if (i < eq.products.length - 1) html += `<span class="plus">+</span>`;
+            });
+            display.innerHTML = html;
+            document.querySelectorAll(".coefficient-input").forEach(input => {
+                input.oninput = updateAtomCounts;
+            });
+        }
+
+        function updateAtomCounts() {
+            const eq = equations[currentEquation];
+            const rCounts = {}, pCounts = {};
+            eq.reactants.forEach((r, i) => {
+                const coef = parseInt(document.getElementById(`coef-r${i}`).value) || 1;
+                for (let atom in r.atoms) {
+                    rCounts[atom] = (rCounts[atom] || 0) + r.atoms[atom] * coef;
+                }
+            });
+            eq.products.forEach((p, i) => {
+                const coef = parseInt(document.getElementById(`coef-p${i}`).value) || 1;
+                for (let atom in p.atoms) {
+                    pCounts[atom] = (pCounts[atom] || 0) + p.atoms[atom] * coef;
+                }
+            });
+            const allAtoms = new Set([...Object.keys(rCounts), ...Object.keys(pCounts)]);
+            document.getElementById("reactantCounts").innerHTML = Array.from(allAtoms).map(atom => {
+                const count = rCounts[atom] || 0;
+                const balanced = count === (pCounts[atom] || 0);
+                return `<div class="atom-row ${balanced ? 'balanced' : 'unbalanced'}">
+                    <span class="atom-symbol">${atom}</span>
+                    <span class="atom-count">${count}</span>
+                </div>`;
+            }).join("");
+            document.getElementById("productCounts").innerHTML = Array.from(allAtoms).map(atom => {
+                const count = pCounts[atom] || 0;
+                const balanced = count === (rCounts[atom] || 0);
+                return `<div class="atom-row ${balanced ? 'balanced' : 'unbalanced'}">
+                    <span class="atom-symbol">${atom}</span>
+                    <span class="atom-count">${count}</span>
+                </div>`;
+            }).join("");
+            document.getElementById("feedback").classList.remove("show");
+        }
+
+        function checkBalance() {
+            const eq = equations[currentEquation];
+            const userAnswer = [];
+            eq.reactants.forEach((r, i) => {
+                userAnswer.push(parseInt(document.getElementById(`coef-r${i}`).value) || 1);
+            });
+            eq.products.forEach((p, i) => {
+                userAnswer.push(parseInt(document.getElementById(`coef-p${i}`).value) || 1);
+            });
+            const feedback = document.getElementById("feedback");
+            const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(eq.answer);
+            document.querySelectorAll(".coefficient-input").forEach((input, i) => {
+                input.classList.remove("correct", "incorrect");
+                if (parseInt(input.value) === eq.answer[i]) {
+                    input.classList.add("correct");
+                } else {
+                    input.classList.add("incorrect");
+                }
+            });
+            if (isCorrect) {
+                feedback.className = "feedback correct show";
+                feedback.innerHTML = "Perfect! Your equation is balanced correctly.<br>Law of conservation of mass is satisfied.";
+            } else {
+                feedback.className = "feedback incorrect show";
+                feedback.innerHTML = "Not quite balanced. Make sure atoms are equal on both sides.";
+            }
+        }
+
+        function clearCoefficients() {
+            document.querySelectorAll(".coefficient-input").forEach(input => {
+                input.value = "1";
+                input.classList.remove("correct", "incorrect");
+            });
+            updateAtomCounts();
+            document.getElementById("feedback").classList.remove("show");
+            document.getElementById("stoichResult").classList.remove("show");
+        }
+
+        function showHint() {
+            const eq = equations[currentEquation];
+            const feedback = document.getElementById("feedback");
+            feedback.className = "feedback hint show";
+            feedback.innerHTML = `<strong>Hint:</strong> ${eq.hint}`;
+        }
+
+        function updateStoichSelects() {
+            const eq = equations[currentEquation];
+            const substances = [
+                ...eq.reactants.map((r, i) => ({ label: r.formula, id: `r${i}` })),
+                ...eq.products.map((p, i) => ({ label: p.formula, id: `p${i}` }))
+            ];
+            const givenSel = document.getElementById("givenSubstance");
+            const findSel = document.getElementById("findSubstance");
+            givenSel.innerHTML = substances.map(s => `<option value="${s.id}">${s.label}</option>`).join("");
+            findSel.innerHTML = substances.map(s => `<option value="${s.id}">${s.label}</option>`).join("");
+            if (substances.length > 1) findSel.selectedIndex = 1;
+        }
+
+        function calculateStoichiometry() {
+            const eq = equations[currentEquation];
+            const givenId = document.getElementById("givenSubstance").value;
+            const findId = document.getElementById("findSubstance").value;
+            const givenAmount = parseFloat(document.getElementById("givenAmount").value);
+            if (!givenAmount || givenAmount <= 0) {
+                alert("Please enter a valid amount");
+                return;
+            }
+            const givenIdx = parseInt(givenId.substring(1));
+            const findIdx = parseInt(findId.substring(1));
+            const givenIsR = givenId.startsWith("r");
+            const findIsR = findId.startsWith("r");
+            let givenCoef, findCoef;
+            if (givenIsR) {
+                givenCoef = eq.answer[givenIdx];
+            } else {
+                givenCoef = eq.answer[eq.reactants.length + givenIdx];
+            }
+            if (findIsR) {
+                findCoef = eq.answer[findIdx];
+            } else {
+                findCoef = eq.answer[eq.reactants.length + findIdx];
+            }
+            const result = (givenAmount * findCoef) / givenCoef;
+            const givenFormula = givenIsR ? eq.reactants[givenIdx].formula : eq.products[givenIdx].formula;
+            const findFormula = findIsR ? eq.reactants[findIdx].formula : eq.products[findIdx].formula;
+            document.getElementById("stoichResult").classList.add("show");
+            document.getElementById("stoichValue").textContent = result.toFixed(3) + " moles";
+            document.getElementById("stoichExplanation").innerHTML = 
+                `Ratio ${givenCoef} ${givenFormula} : ${findCoef} ${findFormula}<br>` +
+                `${givenAmount} mol × (${findCoef}/${givenCoef}) = ${result.toFixed(3)} mol`;
+        }
+
+        document.getElementById("checkBtn").onclick = checkBalance;
+        document.getElementById("clearBtn").onclick = clearCoefficients;
+        document.getElementById("hintBtn").onclick = showHint;
+        document.getElementById("calcBtn").onclick = calculateStoichiometry;
+        createEquationButtons();
+        renderEquation();
+        updateAtomCounts();
+        updateStoichSelects();
+    </script>
+</body>
+</html>

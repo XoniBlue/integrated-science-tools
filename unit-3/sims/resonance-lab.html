@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
+<title>Resonance Lab | Integrated Science Tools</title>
+<link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/sims/resonance-lab.css"></head>
+<body data-site-root="../.." data-page="unit-3"><header id="site-header" class="site-header"></header>
+<main class="page-main"><section class="sim-wrap"><div class="container">
+<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
+<h1>Resonance Lab</h1><p class="subtitle">Explore how drive frequency and damping affect amplitude.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+<div class="grid"><div class="panel">
+<label>Natural Frequency (Hz) <span class="value" id="fnv">2.0</span></label><input id="fn" type="range" min="0.5" max="6" step="0.1" value="2">
+<label>Drive Frequency (Hz) <span class="value" id="fdv">2.0</span></label><input id="fd" type="range" min="0.2" max="8" step="0.1" value="2">
+<label>Damping Ratio <span class="value" id="zv">0.20</span></label><input id="z" type="range" min="0.01" max="1" step="0.01" value="0.2">
+</div><div class="panel"><div class="result">
+<p>Amplitude Ratio: <span class="value" id="amp">0.00</span></p>
+<p>Response Type: <span class="value" id="resp">-</span></p>
+<div class="bar"><div id="fill" class="fill"></div></div>
+</div></div></div>
+</div></section></main><footer id="site-footer" class="site-footer"></footer>
+<script>
+function update(){const fnv=+fn.value, fdv=+fd.value, zv=+z.value; document.getElementById('fnv').textContent=fnv.toFixed(1); document.getElementById('fdv').textContent=fdv.toFixed(1); document.getElementById('zv').textContent=zv.toFixed(2);
+const r=fdv/fnv; const den=Math.sqrt((1-r*r)*(1-r*r)+(2*zv*r)*(2*zv*r)); const A=Math.min(10,1/den); amp.textContent=A.toFixed(2); fill.style.width=`${Math.min(100,A*12)}%`;
+let type='Off resonance'; if (Math.abs(r-1)<0.08) type='At resonance'; if (zv>0.6) type='Heavily damped'; resp.textContent=type;}
+[fn,fd,z].forEach(e=>e.addEventListener('input',update)); update();
+</script></body></html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+    <script src="../../assets/js/theme-init.js"></script>
+    <title>pH Titration Simulator | Integrated Science Tools</title>
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <script src="../../assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/sims/ph-titration.css">
+</head>
+<body data-site-root="../.." data-page="unit-1">
+    <header id="site-header" class="site-header"></header>
+
+    <main class="page-main">
+      <section class="sim-wrap">
+        <div class="container">
+          <div class="top-actions">
+            <a href="../index.html">Back to Unit 1</a>
+            <a href="../../index.html">Home</a>
+          </div>
+        <h1>pH & Titration Simulator</h1>
+        <p class="subtitle">Explore acids, bases, and neutralization reactions</p>
+
+        <div class="instructions sim-instructions-panel">
+            <h3 class="sim-instructions-title">📖 How to Use This Simulator</h3>
+            <div class="sim-instructions-body">
+                <strong>1. Select a Solution:</strong> Click one of the six solution buttons to explore different acids, bases, or neutral solutions.<br>
+                <strong>2. Adjust Concentration:</strong> Use the slider to change the molarity (0.001 M to 1 M) and watch the pH change in real-time.<br>
+                <strong>3. Observe the Beaker:</strong> The solution color and pH indicator on the scale update automatically.<br>
+                <strong>4. Perform Titration:</strong> For acids, click "Add 1 mL" to neutralize with NaOH base. Watch the titration curve plot and detect the equivalence point.<br>
+                <strong>5. Reset:</strong> Click "Reset Titration" to start a new experiment with the current solution.
+            </div>
+        </div>
+
+        <div class="workspace">
+            <div class="panel">
+                <h3 class="panel-title">Solution Visualization</h3>
+                <div class="beaker-container">
+                    <div class="sim-relative">
+                        <div class="beaker-markings">
+                            <div class="marking"><span>100</span><div class="tick"></div></div>
+                            <div class="marking"><span>75</span><div class="tick"></div></div>
+                            <div class="marking"><span>50</span><div class="tick"></div></div>
+                            <div class="marking"><span>25</span><div class="tick"></div></div>
+                        </div>
+                        <div class="beaker">
+                            <div class="beaker-top"></div>
+                            <div class="solution" id="solution"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ph-scale">
+                    <div class="ph-indicator" id="phIndicator"></div>
+                </div>
+                <div class="ph-labels">
+                    <span>0 (Acid)</span>
+                    <span>7 (Neutral)</span>
+                    <span>14 (Base)</span>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3 class="panel-title">Solution Controls</h3>
+                
+                <div class="controls-group">
+                    <label class="control-label">Select Solution Type:</label>
+                    <div class="solution-selector" id="solutionSelector"></div>
+                </div>
+
+                <div class="controls-group">
+                    <label class="control-label">Concentration: <span id="concentrationDisplay">0.100</span> M</label>
+                    <input type="range" id="concentrationSlider" min="0.001" max="1" step="0.001" value="0.1">
+                </div>
+
+                <div class="info-display">
+                    <div class="info-box">
+                        <div class="info-value" id="phValue">1.00</div>
+                        <div class="info-label">pH Level</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-value" id="ionConcentration">1.0e-1</div>
+                        <div class="info-label">[H⁺] M</div>
+                    </div>
+                </div>
+
+                <div class="description" id="solutionDescription"></div>
+            </div>
+        </div>
+
+        <div class="titration-mode">
+            <h3 class="panel-title">Titration Experiment</h3>
+            <p class="sim-muted-intro">
+                Add NaOH solution dropwise to neutralize the acid
+            </p>
+            
+            <div class="titration-grid">
+                <div class="burette-container">
+                    <div class="burette">
+                        <div class="burette-liquid" id="buretteLiquid"></div>
+                    </div>
+                    <button class="add-titrant-btn" id="addTitrantBtn">Add 1 mL</button>
+                    <p class="volume-display">
+                        Added: <span id="volumeAdded">0</span> mL
+                    </p>
+                </div>
+                <div class="chart-wrap">
+                    <canvas id="titrationCurve"></canvas>
+                </div>
+            </div>
+
+            <div class="equivalence-point" id="equivalencePoint">
+                🎯 Equivalence Point Reached! Solution is now neutral (pH ≈ 7)
+            </div>
+
+            <button class="btn-secondary" id="resetBtn">Reset Titration</button>
+        </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer" class="site-footer"></footer>
+
+    <script>
+        const solutions = {
+            hcl: { name: "HCl (Strong Acid)", type: "strong_acid", color: "rgba(255, 100, 100, 0.7)", 
+                   description: "Strong acids completely dissociate in water. HCl → H⁺ + Cl⁻" },
+            acetic: { name: "Acetic Acid", type: "weak_acid", color: "rgba(255, 180, 100, 0.7)", 
+                      description: "Weak acids partially dissociate. Common in vinegar.", pKa: 4.76 },
+            naoh: { name: "NaOH (Strong Base)", type: "strong_base", color: "rgba(100, 100, 255, 0.7)", 
+                    description: "Strong bases completely dissociate. NaOH → Na⁺ + OH⁻" },
+            ammonia: { name: "Ammonia (Weak Base)", type: "weak_base", color: "rgba(150, 200, 255, 0.7)", 
+                       description: "Weak bases partially accept protons. NH₃ + H₂O ⇌ NH₄⁺ + OH⁻", pKb: 4.75 },
+            water: { name: "Pure Water", type: "neutral", color: "rgba(200, 200, 255, 0.5)", 
+                     description: "Water is neutral with pH 7." },
+            buffer: { name: "Buffer Solution", type: "buffer", color: "rgba(150, 255, 150, 0.6)", 
+                      description: "Buffers resist pH changes." }
+        };
+
+        let currentSolution = "hcl";
+        let concentration = 0.1;
+        let titrantVolume = 0;
+        let titrationData = [];
+        const CHART_MAX_WIDTH = 500;
+        const CHART_ASPECT_RATIO = 320 / 500;
+
+        function resizeTitrationCanvas() {
+            const canvas = document.getElementById("titrationCurve");
+            if (!canvas || !canvas.parentElement) {
+                return;
+            }
+            const width = Math.max(260, Math.min(CHART_MAX_WIDTH, Math.floor(canvas.parentElement.clientWidth)));
+            canvas.width = width;
+            canvas.height = Math.round(width * CHART_ASPECT_RATIO);
+        }
+
+        function calculatePH(solution, conc) {
+            const sol = solutions[solution];
+            if (conc <= 0) return 7;
+            
+            if (sol.type === "strong_acid") {
+                return Math.max(0, -Math.log10(conc));
+            } else if (sol.type === "weak_acid") {
+                const Ka = Math.pow(10, -sol.pKa);
+                const h = Math.sqrt(Ka * conc);
+                return -Math.log10(h);
+            } else if (sol.type === "strong_base") {
+                const pOH = -Math.log10(conc);
+                return Math.min(14, 14 - pOH);
+            } else if (sol.type === "weak_base") {
+                const Kb = Math.pow(10, -sol.pKb);
+                const oh = Math.sqrt(Kb * conc);
+                return 14 + Math.log10(oh);
+            } else if (sol.type === "neutral") {
+                return 7;
+            } else if (sol.type === "buffer") {
+                return 7;
+            }
+            return 7;
+        }
+
+        function updateDisplay() {
+            const pH = calculatePH(currentSolution, concentration);
+            const sol = solutions[currentSolution];
+            
+            document.getElementById("solution").style.background = sol.color;
+            document.getElementById("phValue").textContent = pH.toFixed(2);
+            
+            let ionConc = Math.pow(10, -pH);
+            document.getElementById("ionConcentration").textContent = ionConc.toExponential(1);
+            
+            const indicatorPos = (pH / 14) * 100;
+            document.getElementById("phIndicator").style.left = `calc(${indicatorPos}% - 1.5px)`;
+            
+            document.getElementById("solutionDescription").textContent = sol.description;
+        }
+
+        function createSolutionButtons() {
+            const container = document.getElementById("solutionSelector");
+            Object.keys(solutions).forEach((key, idx) => {
+                const btn = document.createElement("button");
+                btn.className = "solution-btn" + (idx === 0 ? " active" : "");
+                btn.textContent = solutions[key].name;
+                btn.onclick = function() {
+                    currentSolution = key;
+                    document.querySelectorAll(".solution-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    resetTitration();
+                    updateDisplay();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        document.getElementById("concentrationSlider").oninput = function() {
+            concentration = parseFloat(this.value);
+            document.getElementById("concentrationDisplay").textContent = concentration.toFixed(3);
+            resetTitration();
+            updateDisplay();
+        };
+
+        document.getElementById("addTitrantBtn").onclick = function() {
+            if (solutions[currentSolution].type.includes("acid")) {
+                titrantVolume += 1;
+                document.getElementById("volumeAdded").textContent = titrantVolume;
+                
+                const initialMoles = concentration * 0.05;
+                const addedMoles = 0.1 * (titrantVolume / 1000);
+                const remainingAcid = Math.max(0, initialMoles - addedMoles);
+                const totalVolume = 0.05 + (titrantVolume / 1000);
+                
+                let currentPH;
+                if (remainingAcid > 0.000001) {
+                    const newConc = remainingAcid / totalVolume;
+                    currentPH = calculatePH(currentSolution, newConc);
+                } else {
+                    const excessBase = Math.max(0, addedMoles - initialMoles) / totalVolume;
+                    if (excessBase > 0.000001) {
+                        currentPH = Math.min(14, 14 + Math.log10(excessBase));
+                    } else {
+                        currentPH = 7;
+                    }
+                }
+                
+                titrationData.push({ volume: titrantVolume, pH: currentPH });
+                drawTitrationCurve();
+                
+                const percentUsed = Math.min(100, (titrantVolume / 100) * 100);
+                document.getElementById("buretteLiquid").style.height = (100 - percentUsed) + "%";
+                
+                if (currentPH >= 6.5 && currentPH <= 7.5) {
+                    document.getElementById("equivalencePoint").classList.add("show");
+                } else {
+                    document.getElementById("equivalencePoint").classList.remove("show");
+                }
+            }
+        };
+
+        function drawTitrationCurve() {
+            const canvas = document.getElementById("titrationCurve");
+            const ctx = canvas.getContext("2d");
+            const theme = getComputedStyle(document.documentElement);
+            const chartWidth = canvas.width;
+            const chartHeight = canvas.height;
+            ctx.clearRect(0, 0, chartWidth, chartHeight);
+            
+            ctx.fillStyle = theme.getPropertyValue("--sim-surface-alt").trim() || "#160a25";
+            ctx.fillRect(0, 0, chartWidth, chartHeight);
+            
+            const padding = { left: 60, right: 30, top: 30, bottom: 50 };
+            const graphWidth = chartWidth - padding.left - padding.right;
+            const graphHeight = chartHeight - padding.top - padding.bottom;
+            
+            // Axes
+            ctx.strokeStyle = theme.getPropertyValue("--sim-canvas-border").trim() || "#5e3b88";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding.left, padding.top);
+            ctx.lineTo(padding.left, chartHeight - padding.bottom);
+            ctx.lineTo(chartWidth - padding.right, chartHeight - padding.bottom);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = theme.getPropertyValue("--sim-muted").trim() || "#c6b5de";
+            ctx.font = "14px Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("pH", 25, padding.top + 10);
+            ctx.fillText("Volume NaOH (mL)", chartWidth / 2, chartHeight - 15);
+            
+            // pH grid
+            ctx.fillStyle = theme.getPropertyValue("--sim-soft").trim() || "#9f7cd4";
+            ctx.font = "11px Arial";
+            ctx.textAlign = "right";
+            for (let i = 0; i <= 14; i += 2) {
+                const y = chartHeight - padding.bottom - (i / 14) * graphHeight;
+                ctx.fillText(i, padding.left - 10, y + 4);
+                
+                ctx.strokeStyle = theme.getPropertyValue("--sim-panel-border").trim() || "#3d215f";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(padding.left, y);
+                ctx.lineTo(chartWidth - padding.right, y);
+                ctx.stroke();
+            }
+            
+            // Plot curve
+            if (titrationData.length > 1) {
+                const maxVol = Math.max(100, titrantVolume + 10);
+                
+                ctx.strokeStyle = theme.getPropertyValue("--sim-accent").trim() || "#ff5ea8";
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                titrationData.forEach((point, i) => {
+                    const x = padding.left + (point.volume / maxVol) * graphWidth;
+                    const y = chartHeight - padding.bottom - (point.pH / 14) * graphHeight;
+                    
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+                
+                // Points
+                ctx.fillStyle = theme.getPropertyValue("--sim-accent-2").trim() || "#ff8dc6";
+                titrationData.forEach(point => {
+                    const x = padding.left + (point.volume / maxVol) * graphWidth;
+                    const y = chartHeight - padding.bottom - (point.pH / 14) * graphHeight;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+        }
+
+        function resetTitration() {
+            titrantVolume = 0;
+            titrationData = [];
+            document.getElementById("volumeAdded").textContent = "0";
+            document.getElementById("buretteLiquid").style.height = "100%";
+            document.getElementById("equivalencePoint").classList.remove("show");
+            
+            const initialPH = calculatePH(currentSolution, concentration);
+            titrationData.push({ volume: 0, pH: initialPH });
+            drawTitrationCurve();
+        }
+
+        document.getElementById("resetBtn").onclick = resetTitration;
+
+        // Initialize
+        createSolutionButtons();
+        updateDisplay();
+        resetTitration();
+        const themeObserver = new MutationObserver(() => {
+            updateDisplay();
+            drawTitrationCurve();
+        });
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+        });
+        window.addEventListener("resize", () => {
+            resizeTitrationCanvas();
+            drawTitrationCurve();
+        });
+        resizeTitrationCanvas();
+        drawTitrationCurve();
+    </script>
+</body>
+</html>

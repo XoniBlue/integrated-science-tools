@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Ramp Dynamics | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/ramp-dynamics.css">
+</head>
+<body data-site-root="../.." data-page="unit-5">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
+    <h1>Ramp Dynamics</h1>
+    <p class="subtitle">Analyze incline motion with friction and calculate time to bottom.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Ramp Angle (degrees): <span class="value" id="angv">25</span></label><input id="angle" type="range" min="1" max="60" step="1" value="25">
+        <label>Ramp Length (m): <span class="value" id="lenv">8.0</span></label><input id="length" type="range" min="1" max="30" step="0.5" value="8">
+        <label>Friction Coefficient mu: <span class="value" id="muv">0.20</span></label><input id="mu" type="range" min="0" max="1" step="0.01" value="0.2">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Net Acceleration: <span class="value" id="acc">0</span> m/s^2</p>
+        <p>Final Speed at Bottom: <span class="value" id="vf">0</span> m/s</p>
+        <p>Travel Time: <span class="value" id="time">0</span> s</p>
+        <p>Motion State: <span class="value" id="state">Slides</span></p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const g = 9.8;
+    function update() {
+      const theta = Number(angle.value) * Math.PI / 180;
+      const L = Number(length.value);
+      const muVal = Number(mu.value);
+
+      angv.textContent = (theta * 180 / Math.PI).toFixed(0);
+      lenv.textContent = L.toFixed(1);
+      muv.textContent = muVal.toFixed(2);
+
+      const a = g * (Math.sin(theta) - muVal * Math.cos(theta));
+      if (a <= 0) {
+        acc.textContent = "0.00";
+        vf.textContent = "0.00";
+        time.textContent = "No slide";
+        state.textContent = "Static friction holds";
+        return;
+      }
+
+      const vFinal = Math.sqrt(2 * a * L);
+      const tTravel = Math.sqrt(2 * L / a);
+
+      acc.textContent = a.toFixed(2);
+      vf.textContent = vFinal.toFixed(2);
+      time.textContent = tTravel.toFixed(2);
+      state.textContent = "Slides down ramp";
+    }
+    [angle, length, mu].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

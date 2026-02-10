@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Solution Mixer | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/solution-mixer.css">
+</head>
+<body data-site-root="../.." data-page="unit-2">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions">
+      <a href="../index.html">Back to Unit 2</a>
+      <a href="../../index.html">Home</a>
+    </div>
+    <h1>Solution Mixer</h1>
+    <p class="subtitle">Mix two solutions and estimate final concentration and pH trend.</p>
+
+    <div class="instructions">
+      <h3>📖 How to Use This Simulator</h3>
+      <div>
+        <strong>1. Choose a Reaction:</strong> Select a preset or customize your own solution mixture.<br>
+        <strong>2. Set Solution A:</strong> Pick the type, molarity, and volume for the first solution.<br>
+        <strong>3. Set Solution B:</strong> Configure the second solution to mix.<br>
+        <strong>4. Watch the Mix:</strong> See the beakers combine and color change in real-time.<br>
+        <strong>5. Analyze pH:</strong> Use the pH scale and results to understand the final solution.
+      </div>
+    </div>
+
+    <div class="reaction-presets">
+      <button class="preset-btn" data-preset="neutralization">Neutralization</button>
+      <button class="preset-btn" data-preset="dilution">Acid Dilution</button>
+      <button class="preset-btn" data-preset="excess-base">Excess Base</button>
+      <button class="preset-btn" data-preset="weak-mix">Weak Mixing</button>
+    </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <div class="panel-title">Solution Parameters</div>
+        
+        <div class="solution-section">
+          <div class="section-label">🧪 Solution A</div>
+          <label>Type</label>
+          <select id="typeA">
+            <option value="acid">Strong Acid (HCl)</option>
+            <option value="base">Strong Base (NaOH)</option>
+            <option value="neutral">Neutral (H₂O)</option>
+          </select>
+          <label>Molarity (M)</label>
+          <input id="mA" type="number" min="0" step="0.01" value="0.20">
+          <label>Volume (mL)</label>
+          <input id="vA" type="number" min="0" step="1" value="50">
+        </div>
+
+        <div class="solution-section solution-b">
+          <div class="section-label">🧪 Solution B</div>
+          <label>Type</label>
+          <select id="typeB">
+            <option value="base">Strong Base (NaOH)</option>
+            <option value="acid">Strong Acid (HCl)</option>
+            <option value="neutral">Neutral (H₂O)</option>
+          </select>
+          <label>Molarity (M)</label>
+          <input id="mB" type="number" min="0" step="0.01" value="0.10">
+          <label>Volume (mL)</label>
+          <input id="vB" type="number" min="0" step="1" value="50">
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-mix" id="mixBtn">⚗️ Mix Solutions</button>
+          <button class="btn btn-reset" id="resetBtn">Reset</button>
+        </div>
+      </div>
+      
+      <div class="panel">
+        <div class="panel-title">Mixing Visualization</div>
+        
+        <div class="beaker-visualization">
+          <div class="beakers-container">
+            <div class="beaker solution-a">
+              <div class="beaker-label">Solution A</div>
+              <div class="beaker-flask">
+                <div class="beaker-liquid" id="liquidA"></div>
+              </div>
+            </div>
+            
+            <div class="mix-arrow">+</div>
+            
+            <div class="beaker solution-b">
+              <div class="beaker-label">Solution B</div>
+              <div class="beaker-flask">
+                <div class="beaker-liquid" id="liquidB"></div>
+              </div>
+            </div>
+            
+            <div class="mix-arrow">→</div>
+            
+            <div class="beaker result-beaker">
+              <div class="beaker-label">Result</div>
+              <div class="beaker-flask">
+                <div class="beaker-liquid" id="liquidResult"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph-scale">
+            <div class="ph-track">
+              <div class="ph-indicator" id="phIndicator"></div>
+            </div>
+            <div class="ph-labels">
+              <span>0 (Acidic)</span>
+              <span>7 (Neutral)</span>
+              <span>14 (Basic)</span>
+            </div>
+          </div>
+
+          <div class="results-grid">
+            <div class="result-card">
+              <div class="result-label">Total Volume</div>
+              <div class="result-value" id="tv">100 mL</div>
+            </div>
+            <div class="result-card">
+              <div class="result-label">Net Molarity</div>
+              <div class="result-value" id="nm">0.050 M</div>
+            </div>
+            <div class="result-card">
+              <div class="result-label">pH Value</div>
+              <div class="result-value" id="ph">7.00</div>
+            </div>
+            <div class="result-card">
+              <div class="result-label">Character</div>
+              <div class="result-value neutral" id="char">Neutral</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const el = id => document.getElementById(id);
+    const sign = t => t === 'acid' ? 1 : (t === 'base' ? -1 : 0);
+    
+    // Get element references
+    const typeA = el('typeA');
+    const mA = el('mA');
+    const vA = el('vA');
+    const typeB = el('typeB');
+    const mB = el('mB');
+    const vB = el('vB');
+    const tv = el('tv');
+    const nm = el('nm');
+    const ph = el('ph');
+    const char = el('char');
+    const liquidA = el('liquidA');
+    const liquidB = el('liquidB');
+    const liquidResult = el('liquidResult');
+    const phIndicator = el('phIndicator');
+
+    const presets = {
+      neutralization: { typeA: 'acid', mA: 0.20, vA: 50, typeB: 'base', mB: 0.20, vB: 50 },
+      dilution: { typeA: 'acid', mA: 1.00, vA: 10, typeB: 'neutral', mB: 0, vB: 90 },
+      'excess-base': { typeA: 'acid', mA: 0.10, vA: 50, typeB: 'base', mB: 0.30, vB: 50 },
+      'weak-mix': { typeA: 'acid', mA: 0.05, vA: 50, typeB: 'base', mB: 0.03, vB: 50 }
+    };
+
+    function getColor(pH) {
+      if (pH < 3) return 'linear-gradient(180deg, #ff3d3d, #ff6b3d)';
+      if (pH < 6) return 'linear-gradient(180deg, #ff9d3d, #ffcf3d)';
+      if (pH < 8) return 'linear-gradient(180deg, #c6ff3d, #8fff3d)';
+      if (pH < 11) return 'linear-gradient(180deg, #3dffa3, #3dffd5)';
+      return 'linear-gradient(180deg, #3dd5ff, #3da3ff)';
+    }
+
+    function update() {
+      const molesA = sign(typeA.value) * (+mA.value) * (+vA.value / 1000);
+      const molesB = sign(typeB.value) * (+mB.value) * (+vB.value / 1000);
+      const net = molesA + molesB;
+      const vTotL = (+vA.value + +vB.value) / 1000;
+      const conc = vTotL > 0 ? Math.abs(net) / vTotL : 0;
+      
+      let pH = 7;
+      if (net > 0 && conc > 0) pH = Math.max(0, -Math.log10(conc));
+      if (net < 0 && conc > 0) pH = Math.min(14, 14 + Math.log10(conc));
+
+      // Update displays
+      tv.textContent = `${(+vA.value + +vB.value).toFixed(0)} mL`;
+      nm.textContent = `${conc.toFixed(3)} M`;
+      ph.textContent = pH.toFixed(2);
+      
+      const charText = net > 0.00001 ? 'Acidic' : net < -0.00001 ? 'Basic' : 'Neutral';
+      char.textContent = charText;
+      char.className = `result-value ${charText.toLowerCase()}`;
+
+      // Update beaker liquids
+      const heightA = Math.min(100, (+vA.value / 100) * 100);
+      const heightB = Math.min(100, (+vB.value / 100) * 100);
+      const heightResult = Math.min(100, ((+vA.value + +vB.value) / 150) * 100);
+
+      liquidA.style.height = `${heightA}%`;
+      liquidB.style.height = `${heightB}%`;
+      liquidResult.style.height = `${heightResult}%`;
+      liquidResult.style.background = getColor(pH);
+
+      // Update pH indicator
+      phIndicator.style.left = `calc(${(pH / 14) * 100}% - 6px)`;
+    }
+
+    function animateMix() {
+      const result = el('liquidResult');
+      result.style.animation = 'none';
+      setTimeout(() => {
+        result.style.animation = 'fillUp 0.8s ease-out';
+      }, 10);
+    }
+
+    function resetToDefault() {
+      applyPreset('neutralization');
+    }
+
+    function applyPreset(preset) {
+      const p = presets[preset];
+      typeA.value = p.typeA;
+      mA.value = p.mA;
+      vA.value = p.vA;
+      typeB.value = p.typeB;
+      mB.value = p.mB;
+      vB.value = p.vB;
+
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.preset === preset);
+      });
+
+      update();
+      animateMix();
+    }
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyPreset(btn.dataset.preset));
+    });
+
+    ['typeA','mA','vA','typeB','mB','vB'].forEach(id => {
+      el(id).addEventListener('input', update);
+    });
+
+    document.getElementById('mixBtn').addEventListener('click', animateMix);
+    document.getElementById('resetBtn').addEventListener('click', resetToDefault);
+
+    update();
+  </script>
+</body>
+</html>

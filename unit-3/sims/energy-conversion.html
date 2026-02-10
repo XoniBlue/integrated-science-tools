@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
+  <title>Energy Conversion Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/energy-conversion.css">
+</head>
+<body data-site-root="../.." data-page="unit-3">
+<header id="site-header" class="site-header"></header>
+<main class="page-main"><section class="sim-wrap"><div class="container">
+<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
+<h1>Energy Conversion Lab</h1><p class="subtitle">Track potential, kinetic, and thermal energy changes.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+<div class="grid"><div class="panel">
+<label>Mass (kg) <span class="value" id="mv">2.0</span></label><input id="mass" type="range" min="0.5" max="10" step="0.1" value="2">
+<label>Drop Height (m) <span class="value" id="hv">5.0</span></label><input id="height" type="range" min="0" max="20" step="0.1" value="5">
+<label>Friction Loss (%) <span class="value" id="fv">20</span></label><input id="fric" type="range" min="0" max="80" step="1" value="20">
+</div><div class="panel"><div class="bars">
+<div class="bar">Potential: <span class="value" id="peText">0</span> J<div class="fill" id="pe"></div></div>
+<div class="bar">Kinetic: <span class="value" id="keText">0</span> J<div class="fill" id="ke"></div></div>
+<div class="bar">Thermal: <span class="value" id="thText">0</span> J<div class="fill" id="th"></div></div>
+</div></div></div>
+</div></section></main><footer id="site-footer" class="site-footer"></footer>
+<script>
+const g=9.8, maxScale=1200; const ids=['mass','height','fric'];
+function update(){const m=+mass.value,h=+height.value,f=+fric.value/100; mv.textContent=m.toFixed(1); hv.textContent=h.toFixed(1); fv.textContent=(f*100).toFixed(0);
+const peVal=m*g*h, thVal=peVal*f, keVal=Math.max(0,peVal-thVal); const scale=Math.max(maxScale,peVal);
+[['pe',peVal,'peText'],['ke',keVal,'keText'],['th',thVal,'thText']].forEach(([id,v,t])=>{document.getElementById(id).style.width=`${(v/scale*100).toFixed(1)}%`;document.getElementById(t).textContent=v.toFixed(1);});}
+ids.forEach(id=>document.getElementById(id).addEventListener('input',update)); update();
+</script>
+</body></html>

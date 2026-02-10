@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+    <script src="../../assets/js/theme-init.js"></script>
+    <title>Molecular Geometry Builder | Integrated Science Tools</title>
+    <link rel="stylesheet" href="../../assets/css/site.css">
+    <script src="../../assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/sims/molecular-geometry.css">
+</head>
+<body data-site-root="../.." data-page="unit-1">
+    <header id="site-header" class="site-header"></header>
+
+    <main class="page-main">
+      <section class="sim-wrap">
+        <div class="container">
+          <div class="top-actions">
+            <a href="../index.html">Back to Unit 1</a>
+            <a href="../../index.html">Home</a>
+          </div>
+        <h1>Molecular Geometry Builder</h1>
+        <p class="subtitle">Explore 3D molecular shapes using VSEPR theory</p>
+
+        <div class="instructions sim-instructions-panel">
+            <h3 class="sim-instructions-title">📖 How to Use This Simulator</h3>
+            <div class="sim-instructions-body">
+                <strong>1. Select a Molecule:</strong> Click any molecule button to view its 3D structure (BeCl₂, BF₃, CH₄, NH₃, H₂O, PCl₅, SF₆, CO₂).<br>
+                <strong>2. Rotate the Molecule:</strong> Click and drag on the 3D viewer to rotate the molecule in any direction.<br>
+                <strong>3. Zoom In/Out:</strong> Use your mouse wheel or trackpad scroll to zoom closer or farther.<br>
+                <strong>4. Auto-Rotate:</strong> Click "Auto-Rotate" to watch the molecule spin continuously.<br>
+                <strong>5. Reset View:</strong> Click "Reset View" to return to the default viewing angle.<br>
+                <strong>6. Study Details:</strong> Check the bond angles, electron pairs, hybridization, and VSEPR explanation for each molecule.
+            </div>
+        </div>
+
+        <div class="workspace">
+            <div class="panel">
+                <h3 class="panel-title">3D Molecular Viewer</h3>
+                <div class="canvas-3d">
+                    <canvas id="moleculeCanvas"></canvas>
+                    <div class="view-controls">
+                        <button class="view-btn" id="resetBtn">Reset View</button>
+                        <button class="view-btn" id="rotateBtn">Auto-Rotate</button>
+                    </div>
+                    <div class="rotate-hint">Click and drag to rotate • Scroll to zoom</div>
+                </div>
+                <div class="angle-display">
+                    <div class="angle-box">
+                        <div class="angle-value" id="bondAngle">180°</div>
+                        <div class="angle-label">Bond Angle</div>
+                    </div>
+                    <div class="angle-box">
+                        <div class="angle-value" id="electronPairs">2</div>
+                        <div class="angle-label">Electron Pairs</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <h3 class="panel-title">Select Molecule</h3>
+                <div class="molecule-selector" id="moleculeSelector"></div>
+                <div class="info-box">
+                    <div class="info-label">Molecular Formula</div>
+                    <div class="info-value" id="moleculeFormula">BeCl₂</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Geometry</div>
+                    <div class="info-value" id="geometryType">Linear</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Hybridization</div>
+                    <div class="info-value" id="hybridization">sp</div>
+                </div>
+                <div class="vsepr-info">
+                    <div class="vsepr-title">VSEPR Explanation</div>
+                    <div class="vsepr-text" id="vseprExplanation"></div>
+                </div>
+            </div>
+        </div>
+        </div>
+      </section>
+    </main>
+
+    <footer id="site-footer" class="site-footer"></footer>
+
+    <script>
+        const molecules = {
+            BeCl2: {
+                formula: "BeCl₂", geometry: "Linear", bondAngle: "180°", electronPairs: "2", hybridization: "sp",
+                explanation: "Linear geometry with 2 bonding pairs. Electron pairs repel to opposite sides, creating 180° bond angles.",
+                atoms: [
+                    { type: "Be", position: [0, 0, 0], color: "#90EE90", size: 25 },
+                    { type: "Cl", position: [-2.5, 0, 0], color: "#7FFF00", size: 22 },
+                    { type: "Cl", position: [2.5, 0, 0], color: "#7FFF00", size: 22 }
+                ],
+                bonds: [[0, 1], [0, 2]]
+            },
+            BF3: {
+                formula: "BF₃", geometry: "Trigonal Planar", bondAngle: "120°", electronPairs: "3", hybridization: "sp²",
+                explanation: "Trigonal planar with 3 bonding pairs. Atoms arrange in a plane with 120° angles.",
+                atoms: [
+                    { type: "B", position: [0, 0, 0], color: "#FFB6C1", size: 23 },
+                    { type: "F", position: [2.2, 0, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [-1.1, 1.9, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [-1.1, -1.9, 0], color: "#90EE90", size: 20 }
+                ],
+                bonds: [[0, 1], [0, 2], [0, 3]]
+            },
+            CH4: {
+                formula: "CH₄", geometry: "Tetrahedral", bondAngle: "109.5°", electronPairs: "4", hybridization: "sp³",
+                explanation: "Tetrahedral with 4 bonding pairs. Most efficient 3D arrangement gives 109.5° angles.",
+                atoms: [
+                    { type: "C", position: [0, 0, 0], color: "#A9A9A9", size: 24 },
+                    { type: "H", position: [1.3, 1.3, 1.3], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [-1.3, -1.3, 1.3], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [-1.3, 1.3, -1.3], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [1.3, -1.3, -1.3], color: "#FFFFFF", size: 16 }
+                ],
+                bonds: [[0, 1], [0, 2], [0, 3], [0, 4]]
+            },
+            NH3: {
+                formula: "NH₃", geometry: "Trigonal Pyramidal", bondAngle: "107°", electronPairs: "4", hybridization: "sp³",
+                explanation: "Trigonal pyramidal with 3 bonding pairs and 1 lone pair. Lone pair compresses angles to ~107°.",
+                atoms: [
+                    { type: "N", position: [0, 0, 0], color: "#87CEEB", size: 23 },
+                    { type: "H", position: [1.2, -0.4, 1.2], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [-1.2, -0.4, 1.2], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [0, -0.4, -1.6], color: "#FFFFFF", size: 16 }
+                ],
+                bonds: [[0, 1], [0, 2], [0, 3]],
+                lonePairs: [{ position: [0, 1.5, 0] }]
+            },
+            H2O: {
+                formula: "H₂O", geometry: "Bent", bondAngle: "104.5°", electronPairs: "4", hybridization: "sp³",
+                explanation: "Bent with 2 bonding pairs and 2 lone pairs. Two lone pairs compress angle to ~104.5°.",
+                atoms: [
+                    { type: "O", position: [0, 0, 0], color: "#FF6B6B", size: 23 },
+                    { type: "H", position: [1.3, -0.9, 0], color: "#FFFFFF", size: 16 },
+                    { type: "H", position: [-1.3, -0.9, 0], color: "#FFFFFF", size: 16 }
+                ],
+                bonds: [[0, 1], [0, 2]],
+                lonePairs: [{ position: [0, 0.9, 0.9] }, { position: [0, 0.9, -0.9] }]
+            },
+            PCl5: {
+                formula: "PCl₅", geometry: "Trigonal Bipyramidal", bondAngle: "90°/120°", electronPairs: "5", hybridization: "sp³d",
+                explanation: "Trigonal bipyramidal with 5 bonding pairs. Three equatorial at 120° and two axial at 90°.",
+                atoms: [
+                    { type: "P", position: [0, 0, 0], color: "#FFA500", size: 25 },
+                    { type: "Cl", position: [0, 2.3, 0], color: "#7FFF00", size: 22 },
+                    { type: "Cl", position: [0, -2.3, 0], color: "#7FFF00", size: 22 },
+                    { type: "Cl", position: [2.2, 0, 0], color: "#7FFF00", size: 22 },
+                    { type: "Cl", position: [-1.1, 0, 1.9], color: "#7FFF00", size: 22 },
+                    { type: "Cl", position: [-1.1, 0, -1.9], color: "#7FFF00", size: 22 }
+                ],
+                bonds: [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
+            },
+            SF6: {
+                formula: "SF₆", geometry: "Octahedral", bondAngle: "90°", electronPairs: "6", hybridization: "sp³d²",
+                explanation: "Octahedral with 6 bonding pairs. All bond angles are 90° for perfect symmetry.",
+                atoms: [
+                    { type: "S", position: [0, 0, 0], color: "#FFFF00", size: 25 },
+                    { type: "F", position: [2.2, 0, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [-2.2, 0, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [0, 2.2, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [0, -2.2, 0], color: "#90EE90", size: 20 },
+                    { type: "F", position: [0, 0, 2.2], color: "#90EE90", size: 20 },
+                    { type: "F", position: [0, 0, -2.2], color: "#90EE90", size: 20 }
+                ],
+                bonds: [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]]
+            },
+            CO2: {
+                formula: "CO₂", geometry: "Linear", bondAngle: "180°", electronPairs: "2", hybridization: "sp",
+                explanation: "Linear with 2 double bonds. The two bonding regions repel to opposite sides.",
+                atoms: [
+                    { type: "C", position: [0, 0, 0], color: "#A9A9A9", size: 24 },
+                    { type: "O", position: [-2.3, 0, 0], color: "#FF6B6B", size: 23 },
+                    { type: "O", position: [2.3, 0, 0], color: "#FF6B6B", size: 23 }
+                ],
+                bonds: [[0, 1], [0, 2]]
+            }
+        };
+        let canvas, ctx, currentMolecule = "BeCl2";
+        let rotationX = 0.3, rotationY = 0.5, scale = 30;
+        let isDragging = false, lastX, lastY, autoRotate = false;
+
+        function resizeCanvas() {
+            if (!canvas || !ctx || !canvas.parentElement) {
+                return;
+            }
+            const bounds = canvas.parentElement.getBoundingClientRect();
+            const cssWidth = Math.max(280, Math.floor(bounds.width));
+            const cssHeight = Math.max(300, Math.floor(bounds.height));
+            const dpr = window.devicePixelRatio || 1;
+
+            canvas.style.width = `${cssWidth}px`;
+            canvas.style.height = `${cssHeight}px`;
+            canvas.width = Math.floor(cssWidth * dpr);
+            canvas.height = Math.floor(cssHeight * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById("moleculeCanvas");
+            ctx = canvas.getContext("2d");
+            resizeCanvas();
+            canvas.addEventListener("mousedown", e => {
+                isDragging = true;
+                const rect = canvas.getBoundingClientRect();
+                lastX = e.clientX - rect.left;
+                lastY = e.clientY - rect.top;
+            });
+            canvas.addEventListener("mousemove", e => {
+                if (!isDragging) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                rotationY += (x - lastX) * 0.01;
+                rotationX += (y - lastY) * 0.01;
+                lastX = x;
+                lastY = y;
+                drawMolecule();
+            });
+            canvas.addEventListener("mouseup", () => { isDragging = false; });
+            canvas.addEventListener("mouseleave", () => { isDragging = false; });
+            canvas.addEventListener("wheel", e => {
+                e.preventDefault();
+                scale += e.deltaY * -0.05;
+                scale = Math.max(15, Math.min(60, scale));
+                drawMolecule();
+            });
+        }
+
+        function rotate3D(point, rx, ry) {
+            let [x, y, z] = point;
+            let cosRx = Math.cos(rx), sinRx = Math.sin(rx);
+            let y1 = y * cosRx - z * sinRx, z1 = y * sinRx + z * cosRx;
+            let cosRy = Math.cos(ry), sinRy = Math.sin(ry);
+            let x2 = x * cosRy + z1 * sinRy, z2 = -x * sinRy + z1 * cosRy;
+            return [x2, y1, z2];
+        }
+
+        function project3D(point) {
+            const [x, y, z] = rotate3D(point, rotationX, rotationY);
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            return {
+                x: width / 2 + x * scale,
+                y: height / 2 + y * scale,
+                z: z
+            };
+        }
+
+        function drawMolecule() {
+            const theme = getComputedStyle(document.documentElement);
+            const mol = molecules[currentMolecule];
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            ctx.fillStyle = theme.getPropertyValue("--sim-canvas-bg").trim() || "#13081f";
+            ctx.fillRect(0, 0, width, height);
+            mol.bonds.forEach(([i, j]) => {
+                const pos1 = project3D(mol.atoms[i].position);
+                const pos2 = project3D(mol.atoms[j].position);
+                ctx.strokeStyle = theme.getPropertyValue("--sim-canvas-stroke").trim() || "#d5b8f3";
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(pos1.x, pos1.y);
+                ctx.lineTo(pos2.x, pos2.y);
+                ctx.stroke();
+            });
+            if (mol.lonePairs) {
+                mol.lonePairs.forEach(lp => {
+                    const lpPos = project3D(lp.position);
+                    ctx.fillStyle = theme.getPropertyValue("--sim-lone-pair").trim() || "rgba(255, 141, 198, 0.25)";
+                    ctx.beginPath();
+                    ctx.arc(lpPos.x, lpPos.y, 18, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = "#ff8dc6";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+            }
+            mol.atoms.forEach(atom => {
+                const pos = project3D(atom.position);
+                ctx.fillStyle = atom.color;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, atom.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = "#1a0a2e";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.fillStyle = "#1a0a2e";
+                ctx.font = "bold 16px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(atom.type, pos.x, pos.y);
+            });
+        }
+
+        function createMoleculeButtons() {
+            const selector = document.getElementById("moleculeSelector");
+            Object.keys(molecules).forEach((name, idx) => {
+                const mol = molecules[name];
+                const btn = document.createElement("button");
+                btn.className = "molecule-btn" + (idx === 0 ? " active" : "");
+                btn.innerHTML = `<div class="formula">${mol.formula}</div><div class="geometry-name">${mol.geometry}</div>`;
+                btn.onclick = function() {
+                    currentMolecule = name;
+                    document.querySelectorAll(".molecule-btn").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById("moleculeFormula").textContent = mol.formula;
+                    document.getElementById("geometryType").textContent = mol.geometry;
+                    document.getElementById("bondAngle").textContent = mol.bondAngle;
+                    document.getElementById("electronPairs").textContent = mol.electronPairs;
+                    document.getElementById("hybridization").textContent = mol.hybridization;
+                    document.getElementById("vseprExplanation").textContent = mol.explanation;
+                    drawMolecule();
+                };
+                selector.appendChild(btn);
+            });
+        }
+
+        document.getElementById("resetBtn").onclick = () => {
+            rotationX = 0.3;
+            rotationY = 0.5;
+            scale = 30;
+            drawMolecule();
+        };
+        document.getElementById("rotateBtn").onclick = () => {
+            autoRotate = !autoRotate;
+            document.getElementById("rotateBtn").textContent = autoRotate ? "Stop Rotate" : "Auto-Rotate";
+            if (autoRotate) requestAnimationFrame(animate);
+        };
+        function animate() {
+            if (!autoRotate) return;
+            rotationY += 0.015;
+            drawMolecule();
+            requestAnimationFrame(animate);
+        }
+        initCanvas();
+        createMoleculeButtons();
+        document.getElementById("vseprExplanation").textContent = molecules.BeCl2.explanation;
+        drawMolecule();
+        window.addEventListener("resize", () => {
+            resizeCanvas();
+            drawMolecule();
+        });
+        const themeObserver = new MutationObserver(() => drawMolecule());
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["data-theme"]
+        });
+    </script>
+</body>
+</html>

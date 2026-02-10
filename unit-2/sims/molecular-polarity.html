@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Molecular Polarity Designer | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/molecular-polarity.css">
+</head>
+<body data-site-root="../.." data-page="unit-2">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 2</a>
+          <a href="../../index.html">Home</a>
+        </div>
+        <h1>Molecular Polarity Designer</h1>
+        <p class="subtitle">Compare electronegativity and geometry to predict molecular polarity.</p>
+
+        <div class="instructions">
+          <h3>📖 How to Use This Simulator</h3>
+          <div>
+            <strong>1. Pick a Molecule:</strong> Choose from common molecules or customize your own.<br>
+            <strong>2. Adjust EN Values:</strong> Change electronegativity to see how it affects polarity.<br>
+            <strong>3. Modify Geometry:</strong> Adjust asymmetry to explore symmetrical vs bent shapes.<br>
+            <strong>4. Watch the Visualization:</strong> See dipole arrows and polarity change in real-time.<br>
+            <strong>5. Analyze Results:</strong> Use the polarity index to classify the molecule.
+          </div>
+        </div>
+
+        <div class="molecule-selector">
+          <button class="molecule-btn active" data-mol="H2O">H₂O (Water)</button>
+          <button class="molecule-btn" data-mol="CO2">CO₂ (Carbon Dioxide)</button>
+          <button class="molecule-btn" data-mol="NH3">NH₃ (Ammonia)</button>
+          <button class="molecule-btn" data-mol="CH4">CH₄ (Methane)</button>
+          <button class="molecule-btn" data-mol="SO2">SO₂ (Sulfur Dioxide)</button>
+        </div>
+
+        <div class="workspace">
+          <div class="panel">
+            <div class="panel-title">Molecule Parameters</div>
+            
+            <label for="enA">Central Atom EN</label>
+            <input id="enA" type="number" step="0.1" min="0.5" max="4" value="3.5">
+            
+            <label for="enB">Outer Atom EN</label>
+            <input id="enB" type="number" step="0.1" min="0.5" max="4" value="2.1">
+            
+            <label for="asym">Geometry Asymmetry: <span id="asymVal">0.85</span></label>
+            <input id="asym" type="range" min="0" max="1" step="0.01" value="0.85">
+            
+            <div class="polarity-tip-box">
+              <strong>💡 Tip:</strong> 
+              Asymmetry = 0 means perfectly symmetric (linear/tetrahedral). 
+              Asymmetry = 1 means highly bent or asymmetric.
+            </div>
+          </div>
+          
+          <div class="panel visualization-panel">
+            <div class="panel-title">Molecular Visualization</div>
+            
+            <div class="molecule-viz">
+              <div class="molecule-display" id="molDisplay">
+                <div class="atom outer">H</div>
+                <div class="bond-visual"></div>
+                <div class="atom central">O</div>
+                <div class="bond-visual"></div>
+                <div class="atom outer">H</div>
+              </div>
+              <div class="dipole-arrow" id="dipoleArrow">➜</div>
+            </div>
+            
+            <div class="results-panel">
+              <div class="electron-dot-card">
+                <div class="electron-dot-card-title">💡 Electron Dots:</div>
+                <div class="electron-dot-card-body">
+                  Pink dots = lone pairs (non-bonding electrons). Bonds are shown as connecting lines.
+                </div>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Bond Polarity (ΔEN):</span>
+                <span class="result-value" id="den">1.40</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Bond Type:</span>
+                <span class="result-value" id="btype">Polar covalent</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Molecular Polarity Index:</span>
+                <span class="result-value" id="midx">0.48</span>
+              </div>
+              <div class="result-row">
+                <span class="result-label">Prediction:</span>
+                <span class="result-value polar" id="pred">Polar molecule</span>
+              </div>
+              
+              <div class="polarity-meter">
+                <div class="meter-label">Polarity Spectrum</div>
+                <div class="meter-track">
+                  <div class="meter-indicator" id="indicator"></div>
+                </div>
+                <div class="polarity-scale-labels">
+                  <span>Nonpolar</span>
+                  <span>Polar</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const molecules = {
+      H2O: { 
+        enA: 3.5, enB: 2.1, asym: 0.85, 
+        name: "Water", symbol: "H₂O", 
+        central: "O", outer: "H", outerCount: 2,
+        bondingPairs: 2, lonePairsOnCentral: 2, lonePairsOnOuter: 0
+      },
+      CO2: { 
+        enA: 2.5, enB: 3.5, asym: 0.05, 
+        name: "Carbon Dioxide", symbol: "CO₂", 
+        central: "C", outer: "O", outerCount: 2,
+        bondingPairs: 4, lonePairsOnCentral: 0, lonePairsOnOuter: 4
+      },
+      NH3: { 
+        enA: 3.0, enB: 2.1, asym: 0.7, 
+        name: "Ammonia", symbol: "NH₃", 
+        central: "N", outer: "H", outerCount: 3,
+        bondingPairs: 3, lonePairsOnCentral: 1, lonePairsOnOuter: 0
+      },
+      CH4: { 
+        enA: 2.5, enB: 2.1, asym: 0.0, 
+        name: "Methane", symbol: "CH₄", 
+        central: "C", outer: "H", outerCount: 4,
+        bondingPairs: 4, lonePairsOnCentral: 0, lonePairsOnOuter: 0
+      },
+      SO2: { 
+        enA: 2.6, enB: 3.4, asym: 0.75, 
+        name: "Sulfur Dioxide", symbol: "SO₂", 
+        central: "S", outer: "O", outerCount: 2,
+        bondingPairs: 4, lonePairsOnCentral: 1, lonePairsOnOuter: 4
+      }
+    };
+
+    let currentMol = 'H2O';
+
+    function classify(delta) {
+      if (delta < 0.4) return 'Nonpolar covalent';
+      if (delta < 1.7) return 'Polar covalent';
+      return 'Ionic-like';
+    }
+
+    function updateVisualization(molKey) {
+      const mol = molecules[molKey];
+      const display = document.getElementById('molDisplay');
+      
+      // Remove any existing electrons
+      document.querySelectorAll('.electron-dot').forEach(e => e.remove());
+      
+      // Simple consistent layout - central atom in middle, outer atoms around
+      if (mol.outerCount === 2) {
+        // Linear or bent (H2O, CO2, SO2)
+        display.innerHTML = `
+          <div class="atom outer" data-atom="outer1">${mol.outer}</div>
+          <div class="bond-visual"></div>
+          <div class="atom central" data-atom="central">${mol.central}</div>
+          <div class="bond-visual"></div>
+          <div class="atom outer" data-atom="outer2">${mol.outer}</div>
+        `;
+        display.style.display = 'flex';
+      } else if (mol.outerCount === 3) {
+        // Trigonal (NH3) - show as simple linear representation
+        display.innerHTML = `
+          <div class="atom outer" data-atom="outer1">${mol.outer}</div>
+          <div class="bond-visual bond-mid"></div>
+          <div class="atom central" data-atom="central">${mol.central}</div>
+          <div class="bond-visual bond-mid"></div>
+          <div class="atom outer" data-atom="outer2">${mol.outer}</div>
+          <div class="bond-visual bond-mid"></div>
+          <div class="atom outer" data-atom="outer3">${mol.outer}</div>
+        `;
+        display.style.display = 'flex';
+      } else if (mol.outerCount === 4) {
+        // Tetrahedral (CH4) - show as linear representation
+        display.innerHTML = `
+          <div class="atom outer" data-atom="outer1">${mol.outer}</div>
+          <div class="bond-visual bond-short"></div>
+          <div class="atom outer" data-atom="outer2">${mol.outer}</div>
+          <div class="bond-visual bond-short"></div>
+          <div class="atom central" data-atom="central">${mol.central}</div>
+          <div class="bond-visual bond-short"></div>
+          <div class="atom outer" data-atom="outer3">${mol.outer}</div>
+          <div class="bond-visual bond-short"></div>
+          <div class="atom outer" data-atom="outer4">${mol.outer}</div>
+        `;
+        display.style.display = 'flex';
+      }
+      
+      // Add electrons (lone pairs) after DOM updates
+      setTimeout(() => {
+        addElectrons(mol);
+      }, 50);
+      
+      // Add a label showing the formula
+      const molViz = document.querySelector('.molecule-viz');
+      let label = document.getElementById('molLabel');
+      if (!label) {
+        label = document.createElement('div');
+        label.id = 'molLabel';
+        label.className = 'mol-label';
+        molViz.insertBefore(label, molViz.firstChild);
+      }
+      label.textContent = mol.symbol;
+    }
+    
+    function addElectrons(mol) {
+      const display = document.getElementById('molDisplay');
+      const centralAtom = display.querySelector('[data-atom="central"]');
+      
+      if (!centralAtom) return;
+      
+      // Add lone pairs on central atom
+      if (mol.lonePairsOnCentral > 0) {
+        const rect = centralAtom.getBoundingClientRect();
+        const displayRect = display.getBoundingClientRect();
+        
+        // Position lone pairs around central atom
+        for (let i = 0; i < mol.lonePairsOnCentral; i++) {
+          // Create a pair of electrons (lone pair = 2 electrons)
+          for (let j = 0; j < 2; j++) {
+            const electron = document.createElement('div');
+            electron.className = 'electron-dot';
+            
+            // Calculate position relative to display container
+            const centerX = rect.left - displayRect.left + rect.width / 2;
+            const centerY = rect.top - displayRect.top + rect.height / 2;
+            
+            // Position electrons above the central atom for lone pairs
+            const angle = (i * 90) + (j * 15) - 7.5; // Spread pairs out
+            const radius = 55;
+            const x = centerX + Math.cos(angle * Math.PI / 180) * radius;
+            const y = centerY - 60 + (j * 10); // Stack pairs vertically above
+            
+            electron.style.left = `${x}px`;
+            electron.style.top = `${y}px`;
+            electron.style.animationDelay = `${(i * 2 + j) * 0.2}s`;
+            
+            display.appendChild(electron);
+          }
+        }
+      }
+      
+      // Add lone pairs on outer atoms (for molecules like CO2, SO2)
+      if (mol.lonePairsOnOuter > 0) {
+        const outerAtoms = display.querySelectorAll('[data-atom^="outer"]');
+        const pairsPerAtom = mol.lonePairsOnOuter / mol.outerCount;
+        
+        outerAtoms.forEach((atom, atomIndex) => {
+          const rect = atom.getBoundingClientRect();
+          const displayRect = display.getBoundingClientRect();
+          const centerX = rect.left - displayRect.left + rect.width / 2;
+          const centerY = rect.top - displayRect.top + rect.height / 2;
+          
+          for (let i = 0; i < pairsPerAtom; i++) {
+            for (let j = 0; j < 2; j++) {
+              const electron = document.createElement('div');
+              electron.className = 'electron-dot';
+              
+              // Position based on which outer atom (left or right)
+              let x, y;
+              if (atomIndex === 0) {
+                // Left atom - electrons on left side
+                x = centerX - 35 - (i * 12);
+                y = centerY - 10 + (j * 10);
+              } else if (atomIndex === 1) {
+                // Right atom - electrons on right side
+                x = centerX + 35 + (i * 12);
+                y = centerY - 10 + (j * 10);
+              } else {
+                // Additional atoms for NH3/CH4
+                x = centerX;
+                y = centerY - 40 + (i * 20) - (j * 10);
+              }
+              
+              electron.style.left = `${x}px`;
+              electron.style.top = `${y}px`;
+              electron.style.animationDelay = `${(atomIndex * 4 + i * 2 + j) * 0.15}s`;
+              
+              display.appendChild(electron);
+            }
+          }
+        });
+      }
+    }
+
+    function update() {
+      const delta = Math.abs(Number(document.getElementById('enA').value) - Number(document.getElementById('enB').value));
+      const asymVal = Number(document.getElementById('asym').value);
+      const idx = Math.min(1, delta / 2.5 * asymVal);
+      
+      document.getElementById('asymVal').textContent = asymVal.toFixed(2);
+      document.getElementById('den').textContent = delta.toFixed(2);
+      document.getElementById('btype').textContent = classify(delta);
+      document.getElementById('midx').textContent = idx.toFixed(2);
+      
+      const isPolar = idx > 0.35;
+      const pred = document.getElementById('pred');
+      pred.textContent = isPolar ? 'Polar molecule' : 'Mostly nonpolar';
+      pred.className = `result-value ${isPolar ? 'polar' : 'nonpolar'}`;
+      
+      const indicator = document.getElementById('indicator');
+      indicator.style.left = `calc(${idx * 100}% - 4px)`;
+      
+      const arrow = document.getElementById('dipoleArrow');
+      arrow.classList.toggle('show', isPolar);
+      arrow.style.fontSize = `${30 + idx * 40}px`;
+    }
+
+    document.querySelectorAll('.molecule-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.molecule-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        currentMol = btn.dataset.mol;
+        const m = molecules[currentMol];
+        document.getElementById('enA').value = m.enA;
+        document.getElementById('enB').value = m.enB;
+        document.getElementById('asym').value = m.asym;
+        updateVisualization(currentMol);
+        update();
+      });
+    });
+
+    ['enA', 'enB', 'asym'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+    });
+
+    updateVisualization('H2O');
+    update();
+    window.addEventListener('resize', () => {
+      updateVisualization(currentMol);
+      update();
+    });
+  </script>
+</body>
+</html>

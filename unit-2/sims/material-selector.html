@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Material Selector Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/material-selector.css">
+</head>
+<body data-site-root="../.." data-page="unit-2">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions">
+      <a href="../index.html">Back to Unit 2</a>
+      <a href="../../index.html">Home</a>
+    </div>
+    <h1>Material Selector Lab</h1>
+    <p class="subtitle">Balance strength, cost, and mass for engineering choices.</p>
+
+    <div class="instructions">
+      <h3>📖 How to Use This Simulator</h3>
+      <div>
+        <strong>1. Choose a Scenario:</strong> Pick a preset engineering challenge or customize your own.<br>
+        <strong>2. Adjust Priorities:</strong> Drag the sliders to set how important each property is.<br>
+        <strong>3. Compare Materials:</strong> Watch the cards update with scores in real-time.<br>
+        <strong>4. Find the Best:</strong> The highest-scoring material is marked as the recommendation.<br>
+        <strong>5. Explain Your Choice:</strong> Use the scores to justify your material selection.
+      </div>
+    </div>
+
+    <div class="scenario-presets">
+      <button class="preset-btn" data-scenario="balanced">Balanced Project</button>
+      <button class="preset-btn" data-scenario="aerospace">Aerospace (Light & Strong)</button>
+      <button class="preset-btn" data-scenario="budget">Budget Build</button>
+      <button class="preset-btn" data-scenario="industrial">Heavy Industry</button>
+    </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <div class="panel-title">Priority Settings</div>
+        
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>💪 Need Strength</span>
+            <span class="slider-value" id="wS">50</span>
+          </div>
+          <input id="strength" type="range" min="0" max="100" value="50">
+        </div>
+        
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>💰 Need Low Cost</span>
+            <span class="slider-value" id="wC">50</span>
+          </div>
+          <input id="cost" type="range" min="0" max="100" value="50">
+        </div>
+        
+        <div class="slider-row">
+          <div class="slider-label">
+            <span>🪶 Need Low Mass</span>
+            <span class="slider-value" id="wM">50</span>
+          </div>
+          <input id="mass" type="range" min="0" max="100" value="50">
+        </div>
+
+        <div class="action-buttons">
+          <button class="btn btn-reset" id="resetBtn">Reset</button>
+          <button class="btn btn-compare" id="compareBtn">Explain Choice</button>
+        </div>
+      </div>
+      
+      <div class="panel">
+        <div class="panel-title">Material Comparison</div>
+        <div class="material-cards" id="cards"></div>
+      </div>
+    </div>
+
+    <div class="recommendation" id="recommendation">
+      <div class="recommendation-title">Recommended: <span id="rec-name">-</span></div>
+      <div class="recommendation-text" id="rec-text">-</div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    const materials = [
+      { 
+        name: 'Aluminum', 
+        strength: 70, 
+        cost: 60, 
+        mass: 75,
+        description: 'Good balance of strength and weight with moderate cost.'
+      },
+      { 
+        name: 'Steel', 
+        strength: 90, 
+        cost: 45, 
+        mass: 30,
+        description: 'Excellent strength and affordability, but heavy.'
+      },
+      { 
+        name: 'Carbon Fiber', 
+        strength: 95, 
+        cost: 20, 
+        mass: 95,
+        description: 'Extremely strong and lightweight, premium price.'
+      },
+      { 
+        name: 'ABS Plastic', 
+        strength: 45, 
+        cost: 80, 
+        mass: 85,
+        description: 'Very affordable and light, limited strength.'
+      },
+      { 
+        name: 'Titanium', 
+        strength: 92, 
+        cost: 15, 
+        mass: 70,
+        description: 'Outstanding strength and lightweight, very expensive.'
+      }
+    ];
+
+    const scenarios = {
+      balanced: { strength: 50, cost: 50, mass: 50 },
+      aerospace: { strength: 90, cost: 30, mass: 95 },
+      budget: { strength: 40, cost: 95, mass: 40 },
+      industrial: { strength: 95, cost: 60, mass: 20 }
+    };
+
+    function score(m, w) {
+      return (m.strength * w.strength + m.cost * w.cost + m.mass * w.mass) / 100;
+    }
+
+    function update() {
+      const w = { 
+        strength: +document.getElementById('strength').value, 
+        cost: +document.getElementById('cost').value, 
+        mass: +document.getElementById('mass').value 
+      };
+      
+      document.getElementById('wS').textContent = w.strength;
+      document.getElementById('wC').textContent = w.cost;
+      document.getElementById('wM').textContent = w.mass;
+
+      const scored = materials.map(m => ({ 
+        ...m, 
+        s: score(m, w) 
+      })).sort((a,b) => b.s - a.s);
+
+      const cards = document.getElementById('cards');
+      cards.innerHTML = scored.map((mat, idx) => `
+        <div class="material-card ${idx === 0 ? 'best' : ''}" data-material="${mat.name}">
+          <div class="material-header">
+            <div class="material-name">${mat.name}</div>
+            <div class="material-score">${mat.s.toFixed(1)}</div>
+          </div>
+          <div class="material-stats">
+            <div class="stat">
+              <div class="stat-label">Strength</div>
+              <div class="stat-bar">
+                <div class="stat-fill" data-fill="${mat.strength}"></div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Cost</div>
+              <div class="stat-bar">
+                <div class="stat-fill" data-fill="${mat.cost}"></div>
+              </div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Lightness</div>
+              <div class="stat-bar">
+                <div class="stat-fill" data-fill="${mat.mass}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      cards.querySelectorAll('.stat-fill').forEach((bar) => {
+        const width = Number(bar.dataset.fill || 0);
+        bar.style.width = `${Math.max(0, Math.min(100, width))}%`;
+      });
+
+      // Add click handlers to cards
+      document.querySelectorAll('.material-card').forEach(card => {
+        card.addEventListener('click', () => selectMaterial(card.dataset.material));
+      });
+
+      window.bestMaterial = scored[0];
+    }
+
+    function selectMaterial(name) {
+      const mat = materials.find(m => m.name === name);
+      document.getElementById('rec-name').textContent = name;
+      document.getElementById('rec-text').textContent = mat.description;
+      document.getElementById('recommendation').classList.add('show');
+    }
+
+    function showRecommendation() {
+      if (window.bestMaterial) {
+        selectMaterial(window.bestMaterial.name);
+      }
+    }
+
+    function resetToBalanced() {
+      applyScenario('balanced');
+    }
+
+    function applyScenario(scenario) {
+      const s = scenarios[scenario];
+      document.getElementById('strength').value = s.strength;
+      document.getElementById('cost').value = s.cost;
+      document.getElementById('mass').value = s.mass;
+      
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.scenario === scenario);
+      });
+      
+      update();
+    }
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyScenario(btn.dataset.scenario));
+    });
+
+    ['strength','cost','mass'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', resetToBalanced);
+    document.getElementById('compareBtn').addEventListener('click', showRecommendation);
+
+    applyScenario('balanced');
+  </script>
+</body>
+</html>

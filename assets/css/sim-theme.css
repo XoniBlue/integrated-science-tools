@@ -1,0 +1,278 @@
+:root {
+  --sim-bg-start: #0f0520;
+  --sim-bg-end: #1a0a2e;
+  --sim-text: #f3ecff;
+  --sim-muted: #c6b5de;
+  --sim-title: #ffd7f0;
+  --sim-surface: #23113a;
+  --sim-surface-alt: #160a25;
+  --sim-panel-border: #3d215f;
+  --sim-accent: #ff5ea8;
+  --sim-accent-2: #ff8dc6;
+  --sim-soft: #9f7cd4;
+  --sim-btn: #3a1a59;
+  --sim-btn-hover: #55277d;
+  --sim-btn-active-text: #200a2d;
+  --sim-success: #6deca4;
+  --sim-danger: #ff7c93;
+  --sim-canvas-border: #5e3b88;
+  --sim-canvas-bg: #13081f;
+  --sim-canvas-stroke: #d5b8f3;
+  --sim-lone-pair: rgba(255, 141, 198, 0.25);
+  --sim-toolbar-bg: rgba(35, 17, 58, 0.95);
+}
+
+:root[data-theme="ocean"] {
+  --sim-bg-start: #071527;
+  --sim-bg-end: #0a2137;
+  --sim-text: #ecf6ff;
+  --sim-muted: #b4ccde;
+  --sim-title: #f4fbff;
+  --sim-surface: #14304f;
+  --sim-surface-alt: #0f243b;
+  --sim-panel-border: #2f5677;
+  --sim-accent: #ff9e2c;
+  --sim-accent-2: #42d58d;
+  --sim-soft: #7db8df;
+  --sim-btn: #123254;
+  --sim-btn-hover: #1d446b;
+  --sim-btn-active-text: #062033;
+  --sim-success: #42d58d;
+  --sim-danger: #ff9a76;
+  --sim-canvas-border: #2d5c7f;
+  --sim-canvas-bg: #0b1e31;
+  --sim-canvas-stroke: #b7d7ee;
+  --sim-lone-pair: rgba(66, 213, 141, 0.22);
+  --sim-toolbar-bg: rgba(15, 36, 59, 0.95);
+}
+
+body {
+  color: var(--sim-text) !important;
+  background: linear-gradient(135deg, var(--sim-bg-start) 0%, var(--sim-bg-end) 100%) !important;
+  padding-top: 92px !important;
+}
+
+h1,
+.panel-title,
+.sim-toolbar a {
+  color: var(--sim-title) !important;
+}
+
+.subtitle,
+.info-label,
+.vsepr-text,
+.rotate-hint,
+.ph-labels,
+.reaction-type-label,
+.atom-symbol,
+.noble-gas-label,
+.description,
+.marking,
+.tick,
+.control-label,
+.stoich-label,
+.info-box,
+.counter-title,
+.angle-label {
+  color: var(--sim-muted) !important;
+}
+
+.container,
+.panel,
+.instructions,
+.titration-mode,
+.reaction-type,
+.vsepr-info,
+.info-box,
+.controls-group,
+.counter-panel,
+.stoich-input-group,
+.description,
+.noble-gas-notation,
+.notation-display,
+.orbital-row,
+.atom-row,
+.angle-box,
+.stoich-result {
+  background: var(--sim-surface) !important;
+  border-color: var(--sim-panel-border) !important;
+}
+
+.equation-display,
+.beaker-container,
+.canvas-3d,
+.ph-scale,
+.orbital-box,
+.atom-row,
+.beaker,
+.beaker-top {
+  background-color: var(--sim-surface-alt) !important;
+  border-color: var(--sim-canvas-border) !important;
+}
+
+.equation-btn,
+.solution-btn,
+.element-btn,
+.molecule-btn,
+.view-btn,
+.btn,
+.coefficient-input,
+.stoich-input {
+  background: var(--sim-btn) !important;
+  color: var(--sim-text) !important;
+  border-color: var(--sim-panel-border) !important;
+}
+
+.equation-btn:hover,
+.solution-btn:hover,
+.element-btn:hover,
+.molecule-btn:hover,
+.view-btn:hover,
+.btn:hover {
+  background: var(--sim-btn-hover) !important;
+}
+
+.equation-btn.active,
+.solution-btn.active,
+.element-btn.active,
+.molecule-btn.active,
+.btn-check,
+.btn-fill {
+  background: var(--sim-accent) !important;
+  color: var(--sim-btn-active-text) !important;
+}
+
+.btn-hint,
+.btn-clear,
+.button-subtle {
+  background: var(--sim-soft) !important;
+  color: var(--sim-btn-active-text) !important;
+}
+
+.info-value,
+.atom-count,
+.angle-value,
+.stoich-result-value,
+.molecule,
+.electron-count {
+  color: var(--sim-accent-2) !important;
+}
+
+.feedback.correct,
+.atom-row.balanced,
+.coefficient-input.correct {
+  border-color: var(--sim-success) !important;
+}
+
+.feedback.incorrect,
+.atom-row.unbalanced,
+.coefficient-input.incorrect {
+  border-color: var(--sim-danger) !important;
+}
+
+.sim-toolbar {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(980px, calc(100% - 1.2rem));
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: var(--sim-toolbar-bg);
+  border: 1px solid var(--sim-panel-border);
+  border-radius: 12px;
+  padding: 0.55rem 0.75rem;
+  backdrop-filter: blur(3px);
+}
+
+.sim-brand {
+  color: var(--sim-text) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.sim-toolbar-right {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.sim-theme-toggle {
+  width: 44px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 9px;
+  border: 1px solid var(--sim-panel-border);
+  background: var(--sim-btn);
+  color: var(--sim-text);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.sim-nav {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.sim-nav a {
+  color: var(--sim-muted);
+  font-weight: 600;
+  padding: 0.5rem 0.7rem;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.sim-nav a:hover {
+  color: var(--sim-text);
+  background: color-mix(in srgb, var(--sim-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--sim-accent) 30%, transparent);
+}
+
+.sim-nav a.active {
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--sim-accent) 35%, transparent),
+    color-mix(in srgb, var(--sim-accent-2) 30%, transparent)
+  );
+  border-color: var(--sim-accent);
+}
+
+.sim-theme-toggle:hover {
+  background: var(--sim-btn-hover);
+}
+
+@media (max-width: 700px) {
+  .sim-toolbar {
+    width: calc(100% - 0.8rem);
+  }
+
+  .sim-brand {
+    font-size: 0.88rem;
+  }
+
+  .sim-theme-toggle {
+    width: 38px;
+    height: 34px;
+  }
+
+  .sim-nav {
+    gap: 0.35rem;
+  }
+
+  .sim-nav a {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.45rem;
+  }
+}

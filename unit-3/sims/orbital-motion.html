@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
+<title>Orbital Motion Simulator | Integrated Science Tools</title>
+<link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/sims/orbital-motion.css"></head>
+<body data-site-root="../.." data-page="unit-3"><header id="site-header" class="site-header"></header>
+<main class="page-main"><section class="sim-wrap"><div class="container">
+<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
+<h1>Orbital Motion Simulator</h1><p class="subtitle">Compare your input velocity against circular and escape velocity.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+<div class="grid"><div class="panel">
+<label>Central Mass (x Earth) <span class="value" id="cmv">1.0</span></label><input id="cm" type="range" min="0.2" max="20" step="0.1" value="1">
+<label>Orbit Radius (x Earth radius) <span class="value" id="rv">1.5</span></label><input id="r" type="range" min="1" max="20" step="0.1" value="1.5">
+<label>Craft Speed (km/s) <span class="value" id="vv">7.8</span></label><input id="v" type="range" min="1" max="25" step="0.1" value="7.8">
+</div><div class="panel"><div class="result">
+<p>Circular Velocity: <span class="value" id="vc">0</span> km/s</p>
+<p>Escape Velocity: <span class="value" id="ve">0</span> km/s</p>
+<p>Orbit Period: <span class="value" id="tp">0</span> minutes</p>
+<p>Status: <span class="value" id="st">-</span></p>
+</div></div></div>
+</div></section></main><footer id="site-footer" class="site-footer"></footer>
+<script>
+const GMe=398600.4418, Re=6371; function upd(){const m=+cm.value, rr=+r.value, vIn=+v.value; cmv.textContent=m.toFixed(1); rv.textContent=rr.toFixed(1); vv.textContent=vIn.toFixed(1);
+const mu=GMe*m, rad=Re*rr, vc=Math.sqrt(mu/rad), ve=Math.sqrt(2*mu/rad), T=2*Math.PI*rad/vc/60;
+vc && (vc<1e9); vc.toFixed(2); document.getElementById('vc').textContent=vc.toFixed(2); document.getElementById('ve').textContent=ve.toFixed(2); document.getElementById('tp').textContent=T.toFixed(1);
+let s='Elliptical orbit'; if (Math.abs(vIn-vc)<0.4) s='Near circular orbit'; else if (vIn>=ve) s='Escape trajectory'; else if (vIn<0.75*vc) s='Suborbital / re-entry'; st.textContent=s; }
+[cm,r,v].forEach(e=>e.addEventListener('input',upd)); upd();
+</script></body></html>

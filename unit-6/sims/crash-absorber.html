@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Crash Absorber Designer | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/crash-absorber.css">
+</head>
+<body data-site-root="../.." data-page="unit-6">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main"><section class="sim-wrap"><div class="container">
+    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
+    <h1>Crash Absorber Designer</h1>
+    <p class="subtitle">Tune stopping distance to lower impact force while maintaining design limits.</p>
+
+        <div class="instructions">
+            <h3>📖 How to Use This Simulator</h3>
+            <div>
+                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
+                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
+                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
+                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
+                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+            </div>
+        </div>
+
+    <div class="workspace">
+      <div class="panel">
+        <label>Vehicle Mass (kg): <span class="value" id="mv">1200</span></label><input id="mass" type="range" min="200" max="5000" step="10" value="1200">
+        <label>Impact Speed (m/s): <span class="value" id="vv">15.0</span></label><input id="speed" type="range" min="1" max="45" step="0.5" value="15">
+        <label>Stopping Distance (m): <span class="value" id="dv">0.60</span></label><input id="dist" type="range" min="0.05" max="2.5" step="0.01" value="0.6">
+      </div>
+      <div class="panel"><div class="result">
+        <p>Kinetic Energy: <span class="value" id="ke">0</span> J</p>
+        <p>Average Deceleration: <span class="value" id="adec">0</span> m/s^2</p>
+        <p>Average Force: <span class="value" id="fav">0</span> N</p>
+        <p>Safety Rating: <span class="value" id="rating">-</span></p>
+      </div></div>
+    </div>
+  </div></section></main>
+  <footer id="site-footer" class="site-footer"></footer>
+  <script>
+    function update() {
+      const m = Number(mass.value);
+      const v = Number(speed.value);
+      const d = Number(dist.value);
+
+      mv.textContent = m.toFixed(0);
+      vv.textContent = v.toFixed(1);
+      dv.textContent = d.toFixed(2);
+
+      const keVal = 0.5 * m * v * v;
+      const aMag = (v * v) / (2 * d);
+      const fAvg = m * aMag;
+
+      ke.textContent = keVal.toFixed(0);
+      adec.textContent = aMag.toFixed(1);
+      fav.textContent = fAvg.toFixed(0);
+
+      rating.textContent = aMag < 80 ? "Safer design" : aMag < 150 ? "Moderate risk" : "High risk";
+    }
+    [mass, speed, dist].forEach(el => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>
