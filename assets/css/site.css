@@ -161,22 +161,36 @@ button:focus-visible {
   font-weight: 700;
   letter-spacing: 0.02em;
   display: inline-flex;
-  flex-direction: column;
-  line-height: 1.1;
-  gap: 0.06rem;
+  align-items: center;
+  line-height: 1;
+  gap: 0.55rem;
   min-width: 0;
 }
 
-.brand-kicker {
-  font-size: 0.69rem;
-  color: var(--accent2);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+.brand-mark {
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: var(--pill-radius);
+  border: 1px solid var(--pill-border);
+  background: var(--pill-bg);
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--pill-ring);
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: block;
 }
 
 .brand-title {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 .header-controls {
@@ -989,12 +1003,18 @@ body[data-page="home"] .page-main > .hero.section-header-panel {
     gap: 0.55rem;
   }
 
-  .brand-kicker {
-    font-size: 0.62rem;
+  .brand-title {
+    font-size: 0.88rem;
   }
 
-  .brand-title {
-    font-size: 0.95rem;
+  .brand-mark {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .brand-icon {
+    width: 1.08rem;
+    height: 1.08rem;
   }
 
   .nav-badge {
@@ -1076,10 +1096,6 @@ body[data-page="home"] .page-main > .hero.section-header-panel {
 @media (max-width: 700px) {
   .site-nav a {
     flex-basis: 100%;
-  }
-
-  .brand-kicker {
-    display: none;
   }
 
   .sim-wrap .container {
