@@ -104,6 +104,20 @@
             height: 70%;
             transition: all 0.6s ease;
             border-radius: 0 0 16px 16px;
+            overflow: hidden;
+        }
+        .solution::before {
+            content: "";
+            position: absolute;
+            left: -20%;
+            right: -20%;
+            top: 9%;
+            height: 16%;
+            border-radius: 999px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(0);
+            opacity: 0.62;
+            animation: pt-solution-sheen 7.853s linear infinite;
         }
         .beaker-markings {
             position: absolute;
@@ -149,6 +163,33 @@
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
             transition: left 0.3s ease;
             left: 7%;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+            animation: pt-indicator-glow 4.333s linear infinite;
+        }
+        @keyframes pt-solution-sheen {
+            0%, 50%, 100% {
+                transform: translateX(0);
+                opacity: 0.62;
+            }
+            25% {
+                transform: translateX(14%);
+                opacity: 0.78;
+            }
+            75% {
+                transform: translateX(-14%);
+                opacity: 0.46;
+            }
+        }
+        @keyframes pt-indicator-glow {
+            0%, 50%, 100% {
+                box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+            }
+            25% {
+                box-shadow: 0 0 17px rgba(255, 255, 255, 0.9);
+            }
+            75% {
+                box-shadow: 0 0 2px rgba(255, 255, 255, 0.9);
+            }
         }
         .ph-labels {
             display: flex;
@@ -368,7 +409,6 @@
                 justify-self: center;
             }
         }
-
         :root {
             --sim-bg-start: var(--bg-top);
             --sim-bg-end: var(--bg-mid);

@@ -152,6 +152,12 @@
     };
 
     let currentMol = 'H2O';
+    const dipoleState = {
+      active: false,
+      amplitude: 0,
+      phase: 0
+    };
+    let dipoleAnimationFrame = null;
 
     function classify(delta) {
       if (delta < 0.4) return 'Nonpolar covalent';
@@ -323,6 +329,21 @@
       const arrow = document.getElementById('dipoleArrow');
       arrow.classList.toggle('show', isPolar);
       arrow.style.fontSize = `${30 + idx * 40}px`;
+      dipoleState.active = isPolar;
+      dipoleState.amplitude = isPolar ? (3 + idx * 7) : 0;
+    }
+
+    function animateDipole() {
+      const arrow = document.getElementById('dipoleArrow');
+      const step = () => {
+        dipoleState.phase += 0.06;
+        const bob = dipoleState.active ? Math.sin(dipoleState.phase) * dipoleState.amplitude : 0;
+        arrow.style.transform = `translate(-50%, calc(-50% - ${bob.toFixed(2)}px))`;
+        dipoleAnimationFrame = requestAnimationFrame(step);
+      };
+      if (dipoleAnimationFrame === null) {
+        dipoleAnimationFrame = requestAnimationFrame(step);
+      }
     }
 
     document.querySelectorAll('.molecule-btn').forEach(btn => {
@@ -346,6 +367,7 @@
 
     updateVisualization('H2O');
     update();
+    animateDipole();
     window.addEventListener('resize', () => {
       updateVisualization(currentMol);
       update();

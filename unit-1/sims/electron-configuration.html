@@ -8,6 +8,7 @@
     <title>Electron Configuration Builder | Integrated Science Tools</title>
     <link rel="stylesheet" href="../../assets/css/site.css">
     <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/sim-enhancer.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/sims/electron-configuration.css">
 </head>
 <body data-site-root="../.." data-page="unit-1">
@@ -124,14 +125,14 @@
                 const btn = document.createElement("button");
                 btn.className = "element-btn" + (idx === 0 ? " active" : "");
                 btn.innerHTML = `<div class="element-number">${el.number}</div><div class="element-symbol">${el.symbol}</div>`;
-                btn.onclick = function() {
+                btn.addEventListener("click", function() {
                     currentElement = el;
                     document.querySelectorAll(".element-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     document.getElementById("elementName").textContent = el.name;
                     document.getElementById("atomicNumber").textContent = el.number;
                     clearOrbitals();
-                };
+                });
                 selector.appendChild(btn);
             });
         }
@@ -154,12 +155,12 @@
                     box.className = "orbital-box";
                     box.dataset.orbital = orbital.label;
                     box.dataset.box = i;
-                    box.onclick = function() {
+                    box.addEventListener("click", function() {
                         const key = `${orbital.label}-${i}`;
                         orbitalStates[key] = (orbitalStates[key] + 1) % 3;
                         updateOrbitalDisplay();
                         updateDisplay();
-                    };
+                    });
                     boxes.appendChild(box);
                     orbitalStates[`${orbital.label}-${i}`] = 0;
                 }
@@ -289,9 +290,9 @@
             }
         }
 
-        document.getElementById("autoFillBtn").onclick = autoFill;
-        document.getElementById("clearBtn").onclick = clearOrbitals;
-        document.getElementById("checkBtn").onclick = checkConfig;
+        document.getElementById("autoFillBtn").addEventListener("click", autoFill);
+        document.getElementById("clearBtn").addEventListener("click", clearOrbitals);
+        document.getElementById("checkBtn").addEventListener("click", checkConfig);
         initElements();
         initOrbitals();
         updateDisplay();

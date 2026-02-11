@@ -8,6 +8,7 @@
     <title>pH Titration Simulator | Integrated Science Tools</title>
     <link rel="stylesheet" href="../../assets/css/site.css">
     <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/sim-enhancer.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/sims/ph-titration.css">
 </head>
 <body data-site-root="../.." data-page="unit-1">
@@ -203,25 +204,25 @@
                 const btn = document.createElement("button");
                 btn.className = "solution-btn" + (idx === 0 ? " active" : "");
                 btn.textContent = solutions[key].name;
-                btn.onclick = function() {
+                btn.addEventListener("click", function() {
                     currentSolution = key;
                     document.querySelectorAll(".solution-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
                     resetTitration();
                     updateDisplay();
-                };
+                });
                 container.appendChild(btn);
             });
         }
 
-        document.getElementById("concentrationSlider").oninput = function() {
-            concentration = parseFloat(this.value);
+        function handleConcentrationInput(event) {
+            concentration = parseFloat(event.target.value);
             document.getElementById("concentrationDisplay").textContent = concentration.toFixed(3);
             resetTitration();
             updateDisplay();
-        };
+        }
 
-        document.getElementById("addTitrantBtn").onclick = function() {
+        function handleAddTitrant() {
             if (solutions[currentSolution].type.includes("acid")) {
                 titrantVolume += 1;
                 document.getElementById("volumeAdded").textContent = titrantVolume;
@@ -256,7 +257,7 @@
                     document.getElementById("equivalencePoint").classList.remove("show");
                 }
             }
-        };
+        }
 
         function drawTitrationCurve() {
             const canvas = document.getElementById("titrationCurve");
@@ -346,7 +347,9 @@
             drawTitrationCurve();
         }
 
-        document.getElementById("resetBtn").onclick = resetTitration;
+        document.getElementById("concentrationSlider").addEventListener("input", handleConcentrationInput);
+        document.getElementById("addTitrantBtn").addEventListener("click", handleAddTitrant);
+        document.getElementById("resetBtn").addEventListener("click", resetTitration);
 
         // Initialize
         createSolutionButtons();

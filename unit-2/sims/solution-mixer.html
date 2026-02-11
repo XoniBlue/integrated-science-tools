@@ -161,6 +161,7 @@
     const liquidB = el('liquidB');
     const liquidResult = el('liquidResult');
     const phIndicator = el('phIndicator');
+    let mixAnimationFrame = null;
 
     const presets = {
       neutralization: { typeA: 'acid', mA: 0.20, vA: 50, typeB: 'base', mB: 0.20, vB: 50 },
@@ -213,10 +214,45 @@
 
     function animateMix() {
       const result = el('liquidResult');
-      result.style.animation = 'none';
-      setTimeout(() => {
-        result.style.animation = 'fillUp 0.8s ease-out';
-      }, 10);
+      const targetHeight = Math.max(0, Math.min(100, parseFloat(result.style.height) || 0));
+      if (mixAnimationFrame !== null) {
+        cancelAnimationFrame(mixAnimationFrame);
+        mixAnimationFrame = null;
+      }
+
+      if (typeof result.getAnimations === 'function') {
+        result.getAnimations().forEach((anim) => anim.cancel());
+      }
+
+      result.style.height = '0%';
+
+      if (typeof result.animate === 'function') {
+        const animation = result.animate(
+          [{ height: '0%' }, { height: `${targetHeight}%` }],
+          {
+            duration: 820,
+            easing: 'cubic-bezier(0.25, 0.75, 0.3, 1)'
+          }
+        );
+        animation.addEventListener('finish', () => {
+          result.style.height = `${targetHeight}%`;
+        }, { once: true });
+        return;
+      }
+
+      const startTime = performance.now();
+      const durationMs = 820;
+      const step = (now) => {
+        const progress = Math.max(0, Math.min(1, (now - startTime) / durationMs));
+        const eased = 1 - Math.pow(1 - progress, 3);
+        result.style.height = `${(targetHeight * eased).toFixed(2)}%`;
+        if (progress < 1) {
+          mixAnimationFrame = requestAnimationFrame(step);
+          return;
+        }
+        mixAnimationFrame = null;
+      };
+      mixAnimationFrame = requestAnimationFrame(step);
     }
 
     function resetToDefault() {

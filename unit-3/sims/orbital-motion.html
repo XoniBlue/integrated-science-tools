@@ -1,42 +1,476 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
-<title>Orbital Motion Simulator | Integrated Science Tools</title>
-<link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Orbital Motion Simulator | Integrated Science Tools</title>
+  <meta name="description" content="Interactive orbital motion simulator for circular velocity and escape velocity.">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
-<link rel="stylesheet" href="../../assets/css/sims/orbital-motion.css"></head>
-<body data-site-root="../.." data-page="unit-3"><header id="site-header" class="site-header"></header>
-<main class="page-main"><section class="sim-wrap"><div class="container">
-<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
-<h1>Orbital Motion Simulator</h1><p class="subtitle">Compare your input velocity against circular and escape velocity.</p>
+  <link rel="stylesheet" href="../../assets/css/sims/orbital-motion.css">
+</head>
+<body data-site-root="../.." data-page="unit-3" data-sim-page="orbital-motion">
+  <header id="site-header" class="site-header"></header>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 3</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-<div class="grid"><div class="panel">
-<label>Central Mass (x Earth) <span class="value" id="cmv">1.0</span></label><input id="cm" type="range" min="0.2" max="20" step="0.1" value="1">
-<label>Orbit Radius (x Earth radius) <span class="value" id="rv">1.5</span></label><input id="r" type="range" min="1" max="20" step="0.1" value="1.5">
-<label>Craft Speed (km/s) <span class="value" id="vv">7.8</span></label><input id="v" type="range" min="1" max="25" step="0.1" value="7.8">
-</div><div class="panel"><div class="result">
-<p>Circular Velocity: <span class="value" id="vc">0</span> km/s</p>
-<p>Escape Velocity: <span class="value" id="ve">0</span> km/s</p>
-<p>Orbit Period: <span class="value" id="tp">0</span> minutes</p>
-<p>Status: <span class="value" id="st">-</span></p>
-</div></div></div>
-</div></section></main><footer id="site-footer" class="site-footer"></footer>
-<script>
-const GMe=398600.4418, Re=6371; function upd(){const m=+cm.value, rr=+r.value, vIn=+v.value; cmv.textContent=m.toFixed(1); rv.textContent=rr.toFixed(1); vv.textContent=vIn.toFixed(1);
-const mu=GMe*m, rad=Re*rr, vc=Math.sqrt(mu/rad), ve=Math.sqrt(2*mu/rad), T=2*Math.PI*rad/vc/60;
-vc && (vc<1e9); vc.toFixed(2); document.getElementById('vc').textContent=vc.toFixed(2); document.getElementById('ve').textContent=ve.toFixed(2); document.getElementById('tp').textContent=T.toFixed(1);
-let s='Elliptical orbit'; if (Math.abs(vIn-vc)<0.4) s='Near circular orbit'; else if (vIn>=ve) s='Escape trajectory'; else if (vIn<0.75*vc) s='Suborbital / re-entry'; st.textContent=s; }
-[cm,r,v].forEach(e=>e.addEventListener('input',upd)); upd();
-</script></body></html>
+        <h1>Orbital Motion Simulator</h1>
+        <p class="subtitle">Compare spacecraft speed against circular and escape thresholds.</p>
+
+        <div class="sim-toolbar">
+          <div class="preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="earth">Earth Orbit</button>
+            <button class="preset-btn" type="button" data-preset="moon">Moon Orbit</button>
+            <button class="preset-btn" type="button" data-preset="escape">Escape Trajectory</button>
+            <button class="preset-btn" type="button" data-preset="reentry">Re-entry</button>
+            <button class="preset-btn" type="button" data-preset="heavy">Massive Planet</button>
+          </div>
+          <div class="sim-help">
+            <button
+              id="help-toggle"
+              class="help-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="sim-instructions"
+              title="How to use this simulator"
+            >
+              i
+            </button>
+
+            <section id="sim-instructions" class="instructions" aria-label="Instructions" hidden>
+              <h2>How To Use</h2>
+              <ol>
+                <li>Choose a preset orbit or adjust mass, radius, and speed manually.</li>
+                <li>Track circular velocity, escape velocity, and orbital period outputs.</li>
+                <li>Use orbit map, velocity scale, and status badge to classify trajectory.</li>
+              </ol>
+              <p class="help-legend"><strong>Legend:</strong> central body = gravity source, white arrow = velocity direction.</p>
+              <button id="help-close" class="help-close" type="button" aria-label="Close instructions">Close</button>
+            </section>
+          </div>
+        </div>
+
+        <div class="grid">
+          <section class="panel input-panel" aria-labelledby="orbit-input-heading">
+            <h2 id="orbit-input-heading">Inputs</h2>
+
+            <label for="mass-input">Central Mass (x Earth) <span class="value" id="mass-value">1.00</span></label>
+            <input id="mass-input" type="range" min="0.05" max="20" step="0.05" value="1">
+
+            <label for="radius-input">Orbit Radius (x Earth radius) <span class="value" id="radius-value">1.50</span></label>
+            <input id="radius-input" type="range" min="1" max="20" step="0.1" value="1.5">
+
+            <label for="speed-input">Craft Speed (km/s) <span class="value" id="speed-value">7.80</span></label>
+            <input id="speed-input" type="range" min="0.5" max="25" step="0.1" value="7.8">
+
+            <div class="action-row">
+              <button id="reset-btn" class="action-btn" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="orbit-output-heading">
+            <h2 id="orbit-output-heading">Trajectory Results</h2>
+
+            <div class="orbit-visual" id="orbit-visual" aria-label="Orbit visualization">
+              <div class="central-body" id="central-body"></div>
+              <div class="orbit-path" id="orbit-path"></div>
+              <div class="peri-marker" id="peri-marker">Periapsis</div>
+              <div class="apo-marker" id="apo-marker">Apoapsis</div>
+              <div class="craft-orbit" id="craft-orbit">
+                <div class="craft" id="craft">
+                  <span class="velocity-arrow" id="velocity-arrow"></span>
+                </div>
+              </div>
+            </div>
+            <div class="speed-scale" aria-label="Speed comparison scale">
+              <div class="speed-track">
+                <span class="speed-marker" id="marker-circular">v<sub>c</sub></span>
+                <span class="speed-marker" id="marker-escape">v<sub>e</sub></span>
+                <span class="speed-marker current" id="marker-current">v</span>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Circular Velocity</p>
+                <p class="result-number"><span id="circular-velocity">0.00</span> km/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Escape Velocity</p>
+                <p class="result-number"><span id="escape-velocity">0.00</span> km/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Orbit Period</p>
+                <p class="result-number"><span id="period-value">0.0</span> min</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Periapsis / Apoapsis</p>
+                <p class="result-number"><span id="peri-value">0</span> / <span id="apo-value">0</span> Earth radii</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Status</p>
+              <p class="status-badge" id="orbit-status">Near circular orbit</p>
+              <p class="status-note" id="orbit-note">Your craft speed is close to stable circular velocity.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const EARTH_MU = 398600.4418;
+      const EARTH_RADIUS_KM = 6371;
+      const defaults = { mass: 1, radius: 1.5, speed: 7.8 };
+
+      const presets = {
+        earth: { mass: 1, radius: 1.5, speed: 7.8 },
+        moon: { mass: 0.0123, radius: 1.1, speed: 1.7 },
+        escape: { mass: 1, radius: 1.5, speed: 11.2 },
+        reentry: { mass: 1, radius: 1.5, speed: 5.0 },
+        heavy: { mass: 12, radius: 2.4, speed: 14.0 }
+      };
+
+      const massInput = document.getElementById('mass-input');
+      const radiusInput = document.getElementById('radius-input');
+      const speedInput = document.getElementById('speed-input');
+      const resetBtn = document.getElementById('reset-btn');
+      const helpToggle = document.getElementById('help-toggle');
+      const helpClose = document.getElementById('help-close');
+      const simHelpWrap = document.querySelector('.sim-help');
+      const instructionsPanel = document.getElementById('sim-instructions');
+
+      const massValue = document.getElementById('mass-value');
+      const radiusValue = document.getElementById('radius-value');
+      const speedValue = document.getElementById('speed-value');
+
+      const circularVelocity = document.getElementById('circular-velocity');
+      const escapeVelocity = document.getElementById('escape-velocity');
+      const periodValue = document.getElementById('period-value');
+      const periValue = document.getElementById('peri-value');
+      const apoValue = document.getElementById('apo-value');
+
+      const orbitVisual = document.getElementById('orbit-visual');
+      const centralBody = document.getElementById('central-body');
+      const orbitPath = document.getElementById('orbit-path');
+      const craftOrbit = document.getElementById('craft-orbit');
+      const craft = document.getElementById('craft');
+      const periMarker = document.getElementById('peri-marker');
+      const apoMarker = document.getElementById('apo-marker');
+      const velocityArrow = document.getElementById('velocity-arrow');
+      const markerCircular = document.getElementById('marker-circular');
+      const markerEscape = document.getElementById('marker-escape');
+      const markerCurrent = document.getElementById('marker-current');
+
+      const orbitStatus = document.getElementById('orbit-status');
+      const orbitNote = document.getElementById('orbit-note');
+      const presetButtons = document.querySelectorAll('.preset-btn');
+      const bodyEl = document.body;
+      const orbitAnimationState = {
+        width: 180,
+        height: 180,
+        duration: 6,
+        mode: 'stable'
+      };
+      let helpCloseTimer = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function easeInOutSine(value) {
+        return 0.5 - 0.5 * Math.cos(Math.PI * clamp(value, 0, 1));
+      }
+
+      function animateOrbit(nowMs) {
+        const t = nowMs * 0.001;
+        const duration = Math.max(0.8, orbitAnimationState.duration);
+        const phase = (t % duration) / duration;
+        const angle = phase * Math.PI * 2;
+
+        let radialScale = 1;
+        if (orbitAnimationState.mode === 'escape') {
+          radialScale = 1 + (0.38 * easeInOutSine(phase));
+        } else if (orbitAnimationState.mode === 'reentry') {
+          radialScale = 1 - (0.48 * easeInOutSine(phase));
+        }
+
+        const halfWidth = (orbitAnimationState.width * 0.5) * radialScale;
+        const halfHeight = (orbitAnimationState.height * 0.5) * radialScale;
+        const x = Math.cos(angle - (Math.PI / 2)) * halfWidth;
+        const y = Math.sin(angle - (Math.PI / 2)) * halfHeight;
+        const headingDegrees = ((angle + (Math.PI / 2)) * 180) / Math.PI;
+
+        craft.style.left = '50%';
+        craft.style.top = '50%';
+        craft.style.transform = `translate(-50%, -50%) translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${headingDegrees.toFixed(2)}deg)`;
+
+        window.requestAnimationFrame(animateOrbit);
+      }
+
+      function setActivePreset(activeButton) {
+        presetButtons.forEach((button) => {
+          button.classList.toggle('active', button === activeButton);
+        });
+      }
+
+      function classifyOrbit(speed, circular, escape) {
+        if (speed >= escape) {
+          return {
+            status: 'Escape trajectory',
+            note: 'Speed exceeds local escape velocity, so the craft leaves orbit.',
+            level: 'escape'
+          };
+        }
+
+        if (speed < circular * 0.75) {
+          return {
+            status: 'Suborbital / re-entry',
+            note: 'Speed is too low to sustain orbit and the craft falls inward.',
+            level: 'reentry'
+          };
+        }
+
+        if (Math.abs(speed - circular) <= 0.4) {
+          return {
+            status: 'Near circular orbit',
+            note: 'Speed is close to circular velocity for a stable path.',
+            level: 'stable'
+          };
+        }
+
+        return {
+          status: 'Elliptical orbit',
+          note: 'Speed is between circular and escape values, producing an ellipse.',
+          level: 'ellipse'
+        };
+      }
+
+      function updateSpeedScale(vCurrent, vCircular, vEscape) {
+        const maxScale = Math.max(vEscape * 1.2, vCurrent * 1.1, 1);
+        markerCircular.style.left = `${(vCircular / maxScale) * 100}%`;
+        markerEscape.style.left = `${(vEscape / maxScale) * 100}%`;
+        markerCurrent.style.left = `${(vCurrent / maxScale) * 100}%`;
+      }
+
+      function updateVisualization(mass, radiusMultiple, speed, circular, periodMinutes, level) {
+        const normalizedRadius = Math.max(0.15, Math.min(1, radiusMultiple / 20));
+        const orbitSize = 115 + normalizedRadius * 150;
+
+        const eccentricityRaw = Math.abs(speed - circular) / Math.max(circular, 0.001);
+        const eccentricity = Math.max(0, Math.min(0.85, eccentricityRaw));
+        const ellipseRatio = level === 'ellipse' ? (1 - (eccentricity * 0.5)) : 1;
+
+        orbitPath.style.width = `${orbitSize}px`;
+        orbitPath.style.height = `${orbitSize * ellipseRatio}px`;
+        craftOrbit.style.width = orbitPath.style.width;
+        craftOrbit.style.height = orbitPath.style.height;
+
+        const bodySize = 24 + Math.min(46, Math.pow(mass, 0.45) * 9);
+        centralBody.style.width = `${bodySize}px`;
+        centralBody.style.height = `${bodySize}px`;
+
+        const orbitDuration = Math.max(2.5, Math.min(12, periodMinutes / 10));
+        craftOrbit.style.setProperty('--orbit-duration', `${orbitDuration}s`);
+        orbitAnimationState.duration = orbitDuration;
+        orbitAnimationState.width = orbitSize;
+        orbitAnimationState.height = orbitSize * ellipseRatio;
+        orbitAnimationState.mode = level;
+
+        const arrowLength = Math.max(14, Math.min(34, (speed / 25) * 34));
+        velocityArrow.style.width = `${arrowLength}px`;
+
+        const showMarkers = level === 'ellipse' && eccentricity > 0.08;
+        periMarker.style.opacity = showMarkers ? '1' : '0';
+        apoMarker.style.opacity = showMarkers ? '1' : '0';
+        const centerY = orbitVisual.clientHeight / 2;
+        const centerX = orbitVisual.clientWidth / 2;
+        const ellipseWidthPx = orbitSize;
+        const periX = centerX + (ellipseWidthPx / 2) + 10;
+        const apoX = centerX - (ellipseWidthPx / 2) - 10;
+        periMarker.style.left = `${periX}px`;
+        periMarker.style.top = `${centerY}px`;
+        apoMarker.style.left = `${apoX}px`;
+        apoMarker.style.top = `${centerY}px`;
+
+        orbitVisual.dataset.mode = level;
+
+        const radiusNow = radiusMultiple;
+        const periRadius = Math.max(1, radiusNow * (1 - eccentricity * 0.5));
+        const apoRadius = radiusNow * (1 + eccentricity * 0.5);
+        periValue.textContent = periRadius.toFixed(2);
+        apoValue.textContent = apoRadius.toFixed(2);
+      }
+
+      function updateLayoutHeight() {
+        const sidebarShell = document.querySelector('.site-header-shell');
+        if (!sidebarShell) {
+          return;
+        }
+
+        bodyEl.style.setProperty('--orbital-target-top', `${Math.round(sidebarShell.getBoundingClientRect().top)}px`);
+        bodyEl.style.setProperty('--orbital-target-height', `${Math.round(sidebarShell.getBoundingClientRect().height)}px`);
+      }
+
+      function setHelpOpen(isOpen) {
+        helpToggle.setAttribute('aria-expanded', String(isOpen));
+        instructionsPanel.hidden = !isOpen;
+      }
+
+      function cancelHelpClose() {
+        if (helpCloseTimer !== null) {
+          window.clearTimeout(helpCloseTimer);
+          helpCloseTimer = null;
+        }
+      }
+
+      function scheduleHelpClose() {
+        cancelHelpClose();
+        helpCloseTimer = window.setTimeout(() => {
+          setHelpOpen(false);
+        }, 140);
+      }
+
+      function updateModel() {
+        const mass = clamp(massInput.value, 0.05, 20);
+        const radiusMultiple = clamp(radiusInput.value, 1, 20);
+        const speed = clamp(speedInput.value, 0.5, 25);
+
+        massInput.value = mass;
+        radiusInput.value = radiusMultiple;
+        speedInput.value = speed;
+
+        massValue.textContent = mass.toFixed(2);
+        radiusValue.textContent = radiusMultiple.toFixed(2);
+        speedValue.textContent = speed.toFixed(2);
+
+        const mu = EARTH_MU * mass;
+        const radiusKm = EARTH_RADIUS_KM * radiusMultiple;
+
+        const circular = Math.sqrt(mu / radiusKm);
+        const escape = Math.sqrt(2 * mu / radiusKm);
+        const periodMinutes = (2 * Math.PI * radiusKm / circular) / 60;
+
+        circularVelocity.textContent = circular.toFixed(2);
+        escapeVelocity.textContent = escape.toFixed(2);
+        periodValue.textContent = periodMinutes.toFixed(1);
+
+        const classification = classifyOrbit(speed, circular, escape);
+        orbitStatus.textContent = classification.status;
+        orbitStatus.dataset.level = classification.level;
+        orbitNote.textContent = classification.note;
+
+        updateSpeedScale(speed, circular, escape);
+        updateVisualization(mass, radiusMultiple, speed, circular, periodMinutes, classification.level);
+      }
+
+      function resetToDefault() {
+        massInput.value = defaults.mass;
+        radiusInput.value = defaults.radius;
+        speedInput.value = defaults.speed;
+        setActivePreset(presetButtons[0]);
+        updateModel();
+      }
+
+      [massInput, radiusInput, speedInput].forEach((input) => {
+        input.addEventListener('input', updateModel);
+      });
+
+      presetButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const preset = presets[button.dataset.preset];
+          if (!preset) {
+            return;
+          }
+
+          massInput.value = preset.mass;
+          radiusInput.value = preset.radius;
+          speedInput.value = preset.speed;
+          setActivePreset(button);
+          updateModel();
+        });
+      });
+
+      helpToggle.addEventListener('click', () => {
+        const isOpen = helpToggle.getAttribute('aria-expanded') === 'true';
+        setHelpOpen(!isOpen);
+      });
+
+      helpToggle.addEventListener('mouseenter', () => {
+        cancelHelpClose();
+        setHelpOpen(true);
+      });
+
+      simHelpWrap.addEventListener('mouseenter', () => {
+        cancelHelpClose();
+        setHelpOpen(true);
+      });
+
+      simHelpWrap.addEventListener('mouseleave', () => {
+        scheduleHelpClose();
+      });
+
+      helpToggle.addEventListener('focus', () => {
+        cancelHelpClose();
+        setHelpOpen(true);
+      });
+
+      helpClose.addEventListener('click', () => {
+        setHelpOpen(false);
+      });
+
+      document.addEventListener('click', (event) => {
+        if (instructionsPanel.hidden) {
+          return;
+        }
+
+        if (instructionsPanel.contains(event.target) || helpToggle.contains(event.target)) {
+          return;
+        }
+
+        setHelpOpen(false);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          setHelpOpen(false);
+        }
+      });
+
+      resetBtn.addEventListener('click', resetToDefault);
+      window.addEventListener('resize', () => {
+        updateLayoutHeight();
+        updateModel();
+      });
+
+      let layoutAttempt = 0;
+      const layoutTimer = window.setInterval(() => {
+        updateLayoutHeight();
+        layoutAttempt += 1;
+        if (document.querySelector('.site-header-shell') || layoutAttempt > 14) {
+          window.clearInterval(layoutTimer);
+        }
+      }, 120);
+
+      window.requestAnimationFrame(animateOrbit);
+      setHelpOpen(false);
+      updateLayoutHeight();
+      updateModel();
+    })();
+  </script>
+</body>
+</html>

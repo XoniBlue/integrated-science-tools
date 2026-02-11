@@ -8,6 +8,7 @@
     <title>Equation Balancer & Stoichiometry | Integrated Science Tools</title>
     <link rel="stylesheet" href="../../assets/css/site.css">
     <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/sim-enhancer.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/sims/equation-balancer.css">
 </head>
 <body data-site-root="../.." data-page="unit-1">
@@ -156,7 +157,7 @@
                 const btn = document.createElement("button");
                 btn.className = "equation-btn" + (idx === 0 ? " active" : "");
                 btn.textContent = eq.name;
-                btn.onclick = function() {
+                btn.addEventListener("click", function() {
                     currentEquation = key;
                     document.querySelectorAll(".equation-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
@@ -165,7 +166,7 @@
                     renderEquation();
                     updateAtomCounts();
                     updateStoichSelects();
-                };
+                });
                 selector.appendChild(btn);
             });
         }
@@ -187,7 +188,7 @@
             });
             display.innerHTML = html;
             document.querySelectorAll(".coefficient-input").forEach(input => {
-                input.oninput = updateAtomCounts;
+                input.addEventListener("input", updateAtomCounts);
             });
         }
 
@@ -289,8 +290,10 @@
             const givenId = document.getElementById("givenSubstance").value;
             const findId = document.getElementById("findSubstance").value;
             const givenAmount = parseFloat(document.getElementById("givenAmount").value);
-            if (!givenAmount || givenAmount <= 0) {
-                alert("Please enter a valid amount");
+            if (!Number.isFinite(givenAmount) || givenAmount <= 0) {
+                document.getElementById("stoichResult").classList.add("show");
+                document.getElementById("stoichValue").textContent = "Invalid input";
+                document.getElementById("stoichExplanation").textContent = "Enter a positive mole value to run the stoichiometry calculation.";
                 return;
             }
             const givenIdx = parseInt(givenId.substring(1));
@@ -318,10 +321,10 @@
                 `${givenAmount} mol × (${findCoef}/${givenCoef}) = ${result.toFixed(3)} mol`;
         }
 
-        document.getElementById("checkBtn").onclick = checkBalance;
-        document.getElementById("clearBtn").onclick = clearCoefficients;
-        document.getElementById("hintBtn").onclick = showHint;
-        document.getElementById("calcBtn").onclick = calculateStoichiometry;
+        document.getElementById("checkBtn").addEventListener("click", checkBalance);
+        document.getElementById("clearBtn").addEventListener("click", clearCoefficients);
+        document.getElementById("hintBtn").addEventListener("click", showHint);
+        document.getElementById("calcBtn").addEventListener("click", calculateStoichiometry);
         createEquationButtons();
         renderEquation();
         updateAtomCounts();

@@ -191,6 +191,7 @@
       border-color: var(--sim-accent);
       background: var(--sim-canvas-bg);
       box-shadow: 0 5px 25px rgba(255, 94, 168, 0.3);
+      animation: bestPulse 2.2s ease-in-out infinite;
     }
     .material-card.best::before {
       content: "⭐ BEST";
@@ -296,6 +297,10 @@
     .recommendation.show {
       display: block;
       animation: slideIn 0.4s ease;
+    }
+    @keyframes bestPulse {
+      0%, 100% { box-shadow: 0 5px 25px rgba(255, 94, 168, 0.25); }
+      50% { box-shadow: 0 8px 28px rgba(255, 94, 168, 0.45); }
     }
     @keyframes slideIn {
       from { opacity: 0; transform: translateY(-10px); }

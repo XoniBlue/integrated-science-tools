@@ -99,6 +99,7 @@
             min-height: 400px;
             position: relative;
             border: 3px dashed #5e3b88;
+            overflow: hidden;
         }
         .sim-wrap .atom-palette {
             display: flex;
@@ -128,7 +129,8 @@
         .sim-wrap .atom-option.selected {
             background: #ff5ea8;
             color: #1a0925;
-            box-shadow: 0 0 20px rgba(255, 94, 168, 0.45);
+            box-shadow: 0 0 20px rgba(255, 94, 168, 0.5);
+            animation: ld-selected-glow 4.333s linear infinite;
         }
         .sim-wrap .electron-dot {
             width: 16px;
@@ -137,8 +139,31 @@
             border-radius: 50%;
             cursor: pointer;
             position: absolute;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 0 4px rgba(255, 141, 198, 0.5);
             transition: all 0.2s;
+            animation: ld-electron-glow 2.856s linear infinite;
+        }
+        @keyframes ld-selected-glow {
+            0%, 50%, 100% {
+                box-shadow: 0 0 20px rgba(255, 94, 168, 0.5);
+            }
+            25% {
+                box-shadow: 0 0 30px rgba(255, 94, 168, 0.5);
+            }
+            75% {
+                box-shadow: 0 0 10px rgba(255, 94, 168, 0.5);
+            }
+        }
+        @keyframes ld-electron-glow {
+            0%, 50%, 100% {
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 0 4px rgba(255, 141, 198, 0.5);
+            }
+            25% {
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 0 10px rgba(255, 141, 198, 0.5);
+            }
+            75% {
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 0 2px rgba(255, 141, 198, 0.5);
+            }
         }
         .sim-wrap .electron-dot:hover {
             transform: scale(1.2);

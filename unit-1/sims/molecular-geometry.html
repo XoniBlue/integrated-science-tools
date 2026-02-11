@@ -8,6 +8,7 @@
     <title>Molecular Geometry Builder | Integrated Science Tools</title>
     <link rel="stylesheet" href="../../assets/css/site.css">
     <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/sim-enhancer.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/sims/molecular-geometry.css">
 </head>
 <body data-site-root="../.." data-page="unit-1">
@@ -204,31 +205,45 @@
             canvas = document.getElementById("moleculeCanvas");
             ctx = canvas.getContext("2d");
             resizeCanvas();
-            canvas.addEventListener("mousedown", e => {
+
+            function startDrag(clientX, clientY) {
                 isDragging = true;
                 const rect = canvas.getBoundingClientRect();
-                lastX = e.clientX - rect.left;
-                lastY = e.clientY - rect.top;
-            });
-            canvas.addEventListener("mousemove", e => {
+                lastX = clientX - rect.left;
+                lastY = clientY - rect.top;
+            }
+
+            function moveDrag(clientX, clientY) {
                 if (!isDragging) return;
                 const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
                 rotationY += (x - lastX) * 0.01;
                 rotationX += (y - lastY) * 0.01;
                 lastX = x;
                 lastY = y;
                 drawMolecule();
+            }
+
+            canvas.addEventListener("pointerdown", e => {
+                if (e.pointerType === "mouse" && e.button !== 0) return;
+                startDrag(e.clientX, e.clientY);
+                if (canvas.setPointerCapture) {
+                    canvas.setPointerCapture(e.pointerId);
+                }
             });
-            canvas.addEventListener("mouseup", () => { isDragging = false; });
-            canvas.addEventListener("mouseleave", () => { isDragging = false; });
+            canvas.addEventListener("pointermove", e => {
+                moveDrag(e.clientX, e.clientY);
+            });
+            canvas.addEventListener("pointerup", () => { isDragging = false; });
+            canvas.addEventListener("pointercancel", () => { isDragging = false; });
+            canvas.addEventListener("pointerleave", () => { isDragging = false; });
             canvas.addEventListener("wheel", e => {
                 e.preventDefault();
                 scale += e.deltaY * -0.05;
                 scale = Math.max(15, Math.min(60, scale));
                 drawMolecule();
-            });
+            }, { passive: false });
         }
 
         function rotate3D(point, rx, ry) {
@@ -304,7 +319,7 @@
                 const btn = document.createElement("button");
                 btn.className = "molecule-btn" + (idx === 0 ? " active" : "");
                 btn.innerHTML = `<div class="formula">${mol.formula}</div><div class="geometry-name">${mol.geometry}</div>`;
-                btn.onclick = function() {
+                btn.addEventListener("click", function() {
                     currentMolecule = name;
                     document.querySelectorAll(".molecule-btn").forEach(b => b.classList.remove("active"));
                     btn.classList.add("active");
@@ -315,22 +330,22 @@
                     document.getElementById("hybridization").textContent = mol.hybridization;
                     document.getElementById("vseprExplanation").textContent = mol.explanation;
                     drawMolecule();
-                };
+                });
                 selector.appendChild(btn);
             });
         }
 
-        document.getElementById("resetBtn").onclick = () => {
+        document.getElementById("resetBtn").addEventListener("click", () => {
             rotationX = 0.3;
             rotationY = 0.5;
             scale = 30;
             drawMolecule();
-        };
-        document.getElementById("rotateBtn").onclick = () => {
+        });
+        document.getElementById("rotateBtn").addEventListener("click", () => {
             autoRotate = !autoRotate;
             document.getElementById("rotateBtn").textContent = autoRotate ? "Stop Rotate" : "Auto-Rotate";
             if (autoRotate) requestAnimationFrame(animate);
-        };
+        });
         function animate() {
             if (!autoRotate) return;
             rotationY += 0.015;

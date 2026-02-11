@@ -72,7 +72,7 @@
       display: flex;
       gap: 10px;
       justify-content: center;
-      margin-bottom: 25px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
     .molecule-btn {
@@ -99,19 +99,21 @@
     .workspace { 
       display: grid; 
       grid-template-columns: 1fr 1.3fr; 
-      gap: 25px; 
+      gap: 14px;
+      align-items: start;
     }
     .panel { 
       background: var(--sim-surface); 
       border: 2px solid var(--sim-panel-border); 
       border-radius: 15px; 
-      padding: 25px; 
+      padding: 14px;
+      align-self: start;
     }
     .panel-title {
       font-size: 20px;
       font-weight: bold;
       color: var(--sim-title);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       text-align: center;
     }
     
@@ -123,13 +125,13 @@
     }
     input[type="number"] {
       width: 100%;
-      padding: 12px;
+      padding: 9px;
       border-radius: 8px;
       border: 1px solid var(--sim-panel-border);
       background: var(--sim-surface-alt);
       color: var(--sim-text);
       font-size: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
     input[type="range"] {
       width: 100%;
@@ -138,7 +140,7 @@
       background: var(--sim-surface-alt);
       outline: none;
       -webkit-appearance: none;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -166,14 +168,14 @@
     .visualization-panel {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 10px;
     }
     
     .molecule-viz {
       background: var(--sim-canvas-bg);
       border-radius: 12px;
-      padding: 30px;
-      min-height: 280px;
+      padding: 12px;
+      min-height: 178px;
       border: 3px dashed var(--sim-canvas-border);
       display: flex;
       flex-direction: column;
@@ -187,11 +189,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 8px;
       position: relative;
       flex-wrap: nowrap;
-      padding: 20px;
+      padding: 6px;
       max-width: 100%;
       overflow-x: auto;
     }
@@ -254,42 +256,17 @@
     .dipole-arrow {
       position: absolute;
       left: 50%;
-      top: 58%;
+      top: 72%;
       font-size: 48px;
       opacity: 0;
       transition: all 0.5s ease;
-      animation: float 2s ease-in-out infinite;
+      z-index: 24;
+      pointer-events: none;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
     }
     
     .dipole-arrow.show {
       opacity: 1;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translate(-50%, -50%); }
-      50% { transform: translate(-50%, calc(-50% - 8px)); }
-    }
-    
-    .electron-cloud {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    
-    .electron {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: var(--sim-accent-2);
-      border-radius: 50%;
-      animation: orbit 3s linear infinite;
-      box-shadow: 0 0 10px rgba(255, 141, 198, 0.8);
-    }
-    
-    @keyframes orbit {
-      from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
-      to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
     }
     
     .electron-dot {
@@ -316,7 +293,7 @@
     .results-panel {
       background: var(--sim-surface-alt);
       border-radius: 10px;
-      padding: 20px;
+      padding: 10px;
       border: 1px solid var(--sim-panel-border);
     }
     
@@ -324,7 +301,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
+      padding: 7px 0;
       border-bottom: 1px solid var(--sim-panel-border);
     }
     .result-row:last-child {
@@ -347,8 +324,8 @@
     }
     
     .polarity-meter {
-      margin-top: 20px;
-      padding: 15px;
+      margin-top: 10px;
+      padding: 9px;
       background: var(--sim-canvas-bg);
       border-radius: 10px;
       border: 1px solid var(--sim-panel-border);
@@ -406,5 +383,22 @@
       .bond-visual.bond-short {
         width: 18px;
       }
+    }
+
+    .sim-toolbar .molecule-selector.sim-toolbar-actions {
+      margin-bottom: 0;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .sim-wrap .sim-help {
+      display: block !important;
+      align-self: center;
+    }
+
+    .sim-wrap .help-toggle {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
     }
   

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Unit 3 Simulator Test Checklist | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/energy-conversion.css">
+</head>
+<body data-site-root="../.." data-page="unit-3">
+  <header id="site-header" class="site-header"></header>
+
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 3</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Unit 3 Manual Test Checklist</h1>
+        <p class="subtitle">Use this checklist to verify functionality, visual feedback, and responsiveness.</p>
+
+        <section class="panel">
+          <h2>Global Checks (All Simulators)</h2>
+          <ol>
+            <li>Load each simulator without console errors.</li>
+            <li>Click every preset button and verify controls update.</li>
+            <li>Adjust each slider and verify outputs recalculate immediately.</li>
+            <li>Click Reset and verify default values/state are restored.</li>
+            <li>Hover interactive controls and confirm visual feedback appears.</li>
+            <li>Resize to mobile width and verify no overlap or clipping.</li>
+          </ol>
+        </section>
+
+        <section class="panel">
+          <h2>Energy Conversion Lab</h2>
+          <ol>
+            <li>Check Potential, Kinetic, and Thermal values update with each input change.</li>
+            <li>Verify bar widths reflect relative magnitudes.</li>
+            <li>Verify drop-object position changes with drop height and heat haze intensifies with friction.</li>
+            <li>Click <strong>Drop Object</strong> and verify animated fall + impact flash trigger.</li>
+            <li>Verify impact velocity, efficiency, and conservation text update correctly.</li>
+            <li>Confirm summary note changes between good, balanced, and warning states.</li>
+          </ol>
+        </section>
+
+        <section class="panel">
+          <h2>Orbital Motion Simulator</h2>
+          <ol>
+            <li>Confirm circular velocity, escape velocity, and period all update live.</li>
+            <li>Set high speed and verify status becomes escape trajectory.</li>
+            <li>Set low speed and verify status becomes suborbital or re-entry.</li>
+            <li>Verify orbit visualization switches behavior (stable/ellipse/escape/re-entry) with status.</li>
+            <li>Verify ellipse height changes with speed difference (eccentricity behavior).</li>
+            <li>Verify speed scale markers (v, vc, ve) move correctly.</li>
+          </ol>
+        </section>
+
+        <section class="panel">
+          <h2>Resonance Lab</h2>
+          <ol>
+            <li>Verify amplitude ratio and frequency ratio update continuously.</li>
+            <li>Set high damping and check response changes to heavily damped.</li>
+            <li>Set drive frequency near natural frequency and check at resonance state.</li>
+            <li>Verify oscillator spring/mass motion visibly changes with amplitude and damping.</li>
+            <li>Verify phase label and driver indicator behavior update with ratio changes.</li>
+            <li>Verify response curve current-point marker tracks current settings.</li>
+            <li>At extreme resonance, verify cap warning appears.</li>
+          </ol>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+</body>
+</html>

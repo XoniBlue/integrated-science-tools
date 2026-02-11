@@ -1,39 +1,422 @@
-<!DOCTYPE html><html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
-<title>Resonance Lab | Integrated Science Tools</title>
-<link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Resonance Lab | Integrated Science Tools</title>
+  <meta name="description" content="Interactive resonance simulator for frequency ratio and damping response.">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
-<link rel="stylesheet" href="../../assets/css/sims/resonance-lab.css"></head>
-<body data-site-root="../.." data-page="unit-3"><header id="site-header" class="site-header"></header>
-<main class="page-main"><section class="sim-wrap"><div class="container">
-<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
-<h1>Resonance Lab</h1><p class="subtitle">Explore how drive frequency and damping affect amplitude.</p>
+  <link rel="stylesheet" href="../../assets/css/sims/resonance-lab.css">
+</head>
+<body data-site-root="../.." data-page="unit-3">
+  <header id="site-header" class="site-header"></header>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 3</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-<div class="grid"><div class="panel">
-<label>Natural Frequency (Hz) <span class="value" id="fnv">2.0</span></label><input id="fn" type="range" min="0.5" max="6" step="0.1" value="2">
-<label>Drive Frequency (Hz) <span class="value" id="fdv">2.0</span></label><input id="fd" type="range" min="0.2" max="8" step="0.1" value="2">
-<label>Damping Ratio <span class="value" id="zv">0.20</span></label><input id="z" type="range" min="0.01" max="1" step="0.01" value="0.2">
-</div><div class="panel"><div class="result">
-<p>Amplitude Ratio: <span class="value" id="amp">0.00</span></p>
-<p>Response Type: <span class="value" id="resp">-</span></p>
-<div class="bar"><div id="fill" class="fill"></div></div>
-</div></div></div>
-</div></section></main><footer id="site-footer" class="site-footer"></footer>
-<script>
-function update(){const fnv=+fn.value, fdv=+fd.value, zv=+z.value; document.getElementById('fnv').textContent=fnv.toFixed(1); document.getElementById('fdv').textContent=fdv.toFixed(1); document.getElementById('zv').textContent=zv.toFixed(2);
-const r=fdv/fnv; const den=Math.sqrt((1-r*r)*(1-r*r)+(2*zv*r)*(2*zv*r)); const A=Math.min(10,1/den); amp.textContent=A.toFixed(2); fill.style.width=`${Math.min(100,A*12)}%`;
-let type='Off resonance'; if (Math.abs(r-1)<0.08) type='At resonance'; if (zv>0.6) type='Heavily damped'; resp.textContent=type;}
-[fn,fd,z].forEach(e=>e.addEventListener('input',update)); update();
-</script></body></html>
+        <h1>Resonance Lab</h1>
+        <p class="subtitle">Explore how frequency ratio and damping shape system amplitude.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Pick a preset scenario, then adjust one slider at a time.</li>
+            <li>Track amplitude ratio and response classification instantly.</li>
+            <li>Use oscillator and response curve to interpret resonance behavior.</li>
+          </ol>
+        </section>
+
+        <div class="preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+          <button class="preset-btn" type="button" data-preset="low">Low Damping</button>
+          <button class="preset-btn" type="button" data-preset="high">High Damping</button>
+          <button class="preset-btn" type="button" data-preset="drive">Drive = Natural</button>
+          <button class="preset-btn" type="button" data-preset="off">Off Resonance</button>
+        </div>
+
+        <div class="grid">
+          <section class="panel input-panel" aria-labelledby="resonance-input-heading">
+            <h2 id="resonance-input-heading">Inputs</h2>
+
+            <label for="natural-input">Natural Frequency (Hz) <span class="value" id="natural-value">2.0</span></label>
+            <input id="natural-input" type="range" min="0.5" max="6" step="0.1" value="2">
+
+            <label for="drive-input">Drive Frequency (Hz) <span class="value" id="drive-value">2.0</span></label>
+            <input id="drive-input" type="range" min="0.2" max="8" step="0.1" value="2">
+
+            <label for="damping-input">Damping Ratio <span class="value" id="damping-value">0.20</span></label>
+            <input id="damping-input" type="range" min="0.01" max="1" step="0.01" value="0.2">
+
+            <div class="action-row">
+              <button id="reset-btn" class="action-btn" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="resonance-output-heading">
+            <h2 id="resonance-output-heading">Response Outputs</h2>
+
+            <div class="oscillator-viz" id="oscillator-viz" aria-label="Oscillator visualization">
+              <div class="anchor"></div>
+              <div class="osc-track" aria-hidden="true"></div>
+              <div class="equilibrium-marker" aria-hidden="true"></div>
+              <div class="equilibrium-label">Equilibrium</div>
+              <div class="spring" id="spring"></div>
+              <div class="ghost-mass" aria-hidden="true"></div>
+              <div class="mass-block" id="mass-block"></div>
+              <div class="driver-indicator" id="driver-indicator"></div>
+              <div class="driver-label">Drive Force</div>
+            </div>
+            <p class="viz-debug" id="viz-debug">Effective Shift: -- px | Period: -- s | Phase: --</p>
+
+            <canvas id="response-curve" class="response-curve" width="480" height="180" aria-label="Frequency response curve"></canvas>
+            <p class="curve-legend">Curve: amplitude response vs frequency ratio (fd/fn). Pink dot = current operating point.</p>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Amplitude Ratio</p>
+                <p class="result-number"><span id="amplitude-value">0.00</span></p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Frequency Ratio (fd/fn)</p>
+                <p class="result-number"><span id="ratio-value">1.00</span></p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Phase Relation</p>
+                <p class="result-number"><span id="phase-text">In phase</span></p>
+              </article>
+            </div>
+
+            <div class="meter">
+              <div class="meter-track">
+                <div id="meter-fill" class="meter-fill"></div>
+              </div>
+              <div class="meter-labels">
+                <span>Weak</span>
+                <span>Moderate</span>
+                <span>Strong</span>
+              </div>
+            </div>
+
+            <p id="amplitude-warning" class="warning-note" hidden>Amplitude is capped to keep the simulator numerically stable.</p>
+
+            <div class="status-block">
+              <p class="status-label">Response Type</p>
+              <p id="response-type" class="status-badge">At resonance</p>
+              <p id="response-note" class="status-note">Drive frequency is matching natural frequency.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const defaults = { natural: 2, drive: 2, damping: 0.2 };
+      const presets = {
+        baseline: { natural: 2, drive: 2, damping: 0.2 },
+        low: { natural: 2, drive: 2, damping: 0.05 },
+        high: { natural: 2, drive: 2, damping: 0.8 },
+        drive: { natural: 2.5, drive: 2.5, damping: 0.2 },
+        off: { natural: 2, drive: 3.5, damping: 0.2 }
+      };
+
+      const naturalInput = document.getElementById('natural-input');
+      const driveInput = document.getElementById('drive-input');
+      const dampingInput = document.getElementById('damping-input');
+      const resetBtn = document.getElementById('reset-btn');
+
+      const naturalValue = document.getElementById('natural-value');
+      const driveValue = document.getElementById('drive-value');
+      const dampingValue = document.getElementById('damping-value');
+
+      const amplitudeValue = document.getElementById('amplitude-value');
+      const ratioValue = document.getElementById('ratio-value');
+      const phaseText = document.getElementById('phase-text');
+      const meterFill = document.getElementById('meter-fill');
+      const amplitudeWarning = document.getElementById('amplitude-warning');
+
+      const responseCurve = document.getElementById('response-curve');
+      const curveCtx = responseCurve.getContext('2d');
+
+      const oscillatorViz = document.getElementById('oscillator-viz');
+      const oscTrack = oscillatorViz.querySelector('.osc-track');
+      const spring = document.getElementById('spring');
+      const massBlock = document.getElementById('mass-block');
+      const driverIndicator = document.getElementById('driver-indicator');
+      const vizDebug = document.getElementById('viz-debug');
+
+      const responseType = document.getElementById('response-type');
+      const responseNote = document.getElementById('response-note');
+      const presetButtons = document.querySelectorAll('.preset-btn');
+      const oscillatorState = {
+        shift: 18,
+        period: 1,
+        springDelta: 10,
+        driverShift: 8,
+        phaseOffset: 0
+      };
+
+      function animateOscillator(nowMs) {
+        const time = nowMs * 0.001;
+        const omega = (Math.PI * 2) / Math.max(0.2, oscillatorState.period);
+        const massWave = Math.sin(time * omega);
+        const driverWave = Math.sin(time * omega + oscillatorState.phaseOffset);
+        const massX = massWave * oscillatorState.shift;
+        const driverX = ((driverWave - 1) * 0.5) * oscillatorState.driverShift;
+        const springWidth = 126 + massWave * oscillatorState.springDelta;
+        const driverScale = 0.92 + ((driverWave + 1) * 0.16);
+        const driverAlpha = 0.4 + ((driverWave + 1) * 0.3);
+
+        massBlock.style.transform = `translate(-50%, -50%) translateX(${massX.toFixed(2)}px)`;
+        spring.style.width = `${springWidth.toFixed(2)}px`;
+        driverIndicator.style.transform = `translateY(-50%) translateX(${driverX.toFixed(2)}px) scale(${driverScale.toFixed(3)})`;
+        driverIndicator.style.opacity = driverAlpha.toFixed(3);
+
+        window.requestAnimationFrame(animateOscillator);
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function toPixels(lengthValue, referenceSize) {
+        if (typeof lengthValue !== 'string') {
+          return Number(lengthValue) || 0;
+        }
+        if (lengthValue.includes('%')) {
+          return (parseFloat(lengthValue) / 100) * referenceSize;
+        }
+        return parseFloat(lengthValue) || 0;
+      }
+
+      function setActivePreset(activeButton) {
+        presetButtons.forEach((button) => {
+          button.classList.toggle('active', button === activeButton);
+        });
+      }
+
+      function classifyResponse(ratio, damping, amplitude) {
+        if (damping > 0.6) {
+          return {
+            type: 'Heavily damped',
+            note: 'High damping suppresses resonance even near frequency match.',
+            level: 'damped',
+            phase: 'Mostly in phase'
+          };
+        }
+
+        if (Math.abs(ratio - 1) < 0.08) {
+          return {
+            type: 'At resonance',
+            note: 'Drive frequency is matching natural frequency.',
+            level: 'resonant',
+            phase: 'Quarter-cycle lag'
+          };
+        }
+
+        if (amplitude > 1.2) {
+          return {
+            type: 'Near resonance',
+            note: 'Response is elevated, but not at the maximum resonance peak.',
+            level: 'near',
+            phase: ratio < 1 ? 'Mostly in phase' : 'Mostly out of phase'
+          };
+        }
+
+        return {
+          type: 'Off resonance',
+          note: 'Drive frequency is away from natural response conditions.',
+          level: 'off',
+          phase: ratio < 1 ? 'In phase' : 'Out of phase'
+        };
+      }
+
+      function resizeResponseCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        const cssWidth = Math.max(280, Math.floor(responseCurve.clientWidth || responseCurve.parentElement.clientWidth || 480));
+        const cssHeight = Math.round(cssWidth * 0.375);
+        responseCurve.style.height = `${cssHeight}px`;
+        responseCurve.width = Math.round(cssWidth * dpr);
+        responseCurve.height = Math.round(cssHeight * dpr);
+        curveCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function drawResponseCurve(damping, currentRatio, currentAmplitude) {
+        const width = responseCurve.clientWidth;
+        const height = responseCurve.clientHeight;
+        const pad = { left: 34, right: 12, top: 14, bottom: 24 };
+
+        curveCtx.clearRect(0, 0, width, height);
+        curveCtx.fillStyle = 'rgba(0,0,0,0.18)';
+        curveCtx.fillRect(0, 0, width, height);
+
+        const w = width - pad.left - pad.right;
+        const h = height - pad.top - pad.bottom;
+
+        curveCtx.strokeStyle = 'rgba(255,255,255,0.25)';
+        curveCtx.lineWidth = 1;
+        curveCtx.beginPath();
+        curveCtx.moveTo(pad.left, pad.top);
+        curveCtx.lineTo(pad.left, pad.top + h);
+        curveCtx.lineTo(pad.left + w, pad.top + h);
+        curveCtx.stroke();
+
+        curveCtx.strokeStyle = 'rgba(109, 207, 255, 0.95)';
+        curveCtx.lineWidth = 2;
+        curveCtx.beginPath();
+
+        let started = false;
+        for (let i = 0; i <= 240; i += 1) {
+          const ratio = (i / 240) * 2;
+          const denominator = Math.sqrt((1 - ratio * ratio) * (1 - ratio * ratio) + (2 * damping * ratio) * (2 * damping * ratio));
+          const amp = Math.min(10, 1 / Math.max(denominator, 0.00001));
+
+          const x = pad.left + (ratio / 2) * w;
+          const y = pad.top + h - Math.min(1, amp / 10) * h;
+
+          if (!started) {
+            curveCtx.moveTo(x, y);
+            started = true;
+          } else {
+            curveCtx.lineTo(x, y);
+          }
+        }
+        curveCtx.stroke();
+
+        const currentX = pad.left + (Math.min(2, currentRatio) / 2) * w;
+        const currentY = pad.top + h - Math.min(1, currentAmplitude / 10) * h;
+
+        curveCtx.fillStyle = '#ff5ea8';
+        curveCtx.beginPath();
+        curveCtx.arc(currentX, currentY, 5, 0, Math.PI * 2);
+        curveCtx.fill();
+
+        curveCtx.fillStyle = 'rgba(255,255,255,0.75)';
+        curveCtx.font = '11px "Segoe UI", Arial, sans-serif';
+        curveCtx.fillText('Amplitude', 6, 12);
+        curveCtx.fillText('fd/fn', width - 34, height - 6);
+      }
+
+      function updateVisualization(amplitude, drive, damping, level, phaseState) {
+        const normalizedAmplitude = clamp(amplitude / 10, 0, 1);
+        const nonlinearAmplitude = Math.sqrt(normalizedAmplitude);
+        const dampingScale = Math.max(0.45, 1 - damping * 0.55);
+        const baseShift = 14 + nonlinearAmplitude * 52;
+        const effectiveShift = clamp(baseShift * dampingScale, 14, 72);
+        const period = clamp(2 / Math.max(drive, 0.2), 0.55, 2.6);
+        const springDelta = clamp(8 + effectiveShift * 0.32, 8, 26);
+        const vizRect = oscillatorViz.getBoundingClientRect();
+        const trackRect = oscTrack.getBoundingClientRect();
+        const vizWidth = Math.max(1, vizRect.width);
+        const trackLeft = trackRect.left - vizRect.left;
+        const trackRight = trackLeft + trackRect.width;
+        const massHalfWidth = massBlock.offsetWidth * 0.5;
+        const massCenter = toPixels(getComputedStyle(massBlock).left, vizWidth);
+        const edgePadding = 4;
+        const maxLeftTravel = Math.max(8, massCenter - (trackLeft + massHalfWidth + edgePadding));
+        const maxRightTravel = Math.max(8, (trackRight - massHalfWidth - edgePadding) - massCenter);
+        const maxSafeShift = Math.max(8, Math.min(maxLeftTravel, maxRightTravel));
+        const constrainedShift = clamp(effectiveShift, 8, maxSafeShift);
+        const driverShift = Math.min(14, constrainedShift * 0.4);
+
+        oscillatorViz.style.setProperty('--osc-period', `${period.toFixed(2)}s`);
+        oscillatorViz.style.setProperty('--spring-min', `${(126 - springDelta).toFixed(1)}px`);
+        oscillatorViz.style.setProperty('--spring-max', `${(126 + springDelta).toFixed(1)}px`);
+        oscillatorViz.dataset.level = level;
+
+        const normalizedPhase = phaseState.toLowerCase();
+        const phaseOffset = normalizedPhase.includes('out') ? Math.PI : normalizedPhase.includes('quarter') ? Math.PI / 2 : 0;
+        oscillatorState.shift = constrainedShift;
+        oscillatorState.period = period;
+        oscillatorState.springDelta = springDelta;
+        oscillatorState.driverShift = driverShift;
+        oscillatorState.phaseOffset = phaseOffset;
+
+        vizDebug.textContent = `Effective Shift: ${constrainedShift.toFixed(1)} px | Period: ${period.toFixed(2)} s | Phase: ${phaseState}`;
+      }
+
+      function updateModel() {
+        const natural = clamp(naturalInput.value, 0.5, 6);
+        const drive = clamp(driveInput.value, 0.2, 8);
+        const damping = clamp(dampingInput.value, 0.01, 1);
+
+        naturalInput.value = natural;
+        driveInput.value = drive;
+        dampingInput.value = damping;
+
+        naturalValue.textContent = natural.toFixed(1);
+        driveValue.textContent = drive.toFixed(1);
+        dampingValue.textContent = damping.toFixed(2);
+
+        const ratio = drive / natural;
+        const denominator = Math.sqrt((1 - ratio * ratio) * (1 - ratio * ratio) + (2 * damping * ratio) * (2 * damping * ratio));
+        const rawAmplitude = 1 / Math.max(denominator, 0.00001);
+        const amplitude = Math.min(10, rawAmplitude);
+
+        ratioValue.textContent = ratio.toFixed(2);
+        amplitudeValue.textContent = amplitude.toFixed(2);
+        meterFill.style.width = `${Math.min(100, amplitude * 12)}%`;
+        amplitudeWarning.hidden = amplitude < 9.9;
+
+        const classification = classifyResponse(ratio, damping, amplitude);
+        responseType.textContent = classification.type;
+        responseType.dataset.level = classification.level;
+        responseNote.textContent = classification.note;
+        phaseText.textContent = classification.phase;
+
+        drawResponseCurve(damping, ratio, amplitude);
+        updateVisualization(amplitude, drive, damping, classification.level, classification.phase);
+      }
+
+      function resetToDefault() {
+        naturalInput.value = defaults.natural;
+        driveInput.value = defaults.drive;
+        dampingInput.value = defaults.damping;
+        setActivePreset(presetButtons[0]);
+        updateModel();
+      }
+
+      [naturalInput, driveInput, dampingInput].forEach((input) => {
+        input.addEventListener('input', updateModel);
+      });
+
+      presetButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const preset = presets[button.dataset.preset];
+          if (!preset) {
+            return;
+          }
+
+          naturalInput.value = preset.natural;
+          driveInput.value = preset.drive;
+          dampingInput.value = preset.damping;
+          setActivePreset(button);
+          updateModel();
+        });
+      });
+
+      resetBtn.addEventListener('click', resetToDefault);
+      window.addEventListener('resize', () => {
+        resizeResponseCanvas();
+        updateModel();
+      });
+
+      window.requestAnimationFrame(animateOscillator);
+      resizeResponseCanvas();
+      updateModel();
+    })();
+  </script>
+</body>
+</html>

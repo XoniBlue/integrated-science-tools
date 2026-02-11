@@ -9,6 +9,7 @@
     <meta name="description" content="Interactive Lewis Dot Structure Builder simulation.">
     <link rel="stylesheet" href="../../assets/css/site.css">
     <script src="../../assets/js/site.js" defer></script>
+    <script src="../../assets/js/sim-enhancer.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/sims/lewis-dot.css">
 </head>
 <body data-site-root="../.." data-page="unit-1">
@@ -76,8 +77,8 @@
                   </div>
 
                   <div class="action-buttons">
-                      <button class="btn btn-hint" onclick="showHint()">Show Hint</button>
-                      <button class="btn btn-clear" onclick="clearCanvas()">Clear</button>
+                      <button class="btn btn-hint" id="show-hint-btn" type="button">Show Hint</button>
+                      <button class="btn btn-clear" id="clear-canvas-btn" type="button">Clear</button>
                   </div>
               </div>
 
@@ -100,7 +101,7 @@
                   <div class="canvas-container" id="canvas"></div>
 
                   <div class="action-buttons">
-                      <button class="btn btn-check" onclick="checkAnswer()">Check Answer</button>
+                      <button class="btn btn-check" id="check-answer-btn" type="button">Check Answer</button>
                   </div>
 
                   <div class="feedback" id="feedback"></div>
@@ -208,6 +209,10 @@
                     placeAtom(e.offsetX, e.offsetY);
                 }
             });
+
+            document.getElementById("show-hint-btn").addEventListener("click", showHint);
+            document.getElementById("clear-canvas-btn").addEventListener("click", clearCanvas);
+            document.getElementById("check-answer-btn").addEventListener("click", checkAnswer);
         }
 
         function updateMoleculeInfo() {

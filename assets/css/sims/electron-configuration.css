@@ -109,6 +109,8 @@
             position: relative;
             cursor: pointer;
             transition: all 0.3s;
+            box-shadow: inset 0 0 6px rgba(255, 94, 168, 0.14);
+            animation: ec-orbital-glow 4.333s linear infinite;
         }
         .orbital-box:hover {
             border-color: #ff5ea8;
@@ -125,6 +127,32 @@
         }
         .electron-arrow.up { bottom: 12px; border-bottom: 28px solid #ff8dc6; }
         .electron-arrow.down { top: 12px; border-top: 28px solid #ff8dc6; }
+        .electron-arrow {
+            transform: translateX(-50%) translateY(0);
+            animation: ec-arrow-bob 2.856s linear infinite;
+        }
+        @keyframes ec-orbital-glow {
+            0%, 50%, 100% {
+                box-shadow: inset 0 0 6px rgba(255, 94, 168, 0.14);
+            }
+            25% {
+                box-shadow: inset 0 0 14px rgba(255, 94, 168, 0.14);
+            }
+            75% {
+                box-shadow: inset 0 0 2px rgba(255, 94, 168, 0.14);
+            }
+        }
+        @keyframes ec-arrow-bob {
+            0%, 50%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            25% {
+                transform: translateX(-50%) translateY(-2px);
+            }
+            75% {
+                transform: translateX(-50%) translateY(2px);
+            }
+        }
         .notation-display {
             background: #160a25;
             padding: 20px;
@@ -215,7 +243,6 @@
             min-height: 60px;
         }
         .noble-gas-label { color: #c6b5de; font-size: 14px; margin-bottom: 8px; }
-
         :root {
             --sim-bg-start: var(--bg-top);
             --sim-bg-end: var(--bg-mid);

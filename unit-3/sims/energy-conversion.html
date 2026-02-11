@@ -1,45 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg"><script src="../../assets/js/theme-init.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
   <title>Energy Conversion Lab | Integrated Science Tools</title>
-  <link rel="stylesheet" href="../../assets/css/site.css"><script src="../../assets/js/site.js" defer></script>
+  <meta name="description" content="Interactive energy conversion simulator for potential, kinetic, and thermal energy.">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/energy-conversion.css">
 </head>
 <body data-site-root="../.." data-page="unit-3">
-<header id="site-header" class="site-header"></header>
-<main class="page-main"><section class="sim-wrap"><div class="container">
-<div class="top-actions"><a href="../index.html">Back to Unit 3</a><a href="../../index.html">Home</a></div>
-<h1>Energy Conversion Lab</h1><p class="subtitle">Track potential, kinetic, and thermal energy changes.</p>
+  <header id="site-header" class="site-header"></header>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 3</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-<div class="grid"><div class="panel">
-<label>Mass (kg) <span class="value" id="mv">2.0</span></label><input id="mass" type="range" min="0.5" max="10" step="0.1" value="2">
-<label>Drop Height (m) <span class="value" id="hv">5.0</span></label><input id="height" type="range" min="0" max="20" step="0.1" value="5">
-<label>Friction Loss (%) <span class="value" id="fv">20</span></label><input id="fric" type="range" min="0" max="80" step="1" value="20">
-</div><div class="panel"><div class="bars">
-<div class="bar">Potential: <span class="value" id="peText">0</span> J<div class="fill" id="pe"></div></div>
-<div class="bar">Kinetic: <span class="value" id="keText">0</span> J<div class="fill" id="ke"></div></div>
-<div class="bar">Thermal: <span class="value" id="thText">0</span> J<div class="fill" id="th"></div></div>
-</div></div></div>
-</div></section></main><footer id="site-footer" class="site-footer"></footer>
-<script>
-const g=9.8, maxScale=1200; const ids=['mass','height','fric'];
-function update(){const m=+mass.value,h=+height.value,f=+fric.value/100; mv.textContent=m.toFixed(1); hv.textContent=h.toFixed(1); fv.textContent=(f*100).toFixed(0);
-const peVal=m*g*h, thVal=peVal*f, keVal=Math.max(0,peVal-thVal); const scale=Math.max(maxScale,peVal);
-[['pe',peVal,'peText'],['ke',keVal,'keText'],['th',thVal,'thText']].forEach(([id,v,t])=>{document.getElementById(id).style.width=`${(v/scale*100).toFixed(1)}%`;document.getElementById(t).textContent=v.toFixed(1);});}
-ids.forEach(id=>document.getElementById(id).addEventListener('input',update)); update();
-</script>
-</body></html>
+        <h1>Energy Conversion Lab</h1>
+        <p class="subtitle">Track potential, kinetic, and thermal energy as a falling object changes state.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Select a preset scenario or adjust the sliders manually.</li>
+            <li>Click <strong>Drop Object</strong> to run the fall animation.</li>
+            <li>Compare energy split, impact velocity, and efficiency.</li>
+          </ol>
+        </section>
+
+        <div class="preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+          <button class="preset-btn" type="button" data-preset="low">Low Mass Drop</button>
+          <button class="preset-btn" type="button" data-preset="high">High Mass Drop</button>
+          <button class="preset-btn" type="button" data-preset="friction">High Friction</button>
+          <button class="preset-btn" type="button" data-preset="tall">Tall Drop</button>
+        </div>
+
+        <div class="grid">
+          <section class="panel input-panel" aria-labelledby="energy-input-heading">
+            <h2 id="energy-input-heading">Inputs</h2>
+
+            <label for="mass-input">Mass (kg) <span class="value" id="mass-value">2.0</span></label>
+            <input id="mass-input" type="range" min="0.5" max="10" step="0.1" value="2">
+
+            <label for="height-input">Drop Height (m) <span class="value" id="height-value">5.0</span></label>
+            <input id="height-input" type="range" min="0" max="20" step="0.1" value="5">
+
+            <label for="friction-input">Friction Loss (%) <span class="value" id="friction-value">20</span></label>
+            <input id="friction-input" type="range" min="0" max="80" step="1" value="20">
+
+            <div class="action-row">
+              <button id="drop-btn" class="action-btn primary" type="button">Drop Object</button>
+              <button id="reset-btn" class="action-btn" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="energy-output-heading">
+            <h2 id="energy-output-heading">Energy Outputs</h2>
+
+            <div class="energy-stage" aria-label="Energy conversion visualization">
+              <div class="drop-zone" id="drop-zone">
+                <div class="height-ruler" aria-hidden="true">
+                  <div class="ruler-tick tick-top"><span>20 m</span></div>
+                  <div class="ruler-tick tick-mid"><span>10 m</span></div>
+                  <div class="ruler-tick tick-bottom"><span>0 m</span></div>
+                  <div id="ruler-pointer" class="ruler-pointer"></div>
+                </div>
+                <div class="drop-height-label">Drop Height</div>
+                <div id="start-line" class="start-line"></div>
+                <div id="start-label" class="start-label">Start: 5.0 m</div>
+                <div id="drop-object" class="drop-object"></div>
+                <div class="impact-flash" id="impact-flash">Impact</div>
+                <div class="ground-line"></div>
+                <div class="heat-haze" id="heat-haze"></div>
+              </div>
+              <div class="split-meters">
+                <div class="split-row">
+                  <span>Mechanical Share</span>
+                  <div class="mini-meter"><div id="mechanical-fill" class="mini-fill mechanical"></div></div>
+                  <span id="mechanical-pct" class="mini-value">80%</span>
+                </div>
+                <div class="split-row">
+                  <span>Thermal Share</span>
+                  <div class="mini-meter"><div id="thermal-share-fill" class="mini-fill thermal"></div></div>
+                  <span id="thermal-pct" class="mini-value">20%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Potential Energy</p>
+                <p class="result-number"><span id="potential-text">98.0</span> J</p>
+                <div class="bar"><div class="fill fill-potential" id="potential-fill"></div></div>
+              </article>
+
+              <article class="result-card">
+                <p class="result-label">Kinetic Energy</p>
+                <p class="result-number"><span id="kinetic-text">78.4</span> J</p>
+                <div class="bar"><div class="fill fill-kinetic" id="kinetic-fill"></div></div>
+              </article>
+
+              <article class="result-card">
+                <p class="result-label">Thermal Energy</p>
+                <p class="result-number"><span id="thermal-text">19.6</span> J</p>
+                <div class="bar"><div class="fill fill-thermal" id="thermal-fill"></div></div>
+              </article>
+            </div>
+
+            <div class="derived-row">
+              <p><strong>Impact velocity:</strong> <span id="impact-velocity">0.0</span> m/s</p>
+              <p><strong>Efficiency:</strong> <span id="efficiency-pct">0</span>%</p>
+            </div>
+            <p class="conservation-note">Total Energy: <span id="conservation-text">98.0</span> J = Kinetic + Thermal</p>
+
+            <p id="efficiency-summary" class="feedback-note">Most energy remains as motion under this setup.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const gravity = 9.8;
+      const minScale = 1200;
+      const defaults = { mass: 2, height: 5, friction: 20 };
+
+      const presets = {
+        baseline: { mass: 2, height: 5, friction: 20 },
+        low: { mass: 1, height: 3, friction: 10 },
+        high: { mass: 8, height: 7, friction: 15 },
+        friction: { mass: 2, height: 5, friction: 60 },
+        tall: { mass: 2, height: 18, friction: 20 }
+      };
+
+      const massInput = document.getElementById('mass-input');
+      const heightInput = document.getElementById('height-input');
+      const frictionInput = document.getElementById('friction-input');
+      const dropBtn = document.getElementById('drop-btn');
+      const resetBtn = document.getElementById('reset-btn');
+
+      const massValue = document.getElementById('mass-value');
+      const heightValue = document.getElementById('height-value');
+      const frictionValue = document.getElementById('friction-value');
+
+      const potentialFill = document.getElementById('potential-fill');
+      const kineticFill = document.getElementById('kinetic-fill');
+      const thermalFill = document.getElementById('thermal-fill');
+
+      const potentialText = document.getElementById('potential-text');
+      const kineticText = document.getElementById('kinetic-text');
+      const thermalText = document.getElementById('thermal-text');
+      const impactVelocityText = document.getElementById('impact-velocity');
+      const efficiencyPctText = document.getElementById('efficiency-pct');
+      const conservationText = document.getElementById('conservation-text');
+
+      const dropObject = document.getElementById('drop-object');
+      const heatHaze = document.getElementById('heat-haze');
+      const impactFlash = document.getElementById('impact-flash');
+      const mechanicalFill = document.getElementById('mechanical-fill');
+      const thermalShareFill = document.getElementById('thermal-share-fill');
+      const mechanicalPct = document.getElementById('mechanical-pct');
+      const thermalPct = document.getElementById('thermal-pct');
+
+      const efficiencySummary = document.getElementById('efficiency-summary');
+      const presetButtons = document.querySelectorAll('.preset-btn');
+      const dropZone = document.getElementById('drop-zone');
+      const groundLine = document.querySelector('.ground-line');
+      const startLine = document.getElementById('start-line');
+      const startLabel = document.getElementById('start-label');
+      const rulerPointer = document.getElementById('ruler-pointer');
+      let isDropping = false;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(activeButton) {
+        presetButtons.forEach((button) => {
+          button.classList.toggle('active', button === activeButton);
+        });
+      }
+
+      function getModelValues() {
+        const mass = clamp(massInput.value, 0.5, 10);
+        const height = clamp(heightInput.value, 0, 20);
+        const friction = clamp(frictionInput.value, 0, 80) / 100;
+
+        const potential = mass * gravity * height;
+        const thermal = potential * friction;
+        const kinetic = Math.max(0, potential - thermal);
+
+        return { mass, height, friction, potential, kinetic, thermal };
+      }
+
+      function updateBars(potential, kinetic, thermal) {
+        const scale = Math.max(minScale, potential);
+        potentialFill.style.width = `${((potential / scale) * 100).toFixed(1)}%`;
+        kineticFill.style.width = `${((kinetic / scale) * 100).toFixed(1)}%`;
+        thermalFill.style.width = `${((thermal / scale) * 100).toFixed(1)}%`;
+      }
+
+      function getDropGeometry() {
+        const zoneHeight = Math.max(1, dropZone.clientHeight);
+        const objectHeight = Math.max(1, dropObject.offsetHeight);
+        const groundBottom = parseFloat(getComputedStyle(groundLine).bottom) || 16;
+        const baseTop = parseFloat(getComputedStyle(dropObject).top) || 14;
+        const groundTravel = Math.max(0, zoneHeight - groundBottom - objectHeight);
+        return { zoneHeight, objectHeight, groundTravel, baseTop };
+      }
+
+      function positionDrop(height) {
+        const { groundTravel } = getDropGeometry();
+        const normalizedHeight = Math.max(0, Math.min(1, height / 20));
+        return groundTravel * (1 - normalizedHeight);
+      }
+
+      function animateDrop(startTravel, groundTravel) {
+        if (isDropping) {
+          return;
+        }
+
+        isDropping = true;
+        dropBtn.disabled = true;
+        dropObject.style.transition = 'none';
+        dropObject.style.transform = `translate(-50%, ${startTravel}px)`;
+        impactFlash.classList.remove('show');
+
+        const travelDistance = Math.max(0, groundTravel - startTravel);
+        const durationMs = 450 + (travelDistance / Math.max(groundTravel, 1)) * 1350;
+
+        const completeDrop = () => {
+          impactFlash.classList.add('show');
+          setTimeout(() => impactFlash.classList.remove('show'), 420);
+          dropObject.style.transform = `translate(-50%, ${groundTravel}px)`;
+          isDropping = false;
+          dropBtn.disabled = false;
+        };
+
+        if (typeof dropObject.animate === 'function') {
+          dropObject.getAnimations().forEach((anim) => anim.cancel());
+          const animation = dropObject.animate(
+            [
+              { transform: `translate(-50%, ${startTravel}px)` },
+              { transform: `translate(-50%, ${groundTravel}px)` }
+            ],
+            {
+              duration: Math.round(durationMs),
+              easing: 'cubic-bezier(0.18, 0.72, 0.28, 1)',
+              fill: 'forwards'
+            }
+          );
+          animation.addEventListener('finish', completeDrop, { once: true });
+          return;
+        }
+
+        const transitionSpec = `transform ${durationMs.toFixed(0)}ms cubic-bezier(0.18, 0.72, 0.28, 1)`;
+        const fallbackTimer = setTimeout(completeDrop, durationMs + 160);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            dropObject.style.transition = transitionSpec;
+            dropObject.style.transform = `translate(-50%, ${groundTravel}px)`;
+          });
+        });
+        dropObject.addEventListener('transitionend', () => {
+          clearTimeout(fallbackTimer);
+          completeDrop();
+        }, { once: true });
+      }
+
+      function updateVisualization(height, friction, kinetic, thermal) {
+        const geometry = getDropGeometry();
+        const startTravel = positionDrop(height);
+        dropObject.style.transform = `translate(-50%, ${startTravel}px)`;
+        const markerY = geometry.baseTop + startTravel + (geometry.objectHeight / 2);
+        let labelTop = markerY - 8;
+        if (labelTop < 44) {
+          labelTop = markerY + 18;
+        }
+        const clampedLabelTop = Math.min(
+          geometry.zoneHeight - 10,
+          Math.max(22, labelTop)
+        );
+        startLine.style.top = `${markerY}px`;
+        startLabel.style.top = `${clampedLabelTop}px`;
+        startLabel.textContent = `Start height: ${height.toFixed(1)} m`;
+        rulerPointer.style.top = `${markerY}px`;
+
+        const total = Math.max(kinetic + thermal, 1);
+        const mechanicalShare = (kinetic / total) * 100;
+        const thermalShare = (thermal / total) * 100;
+
+        mechanicalFill.style.width = `${mechanicalShare.toFixed(1)}%`;
+        thermalShareFill.style.width = `${thermalShare.toFixed(1)}%`;
+        mechanicalPct.textContent = `${mechanicalShare.toFixed(0)}%`;
+        thermalPct.textContent = `${thermalShare.toFixed(0)}%`;
+
+        heatHaze.style.opacity = `${Math.max(0.1, friction)}`;
+        heatHaze.style.height = `${20 + friction * 70}px`;
+      }
+
+      function updateSummary(kinetic, thermal) {
+        if (thermal > kinetic) {
+          efficiencySummary.textContent = 'Thermal loss is dominant: friction is absorbing most of the energy.';
+          efficiencySummary.dataset.level = 'warning';
+          return;
+        }
+
+        if (thermal > 0.35 * kinetic) {
+          efficiencySummary.textContent = 'Energy is split: both motion and thermal loss are significant.';
+          efficiencySummary.dataset.level = 'balanced';
+          return;
+        }
+
+        efficiencySummary.textContent = 'Most energy remains as motion under this setup.';
+        efficiencySummary.dataset.level = 'good';
+      }
+
+      function updateDerivedMetrics(mass, potential, kinetic, thermal) {
+        const impactVelocity = mass > 0 ? Math.sqrt((2 * kinetic) / mass) : 0;
+        const efficiency = potential > 0 ? (kinetic / potential) * 100 : 0;
+
+        impactVelocityText.textContent = impactVelocity.toFixed(2);
+        efficiencyPctText.textContent = efficiency.toFixed(1);
+        conservationText.textContent = potential.toFixed(1);
+      }
+
+      function updateModel() {
+        const { mass, height, friction, potential, kinetic, thermal } = getModelValues();
+
+        massInput.value = mass;
+        heightInput.value = height;
+        frictionInput.value = Math.round(friction * 100);
+
+        massValue.textContent = mass.toFixed(1);
+        heightValue.textContent = height.toFixed(1);
+        frictionValue.textContent = (friction * 100).toFixed(0);
+
+        potentialText.textContent = potential.toFixed(1);
+        kineticText.textContent = kinetic.toFixed(1);
+        thermalText.textContent = thermal.toFixed(1);
+
+        updateBars(potential, kinetic, thermal);
+        updateVisualization(height, friction, kinetic, thermal);
+        updateDerivedMetrics(mass, potential, kinetic, thermal);
+        updateSummary(kinetic, thermal);
+      }
+
+      function resetToDefault() {
+        massInput.value = defaults.mass;
+        heightInput.value = defaults.height;
+        frictionInput.value = defaults.friction;
+        setActivePreset(presetButtons[0]);
+        updateModel();
+      }
+
+      [massInput, heightInput, frictionInput].forEach((input) => {
+        input.addEventListener('input', updateModel);
+      });
+
+      presetButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const preset = presets[button.dataset.preset];
+          if (!preset) {
+            return;
+          }
+
+          massInput.value = preset.mass;
+          heightInput.value = preset.height;
+          frictionInput.value = preset.friction;
+          setActivePreset(button);
+          updateModel();
+        });
+      });
+
+      dropBtn.addEventListener('click', () => {
+        const { height } = getModelValues();
+        const groundTravel = getDropGeometry().groundTravel;
+        animateDrop(positionDrop(height), groundTravel);
+      });
+
+      resetBtn.addEventListener('click', resetToDefault);
+      window.addEventListener('resize', () => {
+        if (!isDropping) {
+          updateModel();
+        }
+      });
+
+      updateModel();
+    })();
+  </script>
+</body>
+</html>
