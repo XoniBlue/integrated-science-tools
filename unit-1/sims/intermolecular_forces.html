@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Intermolecular Forces Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/intermolecular-forces.css">
+</head>
+<body data-site-root="../.." data-page="unit-1" data-sim-page="intermolecular-forces">
+  <header id="site-header" class="site-header"></header>
+
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 1</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Intermolecular Forces Lab</h1>
+        <p class="subtitle">Compare dispersion, dipole, hydrogen-bond, and ion-dipole interactions with a live particle model.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Choose a preset force family from the top row.</li>
+            <li>Adjust temperature, interaction range, and particle density.</li>
+            <li>Watch attraction links and particle motion in the model panel.</li>
+            <li>Use the results panel to compare bond count, speed, and cohesion.</li>
+            <li>Reset any time to restore the selected preset baseline.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="london">London Dispersion</button>
+          <button class="preset-btn" type="button" data-preset="dipole">Dipole-Dipole</button>
+          <button class="preset-btn" type="button" data-preset="hydrogen">Hydrogen Bonding</button>
+          <button class="preset-btn" type="button" data-preset="ion">Ion-Dipole</button>
+        </div>
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="temperature">Temperature</label>
+                <span class="slider-value" id="temperature-value">55%</span>
+              </div>
+              <input id="temperature" type="range" min="10" max="100" step="1" value="55">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="range">Interaction Range</label>
+                <span class="slider-value" id="range-value">70 px</span>
+              </div>
+              <input id="range" type="range" min="40" max="150" step="1" value="70">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="density">Particle Density</label>
+                <span class="slider-value" id="density-value">60%</span>
+              </div>
+              <input id="density" type="range" min="35" max="100" step="1" value="60">
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Force Family</p>
+                <p class="result-value" id="force-family">London Dispersion</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Relative Strength</p>
+                <p class="result-value"><span id="strength">20</span>%</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Active Attractions</p>
+                <p class="result-value" id="bond-count">0</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Average Particle Speed</p>
+                <p class="result-value"><span id="speed">0.00</span> px/frame</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Weak temporary attractions</p>
+              <p class="status-note" id="status-note">Dispersion interactions are short-range and appear briefly between neighbors.</p>
+            </div>
+
+            <div class="force-details" id="force-details" aria-live="polite"></div>
+          </section>
+
+          <section class="panel model" aria-label="Model">
+            <div class="model-panel">
+              <div class="model-header">
+                <h2 class="panel-title">Model</h2>
+                <div class="control-actions top-control-actions">
+                  <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+                  <button id="pause-btn" class="btn" type="button" aria-pressed="false">Pause</button>
+                </div>
+              </div>
+              <div class="canvas-wrap">
+                <canvas id="force-canvas" width="900" height="520" role="img" aria-label="Particle model of intermolecular interactions"></canvas>
+              </div>
+              <div class="legend" id="legend" aria-live="polite"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const CONSTANTS = {
+        canvasWidth: 900,
+        canvasHeight: 520,
+        dprCap: 2
+      };
+
+      const FORCE_INFO = {
+        london: {
+          title: "London Dispersion",
+          description: "Temporary dipoles create weak attractions between nearby nonpolar particles.",
+          example: "Example: noble gases and nonpolar molecules",
+          strength: 20,
+          color: "#f97373",
+          lineColor: "rgba(249, 115, 115, 0.52)",
+          note: "Short-range and constantly changing interactions"
+        },
+        dipole: {
+          title: "Dipole-Dipole",
+          description: "Polar molecules align so opposite partial charges attract.",
+          example: "Example: HCl and acetone",
+          strength: 45,
+          color: "#4ade80",
+          lineColor: "rgba(74, 222, 128, 0.56)",
+          note: "Moderate interactions that depend on molecular orientation"
+        },
+        hydrogen: {
+          title: "Hydrogen Bonding",
+          description: "A strong directional dipole interaction involving H bonded to N, O, or F.",
+          example: "Example: water, ammonia, and DNA base pairing",
+          strength: 75,
+          color: "#60a5fa",
+          lineColor: "rgba(96, 165, 250, 0.65)",
+          note: "High cohesion and network-like clustering"
+        },
+        ion: {
+          title: "Ion-Dipole",
+          description: "Ions strongly attract polar molecules and reorient nearby dipoles.",
+          example: "Example: NaCl dissolved in water",
+          strength: 90,
+          color: "#c084fc",
+          lineColor: "rgba(192, 132, 252, 0.66)",
+          note: "Strongest interactions in this model"
+        }
+      };
+
+      const PRESETS = {
+        london: { force: "london", temperature: 55, range: 70, density: 60 },
+        dipole: { force: "dipole", temperature: 50, range: 85, density: 62 },
+        hydrogen: { force: "hydrogen", temperature: 42, range: 105, density: 58 },
+        ion: { force: "ion", temperature: 38, range: 125, density: 64 }
+      };
+
+      const el = {
+        canvas: document.getElementById("force-canvas"),
+        temperature: document.getElementById("temperature"),
+        range: document.getElementById("range"),
+        density: document.getElementById("density"),
+        temperatureValue: document.getElementById("temperature-value"),
+        rangeValue: document.getElementById("range-value"),
+        densityValue: document.getElementById("density-value"),
+        resetBtn: document.getElementById("reset-btn"),
+        pauseBtn: document.getElementById("pause-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn"),
+        forceFamily: document.getElementById("force-family"),
+        strength: document.getElementById("strength"),
+        bondCount: document.getElementById("bond-count"),
+        speed: document.getElementById("speed"),
+        status: document.getElementById("status"),
+        statusNote: document.getElementById("status-note"),
+        forceDetails: document.getElementById("force-details"),
+        legend: document.getElementById("legend")
+      };
+
+      const ctx = el.canvas.getContext("2d");
+
+      const state = {
+        force: "london",
+        paused: false,
+        temperature: 55,
+        range: 70,
+        density: 60,
+        particles: [],
+        activeLinks: 0,
+        averageSpeed: 0,
+        cohesion: 0,
+        animationId: 0,
+        pixelRatio: 1,
+        renderWidth: CONSTANTS.canvasWidth,
+        renderHeight: CONSTANTS.canvasHeight
+      };
+
+      class Particle {
+        constructor(x, y, type, charge = null) {
+          this.x = x;
+          this.y = y;
+          this.vx = (Math.random() - 0.5) * 0.8;
+          this.vy = (Math.random() - 0.5) * 0.8;
+          this.type = type;
+          this.charge = charge;
+          this.radius = 12;
+          this.dipoleAngle = Math.random() * Math.PI * 2;
+          this.temporaryDipole = 0;
+        }
+
+        update() {
+          if (state.paused) return;
+
+          this.applyForces();
+
+          const damping = 0.985 - ((state.temperature - 10) / 4000);
+          this.vx *= damping;
+          this.vy *= damping;
+
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x - this.radius < 0 || this.x + this.radius > state.renderWidth) {
+            this.vx *= -0.82;
+            this.x = clamp(this.x, this.radius, state.renderWidth - this.radius);
+          }
+          if (this.y - this.radius < 0 || this.y + this.radius > state.renderHeight) {
+            this.vy *= -0.82;
+            this.y = clamp(this.y, this.radius, state.renderHeight - this.radius);
+          }
+
+          if (state.force === "london") {
+            this.temporaryDipole = Math.sin(performance.now() * 0.008 + this.x * 0.05) * 0.35;
+          }
+
+          if (state.force === "dipole" || state.force === "hydrogen") {
+            this.dipoleAngle += 0.008;
+          }
+        }
+
+        applyForces() {
+          const maxRange = state.range;
+          const thermalBoost = 0.97 + (state.temperature / 1000);
+
+          for (const other of state.particles) {
+            if (other === this) continue;
+
+            const dx = other.x - this.x;
+            const dy = other.y - this.y;
+            const distSq = (dx * dx) + (dy * dy);
+            const dist = Math.sqrt(distSq);
+            if (dist < 0.001) continue;
+
+            const minDist = this.radius + other.radius;
+            if (dist < minDist) {
+              const repel = (minDist - dist) * 0.18;
+              this.vx -= (dx / dist) * repel;
+              this.vy -= (dy / dist) * repel;
+              continue;
+            }
+
+            if (state.force === "london" && dist < maxRange) {
+              const force = 0.006 * ((maxRange - dist) / maxRange);
+              this.vx += (dx / dist) * force;
+              this.vy += (dy / dist) * force;
+            }
+
+            if (state.force === "dipole" && dist < maxRange) {
+              const alignment = Math.cos(Math.abs(this.dipoleAngle - other.dipoleAngle));
+              const force = 0.014 * alignment * ((maxRange - dist) / maxRange);
+              this.vx += (dx / dist) * force;
+              this.vy += (dy / dist) * force;
+            }
+
+            if (state.force === "hydrogen" && dist < maxRange) {
+              const directional = 0.5 + (Math.cos(this.dipoleAngle - other.dipoleAngle) * 0.5);
+              const force = 0.026 * directional * ((maxRange - dist) / maxRange);
+              this.vx += (dx / dist) * force;
+              this.vy += (dy / dist) * force;
+            }
+
+            if (state.force === "ion" && dist < maxRange) {
+              if (this.charge && other.type === "water") {
+                const force = 0.034 * ((maxRange - dist) / maxRange);
+                this.vx += (dx / dist) * force;
+                this.vy += (dy / dist) * force;
+              } else if (this.type === "water" && other.charge) {
+                const force = 0.034 * ((maxRange - dist) / maxRange);
+                this.vx += (dx / dist) * force;
+                this.vy += (dy / dist) * force;
+
+                const targetAngle = Math.atan2(dy, dx);
+                const desired = other.charge === "positive" ? targetAngle : targetAngle + Math.PI;
+                this.dipoleAngle += (desired - this.dipoleAngle) * 0.06;
+              } else if (this.charge && other.charge) {
+                const same = this.charge === other.charge;
+                const force = (same ? -0.02 : 0.028) * ((maxRange - dist) / maxRange);
+                this.vx += (dx / dist) * force;
+                this.vy += (dy / dist) * force;
+              }
+            }
+
+          }
+
+          this.vx *= thermalBoost;
+          this.vy *= thermalBoost;
+        }
+
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+
+          if (state.force === "london") {
+            const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.radius);
+            grad.addColorStop(0, "#7dd3fc");
+            grad.addColorStop(1, "#38bdf8");
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = this.temporaryDipole > 0 ? "#ef4444" : "#2563eb";
+            ctx.beginPath();
+            ctx.arc(this.radius * 0.45, 0, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          if (state.force === "dipole") {
+            ctx.rotate(this.dipoleAngle);
+
+            ctx.fillStyle = "#fb7185";
+            ctx.beginPath();
+            ctx.arc(-7, 0, 10.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "#60a5fa";
+            ctx.beginPath();
+            ctx.arc(7, 0, 10.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "#f8fafc";
+            ctx.font = "600 10px system-ui";
+            ctx.textAlign = "center";
+            ctx.fillText("-", -7, 3.4);
+            ctx.fillText("+", 7, 3.4);
+          }
+
+          if (state.force === "hydrogen") {
+            ctx.rotate(this.dipoleAngle);
+
+            ctx.fillStyle = "#fb7185";
+            ctx.beginPath();
+            ctx.arc(0, 0, 12.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = "#e2e8f0";
+            ctx.beginPath();
+            ctx.arc(-10, 7, 6.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(10, 7, 6.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          if (state.force === "ion") {
+            if (this.charge === "positive") {
+              ctx.fillStyle = "#60a5fa";
+              ctx.beginPath();
+              ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = "#f8fafc";
+              ctx.font = "700 18px system-ui";
+              ctx.textAlign = "center";
+              ctx.fillText("+", 0, 6);
+            } else if (this.charge === "negative") {
+              ctx.fillStyle = "#fb7185";
+              ctx.beginPath();
+              ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = "#f8fafc";
+              ctx.font = "700 20px system-ui";
+              ctx.textAlign = "center";
+              ctx.fillText("-", 0, 7);
+            } else {
+              ctx.rotate(this.dipoleAngle);
+              ctx.fillStyle = "#c084fc";
+              ctx.beginPath();
+              ctx.arc(0, 0, 10, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.fillStyle = "#e2e8f0";
+              ctx.beginPath();
+              ctx.arc(-8, 6, 5, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.beginPath();
+              ctx.arc(8, 6, 5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+
+          ctx.restore();
+        }
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(forceKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === forceKey);
+        });
+      }
+
+      function updateControlReadouts() {
+        el.temperatureValue.textContent = `${Math.round(state.temperature)}%`;
+        el.rangeValue.textContent = `${Math.round(state.range)} px`;
+        el.densityValue.textContent = `${Math.round(state.density)}%`;
+      }
+
+      function updateForceDetails() {
+        const info = FORCE_INFO[state.force];
+        el.forceFamily.textContent = info.title;
+        el.strength.textContent = String(info.strength);
+        el.forceDetails.innerHTML = `
+          <p class="force-label">${info.title}</p>
+          <p class="force-copy">${info.description}</p>
+          <p class="force-example">${info.example}</p>
+        `;
+        renderLegend();
+      }
+
+      function renderLegend() {
+        if (state.force === "london") {
+          el.legend.innerHTML = `
+            <div class="legend-item"><span class="legend-dot legend-dot-molecule"></span> Nonpolar particle</div>
+            <div class="legend-item"><span class="legend-dot legend-dot-london-positive"></span> Temporary dipole region</div>
+            <div class="legend-item"><span class="legend-line"></span> Dispersion attraction</div>
+          `;
+          return;
+        }
+
+        if (state.force === "dipole") {
+          el.legend.innerHTML = `
+            <div class="legend-item"><span class="legend-dot legend-dot-negative"></span> Partial negative end</div>
+            <div class="legend-item"><span class="legend-dot legend-dot-positive"></span> Partial positive end</div>
+            <div class="legend-item"><span class="legend-line"></span> Dipole alignment link</div>
+          `;
+          return;
+        }
+
+        if (state.force === "hydrogen") {
+          el.legend.innerHTML = `
+            <div class="legend-item"><span class="legend-dot legend-dot-negative"></span> Oxygen side</div>
+            <div class="legend-item"><span class="legend-dot legend-dot-hydrogen"></span> Hydrogen side</div>
+            <div class="legend-item"><span class="legend-line"></span> Hydrogen bond</div>
+          `;
+          return;
+        }
+
+        el.legend.innerHTML = `
+          <div class="legend-item"><span class="legend-dot legend-dot-positive"></span> Positive ion</div>
+          <div class="legend-item"><span class="legend-dot legend-dot-negative"></span> Negative ion</div>
+          <div class="legend-item"><span class="legend-dot legend-dot-water"></span> Water molecule</div>
+          <div class="legend-item"><span class="legend-line"></span> Ion-dipole attraction</div>
+        `;
+      }
+
+      function getTargetParticleCount() {
+        const baseByForce = {
+          london: 14,
+          dipole: 12,
+          hydrogen: 10,
+          ion: 16
+        };
+        const densityBoost = Math.round((state.density - 35) / 5);
+        return clamp(baseByForce[state.force] + densityBoost, 8, 24);
+      }
+
+      function resetParticleField() {
+        state.particles = [];
+        const count = getTargetParticleCount();
+
+        if (state.force === "ion") {
+          const ionPairs = Math.max(3, Math.floor(count / 4));
+          for (let i = 0; i < ionPairs; i += 1) {
+            state.particles.push(new Particle(randomX(), randomY(), "ion", "positive"));
+            state.particles.push(new Particle(randomX(), randomY(), "ion", "negative"));
+          }
+          while (state.particles.length < count) {
+            state.particles.push(new Particle(randomX(), randomY(), "water"));
+          }
+          return;
+        }
+
+        const type = state.force === "london" ? "nonpolar" : state.force === "dipole" ? "polar" : "water";
+        for (let i = 0; i < count; i += 1) {
+          state.particles.push(new Particle(randomX(), randomY(), type));
+        }
+      }
+
+      function randomX() {
+        return (Math.random() * (state.renderWidth - 80)) + 40;
+      }
+
+      function randomY() {
+        return (Math.random() * (state.renderHeight - 80)) + 40;
+      }
+
+      function drawAttractionLines() {
+        let links = 0;
+        const info = FORCE_INFO[state.force];
+
+        ctx.strokeStyle = info.lineColor;
+        ctx.lineWidth = state.force === "hydrogen" || state.force === "ion" ? 2.6 : 2;
+        ctx.setLineDash(state.force === "ion" ? [3, 3] : [7, 4]);
+
+        for (let i = 0; i < state.particles.length; i += 1) {
+          const a = state.particles[i];
+          for (let j = i + 1; j < state.particles.length; j += 1) {
+            const b = state.particles[j];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.sqrt((dx * dx) + (dy * dy));
+            if (dist <= a.radius + b.radius || dist > state.range) continue;
+
+            if (state.force === "dipole") {
+              const align = Math.cos(Math.abs(a.dipoleAngle - b.dipoleAngle));
+              if (align < 0.2) continue;
+              ctx.globalAlpha = clamp(((state.range - dist) / state.range) * align, 0.15, 0.7);
+            } else {
+              ctx.globalAlpha = clamp((state.range - dist) / state.range, 0.18, 0.72);
+            }
+
+            if (state.force === "ion" && a.charge && b.charge && a.charge === b.charge) continue;
+
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+            links += 1;
+          }
+        }
+
+        ctx.globalAlpha = 1;
+        ctx.setLineDash([]);
+        return links;
+      }
+
+      function computeMetrics() {
+        let speedTotal = 0;
+        let closePairs = 0;
+        const threshold = state.range * 0.56;
+
+        for (let i = 0; i < state.particles.length; i += 1) {
+          const a = state.particles[i];
+          speedTotal += Math.hypot(a.vx, a.vy);
+
+          for (let j = i + 1; j < state.particles.length; j += 1) {
+            const b = state.particles[j];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            if (Math.hypot(dx, dy) < threshold) {
+              closePairs += 1;
+            }
+          }
+        }
+
+        const n = state.particles.length;
+        const maxPairs = (n * (n - 1)) / 2;
+
+        state.averageSpeed = n ? speedTotal / n : 0;
+        state.cohesion = maxPairs ? (closePairs / maxPairs) * 100 : 0;
+      }
+
+      function classifyStatus() {
+        const strength = FORCE_INFO[state.force].strength;
+        const activity = state.activeLinks;
+
+        if (strength >= 75 && activity > 25) {
+          return {
+            badge: "Strong networked attraction",
+            note: "High-force interactions are creating sustained clusters and slower diffusion."
+          };
+        }
+
+        if (strength >= 45 && activity > 14) {
+          return {
+            badge: "Moderate directional attraction",
+            note: "Particles align often and remain linked over short to medium ranges."
+          };
+        }
+
+        return {
+          badge: "Weak temporary attractions",
+          note: "Most interactions are brief and particles remain comparatively mobile."
+        };
+      }
+
+      function updateResults() {
+        const status = classifyStatus();
+        el.bondCount.textContent = String(state.activeLinks);
+        el.speed.textContent = state.averageSpeed.toFixed(2);
+        el.status.textContent = status.badge;
+        el.statusNote.textContent = `${status.note} Cohesion index: ${state.cohesion.toFixed(0)}%.`;
+      }
+
+      function applyPreset(forceKey) {
+        const preset = PRESETS[forceKey];
+        state.force = preset.force;
+        state.temperature = preset.temperature;
+        state.range = preset.range;
+        state.density = preset.density;
+
+        el.temperature.value = String(state.temperature);
+        el.range.value = String(state.range);
+        el.density.value = String(state.density);
+
+        setActivePreset(forceKey);
+        updateControlReadouts();
+        updateForceDetails();
+        resetParticleField();
+        computeMetrics();
+        updateResults();
+      }
+
+      function resizeCanvas() {
+        const parentWidth = Math.max(320, el.canvas.parentElement.clientWidth);
+        const ratio = CONSTANTS.canvasHeight / CONSTANTS.canvasWidth;
+        const cssWidth = Math.min(parentWidth, CONSTANTS.canvasWidth);
+        const cssHeight = Math.round(cssWidth * ratio);
+
+        state.pixelRatio = Math.min(window.devicePixelRatio || 1, CONSTANTS.dprCap);
+        state.renderWidth = cssWidth;
+        state.renderHeight = cssHeight;
+
+        el.canvas.style.width = `${cssWidth}px`;
+        el.canvas.style.height = `${cssHeight}px`;
+        el.canvas.width = Math.round(cssWidth * state.pixelRatio);
+        el.canvas.height = Math.round(cssHeight * state.pixelRatio);
+
+        ctx.setTransform(state.pixelRatio, 0, 0, state.pixelRatio, 0, 0);
+      }
+
+      function renderFrame() {
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(0, 0, state.renderWidth, state.renderHeight);
+
+        state.activeLinks = drawAttractionLines();
+
+        for (const particle of state.particles) {
+          particle.update();
+          particle.draw();
+        }
+
+        computeMetrics();
+        updateResults();
+      }
+
+      function animate() {
+        renderFrame();
+        state.animationId = window.requestAnimationFrame(animate);
+      }
+
+      function bindEvents() {
+        el.temperature.addEventListener("input", () => {
+          state.temperature = clamp(el.temperature.value, 10, 100);
+          updateControlReadouts();
+        });
+
+        el.range.addEventListener("input", () => {
+          state.range = clamp(el.range.value, 40, 150);
+          updateControlReadouts();
+        });
+
+        el.density.addEventListener("input", () => {
+          state.density = clamp(el.density.value, 35, 100);
+          updateControlReadouts();
+          resetParticleField();
+        });
+
+        el.presetButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            applyPreset(button.dataset.preset);
+          });
+        });
+
+        el.resetBtn.addEventListener("click", () => {
+          resetParticleField();
+        });
+
+        el.pauseBtn.addEventListener("click", () => {
+          state.paused = !state.paused;
+          el.pauseBtn.textContent = state.paused ? "Resume" : "Pause";
+          el.pauseBtn.setAttribute("aria-pressed", state.paused ? "true" : "false");
+        });
+
+        window.addEventListener("resize", () => {
+          resizeCanvas();
+          resetParticleField();
+        });
+      }
+
+      function init() {
+        bindEvents();
+        resizeCanvas();
+        applyPreset("london");
+
+        if (state.animationId) {
+          window.cancelAnimationFrame(state.animationId);
+        }
+        animate();
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

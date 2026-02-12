@@ -7,66 +7,285 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Impulse Analyzer | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/impulse-analyzer.css">
 </head>
-<body data-site-root="../.." data-page="unit-6">
+<body data-site-root="../.." data-page="unit-6" data-sim-page="impulse-analyzer">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
-    <h1>Impulse Analyzer</h1>
-    <p class="subtitle">Connect applied force and contact time to momentum and speed change.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 6</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Mass (kg): <span class="value" id="mv">4.0</span></label><input id="mass" type="range" min="0.5" max="50" step="0.1" value="4">
-        <label>Initial Velocity (m/s): <span class="value" id="uiv">12.0</span></label><input id="ui" type="range" min="-30" max="30" step="0.5" value="12">
-        <label>Average Force (N): <span class="value" id="fv">-120</span></label><input id="force" type="range" min="-1000" max="1000" step="10" value="-120">
-        <label>Contact Time (s): <span class="value" id="tv">0.50</span></label><input id="time" type="range" min="0.01" max="3" step="0.01" value="0.5">
+        <h1>Impulse Analyzer</h1>
+        <p class="subtitle">Connect applied force and contact time to momentum and speed change.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Choose a preset impact case or adjust mass, initial speed, force, and contact time.</li>
+            <li>Track impulse and momentum change together to verify that J equals delta p.</li>
+            <li>Compare final velocity sign to determine whether the object stops or reverses direction.</li>
+            <li>Use the model meters to see how force magnitude and contact duration shape outcome.</li>
+            <li>Reset and test how extending contact time lowers peak force for the same momentum change.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+          <button class="preset-btn" type="button" data-preset="stop">Stopping Impact</button>
+          <button class="preset-btn" type="button" data-preset="reverse">Reverse Motion</button>
+          <button class="preset-btn" type="button" data-preset="launch">Impulse Launch</button>
+          <button class="preset-btn" type="button" data-preset="soft">Soft Catch</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mass">Mass (kg)</label>
+                <span class="slider-value" id="massv">4.0</span>
+              </div>
+              <input id="mass" type="range" min="0.5" max="50" step="0.1" value="4">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="ui">Initial Velocity (m/s)</label>
+                <span class="slider-value" id="uiv">12.0</span>
+              </div>
+              <input id="ui" type="range" min="-30" max="30" step="0.5" value="12">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="force">Average Force (N)</label>
+                <span class="slider-value" id="forcev">-120</span>
+              </div>
+              <input id="force" type="range" min="-1000" max="1000" step="10" value="-120">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="time">Contact Time (s)</label>
+                <span class="slider-value" id="timev">0.50</span>
+              </div>
+              <input id="time" type="range" min="0.01" max="3" step="0.01" value="0.5">
+            </div>
+
+            <div class="control-actions">
+              <button id="resetBtn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results and model">
+            <h2 class="panel-title">Impulse Results</h2>
+
+            <div class="model-panel impulse-model" aria-label="Impulse model">
+              <div class="vector-row">
+                <span class="vector-label">Force Direction</span>
+                <div id="force-vector" class="vector-arrow">F</div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Force magnitude</span>
+                  <span id="force-meter-label">0%</span>
+                </div>
+                <div class="meter"><div id="force-meter-fill" class="meter-fill"></div></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Contact duration</span>
+                  <span id="time-meter-label">0%</span>
+                </div>
+                <div class="meter"><div id="time-meter-fill" class="meter-fill alt"></div></div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Impulse (J = Fdt)</p>
+                <p class="result-value"><span id="j">0</span> N*s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Change in Momentum</p>
+                <p class="result-value"><span id="dp">0</span> kg*m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Final Velocity</p>
+                <p class="result-value"><span id="vf">0</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Delta Velocity</p>
+                <p class="result-value"><span id="dv">0</span> m/s</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Still moving forward</p>
+              <p class="status-note" id="note">Impulse changed momentum but object keeps its original direction.</p>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Impulse J = F*dt: <span class="value" id="j">0</span> N*s</p>
-        <p>Change in Momentum: <span class="value" id="dp">0</span> kg*m/s</p>
-        <p>Final Velocity: <span class="value" id="vf">0</span> m/s</p>
-        <p>Outcome: <span class="value" id="state">-</span></p>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    function update() {
-      const m = Number(mass.value);
-      const u = Number(ui.value);
-      const F = Number(force.value);
-      const dt = Number(time.value);
-      mv.textContent = m.toFixed(1);
-      uiv.textContent = u.toFixed(1);
-      fv.textContent = F.toFixed(0);
-      tv.textContent = dt.toFixed(2);
+    (() => {
+      const CONSTANTS = {
+        maxForce: 1000,
+        maxTime: 3
+      };
 
-      const impulse = F * dt;
-      const deltaV = impulse / m;
-      const finalV = u + deltaV;
+      const presets = {
+        baseline: { mass: 4, ui: 12, force: -120, time: 0.5 },
+        stop: { mass: 2, ui: 18, force: -300, time: 0.12 },
+        reverse: { mass: 3.5, ui: 7, force: -420, time: 0.2 },
+        launch: { mass: 1.5, ui: 0, force: 260, time: 0.35 },
+        soft: { mass: 4, ui: 16, force: -90, time: 0.9 }
+      };
 
-      j.textContent = impulse.toFixed(2);
-      dp.textContent = impulse.toFixed(2);
-      vf.textContent = finalV.toFixed(2);
-      state.textContent = Math.abs(finalV) < 0.5 ? "Nearly stopped" : Math.sign(finalV) === Math.sign(u) ? "Same direction" : "Direction reversed";
-    }
-    [mass, ui, force, time].forEach(el => el.addEventListener("input", update));
-    update();
+      const defaults = presets.baseline;
+
+      const el = {
+        mass: document.getElementById("mass"),
+        ui: document.getElementById("ui"),
+        force: document.getElementById("force"),
+        time: document.getElementById("time"),
+        massv: document.getElementById("massv"),
+        uiv: document.getElementById("uiv"),
+        forcev: document.getElementById("forcev"),
+        timev: document.getElementById("timev"),
+        j: document.getElementById("j"),
+        dp: document.getElementById("dp"),
+        vf: document.getElementById("vf"),
+        dv: document.getElementById("dv"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        forceVector: document.getElementById("force-vector"),
+        forceMeterFill: document.getElementById("force-meter-fill"),
+        timeMeterFill: document.getElementById("time-meter-fill"),
+        forceMeterLabel: document.getElementById("force-meter-label"),
+        timeMeterLabel: document.getElementById("time-meter-label"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(presetKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === presetKey);
+        });
+      }
+
+      function classify(initialVelocity, finalVelocity) {
+        if (Math.abs(finalVelocity) < 0.5) {
+          return {
+            status: "Nearly stopped",
+            note: "Impulse nearly cancels the original momentum."
+          };
+        }
+
+        if (Math.sign(finalVelocity) === Math.sign(initialVelocity) || Math.abs(initialVelocity) < 0.001) {
+          return {
+            status: "Still moving forward",
+            note: "Impulse changed momentum but object keeps its original direction."
+          };
+        }
+
+        return {
+          status: "Direction reversed",
+          note: "Impulse magnitude is large enough to reverse momentum direction."
+        };
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.mass.value = preset.mass;
+        el.ui.value = preset.ui;
+        el.force.value = preset.force;
+        el.time.value = preset.time;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function update() {
+        const mass = clamp(el.mass.value, 0.5, 50);
+        const initialVelocity = clamp(el.ui.value, -30, 30);
+        const force = clamp(el.force.value, -1000, 1000);
+        const time = clamp(el.time.value, 0.01, 3);
+
+        const impulse = force * time;
+        const deltaVelocity = impulse / mass;
+        const finalVelocity = initialVelocity + deltaVelocity;
+
+        const interpretation = classify(initialVelocity, finalVelocity);
+
+        el.massv.textContent = mass.toFixed(1);
+        el.uiv.textContent = initialVelocity.toFixed(1);
+        el.forcev.textContent = force.toFixed(0);
+        el.timev.textContent = time.toFixed(2);
+
+        el.j.textContent = impulse.toFixed(2);
+        el.dp.textContent = impulse.toFixed(2);
+        el.vf.textContent = finalVelocity.toFixed(2);
+        el.dv.textContent = deltaVelocity.toFixed(2);
+
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        const forcePct = clamp((Math.abs(force) / CONSTANTS.maxForce) * 100, 0, 100);
+        const timePct = clamp((time / CONSTANTS.maxTime) * 100, 0, 100);
+
+        el.forceMeterFill.style.width = `${forcePct.toFixed(1)}%`;
+        el.timeMeterFill.style.width = `${timePct.toFixed(1)}%`;
+        el.forceMeterLabel.textContent = `${forcePct.toFixed(0)}%`;
+        el.timeMeterLabel.textContent = `${timePct.toFixed(0)}%`;
+
+        el.forceVector.classList.toggle("reverse", force < 0);
+        el.forceVector.classList.toggle("forward", force >= 0);
+      }
+
+      [el.mass, el.ui, el.force, el.time].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.mass.value = defaults.mass;
+        el.ui.value = defaults.ui;
+        el.force.value = defaults.force;
+        el.time.value = defaults.time;
+        setActivePreset("baseline");
+        update();
+      });
+
+      applyPreset("baseline");
+    })();
   </script>
 </body>
 </html>

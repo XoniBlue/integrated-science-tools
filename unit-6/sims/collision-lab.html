@@ -7,71 +7,455 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Collision Lab | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/collision-lab.css">
 </head>
-<body data-site-root="../.." data-page="unit-6">
+<body data-site-root="../.." data-page="unit-6" data-sim-page="collision-lab">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
-    <h1>Collision Lab</h1>
-    <p class="subtitle">Simulate a 1D collision with adjustable masses, velocities, and elasticity.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 6</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Mass 1 (kg): <span class="value" id="m1v">2.0</span></label><input id="m1" type="range" min="0.5" max="20" step="0.1" value="2">
-        <label>Velocity 1 (m/s): <span class="value" id="u1v">6.0</span></label><input id="u1" type="range" min="-20" max="20" step="0.5" value="6">
-        <label>Mass 2 (kg): <span class="value" id="m2v">3.0</span></label><input id="m2" type="range" min="0.5" max="20" step="0.1" value="3">
-        <label>Velocity 2 (m/s): <span class="value" id="u2v">-2.0</span></label><input id="u2" type="range" min="-20" max="20" step="0.5" value="-2">
-        <label>Elasticity e (0-1): <span class="value" id="ev">0.80</span></label><input id="e" type="range" min="0" max="1" step="0.01" value="0.8">
+        <h1>Collision Lab</h1>
+        <p class="subtitle">Explore how mass, velocity, and elasticity change post-collision motion.</p>
+
+        <div class="sim-toolbar">
+          <div class="preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+            <button class="preset-btn" type="button" data-preset="elastic">Elastic Hit</button>
+            <button class="preset-btn" type="button" data-preset="inelastic">Inelastic Crash</button>
+            <button class="preset-btn" type="button" data-preset="rebound">Strong Rebound</button>
+            <button class="preset-btn" type="button" data-preset="heavywall">Heavy Target</button>
+          </div>
+          <div class="toolbar-end">
+            <button id="resetBtn" class="btn-reset" type="button">Reset</button>
+            <div class="sim-help">
+              <button
+                id="help-toggle"
+                class="help-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="sim-instructions"
+                title="How to use this simulator"
+              >
+                i
+              </button>
+              <section id="sim-instructions" class="instructions" aria-label="Instructions" hidden>
+                <h2>How To Use</h2>
+                <ol>
+                  <li>Select a preset collision scenario at the top.</li>
+                  <li>Adjust masses, initial velocities, and elasticity coefficient.</li>
+                  <li>Read final velocities and compare initial vs final momentum.</li>
+                  <li>Use the model panel to compare pre/post-cart motion vectors.</li>
+                  <li>Reset and test highly elastic vs highly inelastic collisions.</li>
+                </ol>
+                <button id="help-close" class="help-close" type="button" aria-label="Close instructions">Close</button>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <section class="panel input-panel" aria-label="Inputs">
+            <h2 class="panel-title">Inputs</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="m1">Mass 1 (kg)</label>
+                <span class="slider-value" id="m1v">2.0</span>
+              </div>
+              <input id="m1" type="range" min="0.5" max="20" step="0.1" value="2">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="u1">Velocity 1 (m/s)</label>
+                <span class="slider-value" id="u1v">6.0</span>
+              </div>
+              <input id="u1" type="range" min="-20" max="20" step="0.5" value="6">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="m2">Mass 2 (kg)</label>
+                <span class="slider-value" id="m2v">3.0</span>
+              </div>
+              <input id="m2" type="range" min="0.5" max="20" step="0.1" value="3">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="u2">Velocity 2 (m/s)</label>
+                <span class="slider-value" id="u2v">-2.0</span>
+              </div>
+              <input id="u2" type="range" min="-20" max="20" step="0.5" value="-2">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="e">Elasticity e</label>
+                <span class="slider-value" id="ev">0.80</span>
+              </div>
+              <input id="e" type="range" min="0" max="1" step="0.01" value="0.8">
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-label="Collision outputs">
+            <h2 class="panel-title">Collision Model</h2>
+
+            <div class="model-panel">
+              <canvas id="collision-canvas" class="collision-canvas" role="img" aria-label="Two carts before and after collision"></canvas>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Momentum agreement</span>
+                  <span id="momentum-error">0.00%</span>
+                </div>
+                <div class="meter"><div id="momentum-fill" class="meter-fill"></div></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Kinetic energy retained</span>
+                  <span id="energy-ratio">0.00%</span>
+                </div>
+                <div class="meter"><div id="energy-fill" class="meter-fill alt"></div></div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Final Velocity 1</p>
+                <p class="result-value"><span id="v1">0.00</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Final Velocity 2</p>
+                <p class="result-value"><span id="v2">0.00</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Initial Momentum</p>
+                <p class="result-value"><span id="pi">0.00</span> kg*m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Final Momentum</p>
+                <p class="result-value"><span id="pf">0.00</span> kg*m/s</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Partially elastic collision</p>
+              <p class="status-note" id="note">Momentum is conserved; some kinetic energy remains while some may convert to sound/heat.</p>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Final Velocity 1: <span class="value" id="v1">0</span> m/s</p>
-        <p>Final Velocity 2: <span class="value" id="v2">0</span> m/s</p>
-        <p>Initial Momentum: <span class="value" id="pi">0</span> kg*m/s</p>
-        <p>Final Momentum: <span class="value" id="pf">0</span> kg*m/s</p>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    function update() {
-      const mass1 = Number(m1.value);
-      const mass2 = Number(m2.value);
-      const vel1 = Number(u1.value);
-      const vel2 = Number(u2.value);
-      const elasticity = Number(e.value);
+    (() => {
+      const defaults = { m1: 2, u1: 6, m2: 3, u2: -2, e: 0.8 };
 
-      m1v.textContent = mass1.toFixed(1);
-      m2v.textContent = mass2.toFixed(1);
-      u1v.textContent = vel1.toFixed(1);
-      u2v.textContent = vel2.toFixed(1);
-      ev.textContent = elasticity.toFixed(2);
+      const presets = {
+        baseline: { m1: 2, u1: 6, m2: 3, u2: -2, e: 0.8 },
+        elastic: { m1: 1.8, u1: 9, m2: 1.8, u2: -4, e: 1 },
+        inelastic: { m1: 3.5, u1: 8, m2: 4.2, u2: 0, e: 0.2 },
+        rebound: { m1: 5.5, u1: 12, m2: 2.2, u2: -6, e: 0.9 },
+        heavywall: { m1: 1.2, u1: 14, m2: 14, u2: 0, e: 0.35 }
+      };
 
-      const v1f = (mass1 * vel1 + mass2 * vel2 - mass2 * elasticity * (vel1 - vel2)) / (mass1 + mass2);
-      const v2f = (mass1 * vel1 + mass2 * vel2 + mass1 * elasticity * (vel1 - vel2)) / (mass1 + mass2);
-      const pInitial = mass1 * vel1 + mass2 * vel2;
-      const pFinal = mass1 * v1f + mass2 * v2f;
+      const el = {
+        m1: document.getElementById("m1"),
+        u1: document.getElementById("u1"),
+        m2: document.getElementById("m2"),
+        u2: document.getElementById("u2"),
+        e: document.getElementById("e"),
+        m1v: document.getElementById("m1v"),
+        m2v: document.getElementById("m2v"),
+        u1v: document.getElementById("u1v"),
+        u2v: document.getElementById("u2v"),
+        ev: document.getElementById("ev"),
+        v1: document.getElementById("v1"),
+        v2: document.getElementById("v2"),
+        pi: document.getElementById("pi"),
+        pf: document.getElementById("pf"),
+        momentumError: document.getElementById("momentum-error"),
+        energyRatio: document.getElementById("energy-ratio"),
+        momentumFill: document.getElementById("momentum-fill"),
+        energyFill: document.getElementById("energy-fill"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        collisionCanvas: document.getElementById("collision-canvas"),
+        helpToggle: document.getElementById("help-toggle"),
+        helpClose: document.getElementById("help-close"),
+        instructionsPanel: document.getElementById("sim-instructions"),
+        simHelpWrap: document.querySelector(".sim-help"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
 
-      v1.textContent = v1f.toFixed(2);
-      v2.textContent = v2f.toFixed(2);
-      pi.textContent = pInitial.toFixed(2);
-      pf.textContent = pFinal.toFixed(2);
-    }
-    [m1, u1, m2, u2, e].forEach(el => el.addEventListener("input", update));
-    update();
+      const canvasState = {
+        dpr: window.devicePixelRatio || 1,
+        width: 0,
+        height: 0
+      };
+
+      let currentModel = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(activeKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === activeKey);
+        });
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.m1.value = preset.m1;
+        el.u1.value = preset.u1;
+        el.m2.value = preset.m2;
+        el.u2.value = preset.u2;
+        el.e.value = preset.e;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function resizeCanvas() {
+        const rect = el.collisionCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvasState.dpr = dpr;
+        canvasState.width = rect.width;
+        canvasState.height = rect.height;
+        el.collisionCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+        el.collisionCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+        if (currentModel) {
+          drawModel(currentModel);
+        }
+      }
+
+      function drawArrow(ctx, x, y, velocity, color) {
+        const maxArrow = 62;
+        const length = clamp((Math.abs(velocity) / 20) * maxArrow, 8, maxArrow);
+        const direction = velocity >= 0 ? 1 : -1;
+        const x2 = x + direction * length;
+
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(x2, y);
+        ctx.lineTo(x2 - direction * 8, y - 4);
+        ctx.lineTo(x2 - direction * 8, y + 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function drawCart(ctx, x, y, mass, color) {
+        const width = 24 + mass * 2.1;
+        const height = 16;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = "rgba(0,0,0,0.35)";
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(x - width / 2, y - height / 2, width, height);
+        ctx.strokeRect(x - width / 2, y - height / 2, width, height);
+        return { width };
+      }
+
+      function drawModel(model) {
+        const ctx = el.collisionCanvas.getContext("2d");
+        const width = canvasState.width;
+        const height = canvasState.height;
+        if (!ctx || width <= 0 || height <= 0) return;
+
+        ctx.setTransform(canvasState.dpr, 0, 0, canvasState.dpr, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+
+        const midX = width * 0.5;
+        const yBefore = height * 0.35;
+        const yAfter = height * 0.72;
+
+        ctx.strokeStyle = "rgba(255,255,255,0.2)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(20, yBefore + 15);
+        ctx.lineTo(width - 20, yBefore + 15);
+        ctx.moveTo(20, yAfter + 15);
+        ctx.lineTo(width - 20, yAfter + 15);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(255,255,255,0.78)";
+        ctx.font = "12px Segoe UI";
+        ctx.fillText("Before", 16, yBefore - 16);
+        ctx.fillText("After", 16, yAfter - 16);
+
+        const preX1 = midX - 75;
+        const preX2 = midX + 75;
+        const postGap = 80;
+        const postX1 = midX - postGap;
+        const postX2 = midX + postGap;
+
+        drawCart(ctx, preX1, yBefore, model.m1, "#6dcfff");
+        drawCart(ctx, preX2, yBefore, model.m2, "#ff8cc5");
+        drawArrow(ctx, preX1, yBefore - 12, model.u1, "#6dcfff");
+        drawArrow(ctx, preX2, yBefore - 12, model.u2, "#ff8cc5");
+
+        drawCart(ctx, postX1, yAfter, model.m1, "#6dcfff");
+        drawCart(ctx, postX2, yAfter, model.m2, "#ff8cc5");
+        drawArrow(ctx, postX1, yAfter - 12, model.v1f, "#6dcfff");
+        drawArrow(ctx, postX2, yAfter - 12, model.v2f, "#ff8cc5");
+      }
+
+      function update() {
+        const m1 = clamp(el.m1.value, 0.5, 20);
+        const m2 = clamp(el.m2.value, 0.5, 20);
+        const u1 = clamp(el.u1.value, -20, 20);
+        const u2 = clamp(el.u2.value, -20, 20);
+        const e = clamp(el.e.value, 0, 1);
+
+        const v1f = (m1 * u1 + m2 * u2 - m2 * e * (u1 - u2)) / (m1 + m2);
+        const v2f = (m1 * u1 + m2 * u2 + m1 * e * (u1 - u2)) / (m1 + m2);
+
+        const pInitial = m1 * u1 + m2 * u2;
+        const pFinal = m1 * v1f + m2 * v2f;
+        const pError = Math.abs(pInitial - pFinal);
+        const pNorm = Math.max(1, Math.abs(pInitial));
+        const pErrorPct = (pError / pNorm) * 100;
+
+        const keInitial = 0.5 * m1 * u1 * u1 + 0.5 * m2 * u2 * u2;
+        const keFinal = 0.5 * m1 * v1f * v1f + 0.5 * m2 * v2f * v2f;
+        const energyRatio = keInitial > 0 ? (keFinal / keInitial) : 0;
+
+        el.m1v.textContent = m1.toFixed(1);
+        el.m2v.textContent = m2.toFixed(1);
+        el.u1v.textContent = u1.toFixed(1);
+        el.u2v.textContent = u2.toFixed(1);
+        el.ev.textContent = e.toFixed(2);
+
+        el.v1.textContent = v1f.toFixed(2);
+        el.v2.textContent = v2f.toFixed(2);
+        el.pi.textContent = pInitial.toFixed(2);
+        el.pf.textContent = pFinal.toFixed(2);
+
+        el.momentumError.textContent = `${pErrorPct.toFixed(2)}%`;
+        el.energyRatio.textContent = `${(energyRatio * 100).toFixed(1)}%`;
+
+        el.momentumFill.style.width = `${clamp(100 - pErrorPct * 15, 0, 100).toFixed(1)}%`;
+        el.energyFill.style.width = `${clamp(energyRatio * 100, 0, 100).toFixed(1)}%`;
+
+        if (e >= 0.95) {
+          el.status.textContent = "Nearly elastic collision";
+          el.note.textContent = "Most kinetic energy is retained and rebound effects are strong.";
+        } else if (e <= 0.25) {
+          el.status.textContent = "Highly inelastic collision";
+          el.note.textContent = "A large share of kinetic energy is transformed into deformation, heat, or sound.";
+        } else {
+          el.status.textContent = "Partially elastic collision";
+          el.note.textContent = "Momentum is conserved while some kinetic energy is transferred out of translational motion.";
+        }
+
+        currentModel = { m1, m2, u1, u2, v1f, v2f };
+        drawModel(currentModel);
+      }
+
+      [el.m1, el.u1, el.m2, el.u2, el.e].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.m1.value = defaults.m1;
+        el.u1.value = defaults.u1;
+        el.m2.value = defaults.m2;
+        el.u2.value = defaults.u2;
+        el.e.value = defaults.e;
+        setActivePreset("baseline");
+        update();
+      });
+
+      if (el.helpToggle && el.instructionsPanel && el.simHelpWrap) {
+        let helpCloseTimer = null;
+        const setHelpOpen = (isOpen) => {
+          el.helpToggle.setAttribute("aria-expanded", String(isOpen));
+          el.instructionsPanel.hidden = !isOpen;
+        };
+        const cancelHelpClose = () => {
+          if (helpCloseTimer !== null) {
+            window.clearTimeout(helpCloseTimer);
+            helpCloseTimer = null;
+          }
+        };
+        const scheduleHelpClose = () => {
+          cancelHelpClose();
+          helpCloseTimer = window.setTimeout(() => {
+            setHelpOpen(false);
+          }, 140);
+        };
+
+        el.helpToggle.addEventListener("click", () => {
+          const isOpen = el.helpToggle.getAttribute("aria-expanded") === "true";
+          setHelpOpen(!isOpen);
+        });
+        el.helpToggle.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.helpToggle.addEventListener("focus", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseleave", scheduleHelpClose);
+        document.addEventListener("click", (event) => {
+          if (el.instructionsPanel.hidden || el.simHelpWrap.contains(event.target)) {
+            return;
+          }
+          setHelpOpen(false);
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            setHelpOpen(false);
+          }
+        });
+        if (el.helpClose) {
+          el.helpClose.addEventListener("click", () => {
+            setHelpOpen(false);
+          });
+        }
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+
+      resizeCanvas();
+      applyPreset("baseline");
+    })();
   </script>
 </body>
 </html>

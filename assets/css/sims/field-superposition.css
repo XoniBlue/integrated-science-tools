@@ -1,23 +1,38 @@
+/* Payload visuals for Field Superposition Explorer */
 
-    .sim-wrap * { box-sizing: border-box; }
-    .sim-wrap { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color: var(--sim-text); }
-    .container { max-width: 1100px; margin: 0 auto; background: var(--sim-surface); border: 1px solid var(--sim-panel-border); border-radius: 20px; padding: 30px; }
-    .top-actions { display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
-    .top-actions a { padding: 0.5rem 0.8rem; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--sim-accent) 45%, transparent); color: var(--sim-title); background: color-mix(in srgb, var(--sim-accent) 12%, transparent); }
-    h1 { text-align: center; margin: 0; color: var(--sim-title); }
-    .subtitle { text-align: center; color: var(--sim-muted); margin: 0.4rem 0 1.5rem; }
-    .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .panel { background: var(--sim-surface); border: 2px solid var(--sim-panel-border); border-radius: 14px; padding: 1rem; }
-    label { display: block; margin-bottom: 0.35rem; color: var(--sim-muted); }
-    input { width: 100%; margin-bottom: 0.85rem; }
-    .result { background: var(--sim-surface-alt); border: 1px solid var(--sim-panel-border); border-radius: 10px; padding: 0.9rem; }
-    .value { color: var(--sim-accent-2); font-weight: 700; }
-    .meter { height: 16px; border-radius: 999px; background: var(--sim-surface-alt); border: 1px solid var(--sim-panel-border); overflow: hidden; }
-    .fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--sim-accent), var(--sim-accent-2)); transition: width 220ms ease; }
-    .instructions { background: var(--sim-surface); border-radius: 15px; padding: 20px; margin-bottom: 25px; border: 2px solid var(--sim-panel-border); }
-    .instructions h3 { color: var(--sim-title); margin-bottom: 12px; font-size: 18px; text-align: center; }
-    .instructions div { color: var(--sim-muted); line-height: 1.8; font-size: 14px; }
-    .instructions strong { color: var(--sim-accent-2); }
-    :root { --sim-text: var(--text); --sim-muted: var(--muted); --sim-title: var(--text); --sim-surface: var(--surface); --sim-surface-alt: var(--surface-2); --sim-panel-border: var(--border); --sim-accent: var(--accent); --sim-accent-2: var(--accent2); }
-    @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } .container { padding: 18px; } }
-  
+.sim-wrap .superposition-model {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.sim-wrap .target-line {
+  display: grid;
+  grid-template-columns: minmax(70px, auto) 1fr minmax(70px, auto);
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 65%, transparent);
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 72%, transparent);
+}
+
+.sim-wrap .source-chip,
+.sim-wrap .target-chip {
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.35rem 0.55rem;
+}
+
+.sim-wrap .source-chip {
+  border: 1px solid color-mix(in srgb, var(--sim-accent-2) 55%, transparent);
+  background: color-mix(in srgb, var(--sim-accent-2) 22%, transparent);
+  color: var(--sim-text);
+}
+
+.sim-wrap .target-chip {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 65%, transparent);
+  background: color-mix(in srgb, var(--sim-surface) 76%, transparent);
+  color: var(--sim-muted);
+}

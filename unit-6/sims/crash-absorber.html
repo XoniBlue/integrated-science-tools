@@ -7,65 +7,279 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Crash Absorber Designer | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/crash-absorber.css">
 </head>
-<body data-site-root="../.." data-page="unit-6">
+<body data-site-root="../.." data-page="unit-6" data-sim-page="crash-absorber">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 6</a><a href="../../index.html">Home</a></div>
-    <h1>Crash Absorber Designer</h1>
-    <p class="subtitle">Tune stopping distance to lower impact force while maintaining design limits.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 6</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Vehicle Mass (kg): <span class="value" id="mv">1200</span></label><input id="mass" type="range" min="200" max="5000" step="10" value="1200">
-        <label>Impact Speed (m/s): <span class="value" id="vv">15.0</span></label><input id="speed" type="range" min="1" max="45" step="0.5" value="15">
-        <label>Stopping Distance (m): <span class="value" id="dv">0.60</span></label><input id="dist" type="range" min="0.05" max="2.5" step="0.01" value="0.6">
+        <h1>Crash Absorber Designer</h1>
+        <p class="subtitle">Tune stopping distance to lower impact force while maintaining design limits.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Pick a preset crash scenario or set mass, speed, and stopping distance manually.</li>
+            <li>Use one-variable changes to isolate how design decisions alter deceleration and force.</li>
+            <li>Read energy, deceleration, and average force cards together with the status interpretation.</li>
+            <li>Watch the absorber model bars to compare speed load and crumple-zone capacity.</li>
+            <li>Reset to baseline and test how increasing stopping distance lowers peak risk.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="city">City Impact</button>
+          <button class="preset-btn" type="button" data-preset="highway">Highway Crash</button>
+          <button class="preset-btn" type="button" data-preset="heavy">Heavy Vehicle</button>
+          <button class="preset-btn" type="button" data-preset="race">Race Barrier</button>
+          <button class="preset-btn" type="button" data-preset="short">Short Crumple</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mass">Vehicle Mass (kg)</label>
+                <span class="slider-value" id="massv">1200</span>
+              </div>
+              <input id="mass" type="range" min="200" max="5000" step="10" value="1200">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="speed">Impact Speed (m/s)</label>
+                <span class="slider-value" id="speedv">15.0</span>
+              </div>
+              <input id="speed" type="range" min="1" max="45" step="0.5" value="15">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="dist">Stopping Distance (m)</label>
+                <span class="slider-value" id="distv">0.60</span>
+              </div>
+              <input id="dist" type="range" min="0.05" max="2.5" step="0.01" value="0.6">
+            </div>
+
+            <div class="control-actions">
+              <button id="resetBtn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results and model">
+            <h2 class="panel-title">Crash Response</h2>
+
+            <div class="model-panel absorber-model" aria-label="Absorber model">
+              <div class="absorber-track" aria-hidden="true">
+                <div class="vehicle-block">Vehicle</div>
+                <div class="crumple-zone"><span id="zone-fill" class="zone-fill"></span></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Speed load</span>
+                  <span id="speed-load">0%</span>
+                </div>
+                <div class="meter"><div id="speed-fill" class="meter-fill"></div></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Force load</span>
+                  <span id="force-load">0%</span>
+                </div>
+                <div class="meter"><div id="force-fill" class="meter-fill alt"></div></div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Kinetic Energy</p>
+                <p class="result-value"><span id="ke">0</span> J</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Average Deceleration</p>
+                <p class="result-value"><span id="adec">0</span> m/s^2</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Average Force</p>
+                <p class="result-value"><span id="fav">0</span> N</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">g-Load</p>
+                <p class="result-value"><span id="gload">0</span> g</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Safer design window</p>
+              <p class="status-note" id="note">Longer stopping distance reduces average deceleration and force.</p>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Kinetic Energy: <span class="value" id="ke">0</span> J</p>
-        <p>Average Deceleration: <span class="value" id="adec">0</span> m/s^2</p>
-        <p>Average Force: <span class="value" id="fav">0</span> N</p>
-        <p>Safety Rating: <span class="value" id="rating">-</span></p>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    function update() {
-      const m = Number(mass.value);
-      const v = Number(speed.value);
-      const d = Number(dist.value);
+    (() => {
+      const CONSTANTS = {
+        gravity: 9.80665,
+        maxSpeed: 45,
+        maxForce: 1200000
+      };
 
-      mv.textContent = m.toFixed(0);
-      vv.textContent = v.toFixed(1);
-      dv.textContent = d.toFixed(2);
+      const presets = {
+        city: { mass: 1200, speed: 15, dist: 0.6 },
+        highway: { mass: 1500, speed: 28, dist: 1.1 },
+        heavy: { mass: 3800, speed: 22, dist: 1.4 },
+        race: { mass: 900, speed: 40, dist: 2.3 },
+        short: { mass: 1400, speed: 22, dist: 0.35 }
+      };
 
-      const keVal = 0.5 * m * v * v;
-      const aMag = (v * v) / (2 * d);
-      const fAvg = m * aMag;
+      const defaults = presets.city;
 
-      ke.textContent = keVal.toFixed(0);
-      adec.textContent = aMag.toFixed(1);
-      fav.textContent = fAvg.toFixed(0);
+      const el = {
+        mass: document.getElementById("mass"),
+        speed: document.getElementById("speed"),
+        dist: document.getElementById("dist"),
+        massv: document.getElementById("massv"),
+        speedv: document.getElementById("speedv"),
+        distv: document.getElementById("distv"),
+        ke: document.getElementById("ke"),
+        adec: document.getElementById("adec"),
+        fav: document.getElementById("fav"),
+        gload: document.getElementById("gload"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        speedFill: document.getElementById("speed-fill"),
+        forceFill: document.getElementById("force-fill"),
+        speedLoad: document.getElementById("speed-load"),
+        forceLoad: document.getElementById("force-load"),
+        zoneFill: document.getElementById("zone-fill"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
 
-      rating.textContent = aMag < 80 ? "Safer design" : aMag < 150 ? "Moderate risk" : "High risk";
-    }
-    [mass, speed, dist].forEach(el => el.addEventListener("input", update));
-    update();
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(presetKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === presetKey);
+        });
+      }
+
+      function classify(gLoad, distance) {
+        if (gLoad < 8) {
+          return {
+            status: "Safer design window",
+            note: "Energy is dissipated over enough distance to keep average deceleration relatively low."
+          };
+        }
+
+        if (gLoad < 15) {
+          return {
+            status: "Moderate injury risk",
+            note: "Current stopping profile is survivable in some cases but still produces substantial loading."
+          };
+        }
+
+        if (distance < 0.35) {
+          return {
+            status: "High risk short crush zone",
+            note: "Very short stopping distance creates large force spikes. Increase crush distance if possible."
+          };
+        }
+
+        return {
+          status: "High impact load",
+          note: "Deceleration and force are in a severe range; redesign absorber parameters for better protection."
+        };
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.mass.value = preset.mass;
+        el.speed.value = preset.speed;
+        el.dist.value = preset.dist;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function update() {
+        const mass = clamp(el.mass.value, 200, 5000);
+        const speed = clamp(el.speed.value, 1, 45);
+        const distance = clamp(el.dist.value, 0.05, 2.5);
+
+        const kineticEnergy = 0.5 * mass * speed * speed;
+        const deceleration = (speed * speed) / (2 * distance);
+        const averageForce = mass * deceleration;
+        const gLoad = deceleration / CONSTANTS.gravity;
+
+        const interpretation = classify(gLoad, distance);
+
+        el.massv.textContent = mass.toFixed(0);
+        el.speedv.textContent = speed.toFixed(1);
+        el.distv.textContent = distance.toFixed(2);
+
+        el.ke.textContent = kineticEnergy.toFixed(0);
+        el.adec.textContent = deceleration.toFixed(1);
+        el.fav.textContent = averageForce.toFixed(0);
+        el.gload.textContent = gLoad.toFixed(1);
+
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        const speedPct = clamp((speed / CONSTANTS.maxSpeed) * 100, 0, 100);
+        const forcePct = clamp((averageForce / CONSTANTS.maxForce) * 100, 0, 100);
+        const zonePct = clamp((distance / 2.5) * 100, 2, 100);
+
+        el.speedFill.style.width = `${speedPct.toFixed(1)}%`;
+        el.forceFill.style.width = `${forcePct.toFixed(1)}%`;
+        el.zoneFill.style.width = `${zonePct.toFixed(1)}%`;
+        el.speedLoad.textContent = `${speedPct.toFixed(0)}%`;
+        el.forceLoad.textContent = `${forcePct.toFixed(0)}%`;
+      }
+
+      [el.mass, el.speed, el.dist].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.mass.value = defaults.mass;
+        el.speed.value = defaults.speed;
+        el.dist.value = defaults.dist;
+        setActivePreset("city");
+        update();
+      });
+
+      applyPreset("city");
+    })();
   </script>
 </body>
 </html>

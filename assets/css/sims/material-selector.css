@@ -1,324 +1,79 @@
+/* Payload visuals for Material Selector. Chassis/layout/controls come from sim-base.css. */
 
-    :root { --sim-text: var(--text); --sim-muted: var(--muted); --sim-title: var(--text); --sim-surface: var(--surface); --sim-surface-alt: var(--surface-2); --sim-panel-border: var(--border); --sim-accent: var(--accent); --sim-accent-2: var(--accent2); --sim-btn: color-mix(in srgb, var(--sim-accent) 25%, var(--sim-surface)); --sim-btn-hover: color-mix(in srgb, var(--sim-accent) 38%, var(--sim-surface)); --sim-btn-active-text: var(--button-text); --sim-canvas-bg: color-mix(in srgb, var(--sim-surface-alt) 75%, #000); --sim-canvas-border: color-mix(in srgb, var(--sim-accent) 30%, var(--sim-accent-2)); }
-    .sim-wrap * { box-sizing: border-box; margin: 0; padding: 0; }
-    .sim-wrap { 
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; 
-      padding: 0; 
-      color: var(--sim-text); 
-    }
-    .container { 
-      max-width: 1200px; 
-      margin: 0 auto; 
-      background: var(--sim-surface); 
-      border-radius: 20px; 
-      padding: 30px; 
-      border: 1px solid var(--sim-panel-border); 
-      box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55);
-    }
-    .top-actions { 
-      display: flex; 
-      justify-content: space-between; 
-      gap: 0.5rem; 
-      margin-bottom: 1rem; 
-      flex-wrap: wrap; 
-    }
-    .top-actions a { 
-      padding: 0.5rem 0.8rem; 
-      border-radius: 8px; 
-      border: 1px solid var(--sim-panel-border); 
-      color: var(--sim-title); 
-      background: var(--sim-btn);
-      text-decoration: none;
-      transition: all 0.25s;
-    }
-    .top-actions a:hover {
-      background: var(--sim-btn-hover);
-      transform: translateY(-2px);
-    }
-    h1 { 
-      text-align: center; 
-      margin: 0; 
-      color: var(--sim-title); 
-      margin-bottom: 10px;
-    }
-    .subtitle { 
-      text-align: center; 
-      color: var(--sim-muted); 
-      margin: 0.4rem 0 1.4rem; 
-    }
-    
-    .instructions {
-      background: var(--sim-surface);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-      border: 2px solid var(--sim-panel-border);
-    }
-    .instructions h3 {
-      color: var(--sim-title);
-      margin-bottom: 12px;
-      font-size: 18px;
-      text-align: center;
-    }
-    .instructions div {
-      color: var(--sim-muted);
-      line-height: 1.8;
-      font-size: 14px;
-    }
-    .instructions strong {
-      color: var(--sim-accent-2);
-    }
-    
-    .scenario-presets {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-    }
-    .preset-btn {
-      padding: 12px 24px;
-      background: var(--sim-btn);
-      color: var(--sim-text);
-      border: 1px solid var(--sim-panel-border);
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-      transition: all 0.25s;
-    }
-    .preset-btn:hover {
-      background: var(--sim-btn-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(255, 94, 168, 0.18);
-    }
-    .preset-btn.active {
-      background: var(--sim-accent);
-      color: var(--sim-btn-active-text);
-    }
-    
-    .workspace {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 25px;
-      margin-bottom: 25px;
-    }
-    
-    .panel {
-      background: var(--sim-surface);
-      border-radius: 15px;
-      padding: 25px;
-      border: 2px solid var(--sim-panel-border);
-    }
-    
-    .panel-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--sim-title);
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    .slider-row {
-      margin-bottom: 25px;
-    }
-    .slider-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      color: var(--sim-muted);
-      font-weight: 600;
-    }
-    .slider-value {
-      color: var(--sim-accent-2);
-      font-size: 20px;
-      font-weight: bold;
-    }
-    input[type="range"] {
-      width: 100%;
-      height: 8px;
-      border-radius: 5px;
-      background: var(--sim-surface-alt);
-      outline: none;
-      -webkit-appearance: none;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--sim-accent);
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(255, 94, 168, 0.4);
-      transition: all 0.2s;
-    }
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 4px 12px rgba(255, 94, 168, 0.6);
-    }
-    input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--sim-accent);
-      cursor: pointer;
-      border: none;
-      box-shadow: 0 2px 8px rgba(255, 94, 168, 0.4);
-    }
-    
-    .material-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .material-card {
-      background: var(--sim-surface-alt);
-      border-radius: 12px;
-      padding: 18px;
-      border: 2px solid var(--sim-panel-border);
-      transition: all 0.3s;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .material-card:hover {
-      transform: translateX(5px);
-      border-color: var(--sim-accent-2);
-      box-shadow: 0 5px 20px rgba(255, 94, 168, 0.2);
-    }
-    .material-card.best {
-      border-color: var(--sim-accent);
-      background: var(--sim-canvas-bg);
-      box-shadow: 0 5px 25px rgba(255, 94, 168, 0.3);
-      animation: bestPulse 2.2s ease-in-out infinite;
-    }
-    .material-card.best::before {
-      content: "⭐ BEST";
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: var(--sim-accent);
-      color: var(--sim-btn-active-text);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: bold;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(255, 94, 168, 0.4);
-    }
-    .material-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      margin-top: 20px;
-      position: relative;
-    }
-    .material-name {
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--sim-title);
-    }
-    .material-score {
-      font-size: 28px;
-      font-weight: bold;
-      color: var(--sim-accent-2);
-    }
-    .material-card.best .material-score {
-      color: var(--sim-accent-2);
-    }
-    .material-stats {
-      display: flex;
-      gap: 15px;
-      margin-top: 10px;
-    }
-    .stat {
-      flex: 1;
-    }
-    .stat-label {
-      font-size: 11px;
-      color: var(--sim-muted);
-      margin-bottom: 4px;
-    }
-    .stat-bar {
-      height: 6px;
-      background: var(--sim-canvas-bg);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .stat-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--sim-accent), var(--sim-accent-2));
-      transition: width 0.5s ease;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .btn {
-      padding: 14px 30px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .btn-reset {
-      background: var(--sim-accent-2);
-      color: var(--sim-btn-active-text);
-    }
-    .btn-reset:hover {
-      background: color-mix(in srgb, var(--sim-accent-2) 75%, #fff);
-      transform: translateY(-2px);
-    }
-    .btn-compare {
-      background: var(--sim-title);
-      color: var(--sim-btn-active-text);
-    }
-    .btn-compare:hover {
-      background: color-mix(in srgb, var(--sim-title) 70%, #fff);
-      transform: translateY(-2px);
-    }
-    
-    .recommendation {
-      background: rgba(109, 236, 164, 0.12);
-      border: 2px solid var(--sim-accent-2);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-      text-align: center;
-      display: none;
-    }
-    .recommendation.show {
-      display: block;
-      animation: slideIn 0.4s ease;
-    }
-    @keyframes bestPulse {
-      0%, 100% { box-shadow: 0 5px 25px rgba(255, 94, 168, 0.25); }
-      50% { box-shadow: 0 8px 28px rgba(255, 94, 168, 0.45); }
-    }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .recommendation-title {
-      color: var(--sim-accent-2);
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .recommendation-text {
-      color: var(--sim-muted);
-      line-height: 1.6;
-    }
-    
-    @media (max-width: 900px) { 
-      .workspace { grid-template-columns: 1fr; } 
-      .container { padding: 18px; } 
-    }
-  
+.material-cards {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.material-card {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--sim-surface-alt) 82%, transparent);
+  padding: 0.7rem 0.8rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.material-card.best {
+  border-color: color-mix(in srgb, var(--sim-accent) 60%, var(--sim-panel-border) 40%);
+  background: color-mix(in srgb, var(--sim-accent) 12%, var(--sim-surface-alt));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--sim-accent) 20%, transparent);
+}
+
+.material-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.7rem;
+}
+
+.material-name {
+  margin: 0;
+  color: var(--sim-text);
+  font-weight: 700;
+}
+
+.material-score {
+  margin: 0;
+  color: var(--sim-accent-2);
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.material-rank {
+  margin: 0;
+  color: var(--sim-muted);
+  font-size: 0.82rem;
+}
+
+.material-stats {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.stat {
+  display: grid;
+  grid-template-columns: minmax(0, 6.2rem) 1fr;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.stat-label {
+  margin: 0;
+  color: var(--sim-muted);
+  font-size: 0.79rem;
+}
+
+.stat-bar {
+  height: 0.48rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sim-surface) 45%, var(--sim-surface-alt) 55%);
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--sim-accent), var(--sim-accent-2));
+  transition: width 220ms ease;
+}

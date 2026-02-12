@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Coulomb's Law Playground | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/coulombs-law-playground.css">
+</head>
+<body data-site-root="../.." data-page="unit-1" data-sim-page="coulombs-law-playground">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 1</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Coulomb's Law Playground</h1>
+        <p class="subtitle">Explore how charge and distance control electric force between particles.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Start with a preset scenario or set charge and distance manually.</li>
+            <li>Use positive and negative charges to compare attraction vs repulsion.</li>
+            <li>Watch force magnitude, field strength, and potential energy update live.</li>
+            <li>Read the interpretation badge to classify the interaction strength.</li>
+            <li>Reset and test how doubling distance changes force dramatically.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+          <button class="preset-btn" type="button" data-preset="attract">Strong Attract</button>
+          <button class="preset-btn" type="button" data-preset="repel">Strong Repel</button>
+          <button class="preset-btn" type="button" data-preset="weak">Weak Far</button>
+          <button class="preset-btn" type="button" data-preset="close">Close Pair</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="q1">Charge 1 (microC)</label>
+                <span class="slider-value" id="q1v">4.0</span>
+              </div>
+              <input id="q1" type="range" min="-10" max="10" step="0.1" value="4">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="q2">Charge 2 (microC)</label>
+                <span class="slider-value" id="q2v">-3.0</span>
+              </div>
+              <input id="q2" type="range" min="-10" max="10" step="0.1" value="-3">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="dist">Separation Distance (m)</label>
+                <span class="slider-value" id="distv">0.80</span>
+              </div>
+              <input id="dist" type="range" min="0.1" max="5" step="0.01" value="0.8">
+            </div>
+
+            <div class="control-actions">
+              <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Force Magnitude</p>
+                <p class="result-value"><span id="force">0</span> N</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Electric Field at Midpoint</p>
+                <p class="result-value"><span id="field">0</span> N/C</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Potential Energy</p>
+                <p class="result-value"><span id="energy">0</span> J</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Interaction Type</p>
+                <p class="result-value" id="interaction">Attractive</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Moderate attraction</p>
+              <p class="status-note" id="note">Opposite charges pull together with noticeable force.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel">
+              <div class="charge-line" id="charge-line">
+                <div class="charge-node charge-left" id="left-charge">+</div>
+                <div class="distance-tag"><span id="distance-tag">0.80 m</span></div>
+                <div class="charge-node charge-right" id="right-charge">-</div>
+                <div class="force-arrow force-left" id="force-left" aria-hidden="true"></div>
+                <div class="force-arrow force-right" id="force-right" aria-hidden="true"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const CONSTANTS = {
+        k: 8.9875517923e9
+      };
+
+      const presets = {
+        baseline: { q1: 4, q2: -3, dist: 0.8 },
+        attract: { q1: 8, q2: -7, dist: 0.45 },
+        repel: { q1: 6, q2: 5, dist: 0.55 },
+        weak: { q1: 1.2, q2: -1.4, dist: 3.8 },
+        close: { q1: -4.5, q2: -4.5, dist: 0.2 }
+      };
+
+      const defaults = presets.baseline;
+
+      const el = {
+        q1: document.getElementById("q1"),
+        q2: document.getElementById("q2"),
+        dist: document.getElementById("dist"),
+        q1v: document.getElementById("q1v"),
+        q2v: document.getElementById("q2v"),
+        distv: document.getElementById("distv"),
+        force: document.getElementById("force"),
+        field: document.getElementById("field"),
+        energy: document.getElementById("energy"),
+        interaction: document.getElementById("interaction"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        leftCharge: document.getElementById("left-charge"),
+        rightCharge: document.getElementById("right-charge"),
+        distanceTag: document.getElementById("distance-tag"),
+        forceLeft: document.getElementById("force-left"),
+        forceRight: document.getElementById("force-right"),
+        resetBtn: document.getElementById("reset-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(key) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === key);
+        });
+      }
+
+      function formatCharge(value) {
+        if (value > 0) return `+${value.toFixed(1)} microC`;
+        if (value < 0) return `${value.toFixed(1)} microC`;
+        return "0.0 microC";
+      }
+
+      function classify(interaction, magnitude) {
+        if (magnitude < 50) {
+          return {
+            status: interaction === "Neutral" ? "No force" : `Weak ${interaction.toLowerCase()}`,
+            note: "Low charge and/or larger distance produces a small interaction."
+          };
+        }
+        if (magnitude < 500) {
+          return {
+            status: interaction === "Neutral" ? "No force" : `Moderate ${interaction.toLowerCase()}`,
+            note: "Force is noticeable and scales rapidly with distance changes."
+          };
+        }
+        return {
+          status: interaction === "Neutral" ? "No force" : `Strong ${interaction.toLowerCase()}`,
+          note: "Large charges at short range create high force magnitudes."
+        };
+      }
+
+      function updateModel(q1, q2, distance, forceN) {
+        el.leftCharge.textContent = q1 > 0 ? "+" : q1 < 0 ? "-" : "0";
+        el.rightCharge.textContent = q2 > 0 ? "+" : q2 < 0 ? "-" : "0";
+        el.leftCharge.title = formatCharge(q1);
+        el.rightCharge.title = formatCharge(q2);
+        el.distanceTag.textContent = `${distance.toFixed(2)} m`;
+
+        const sameSign = Math.sign(q1) === Math.sign(q2) && q1 !== 0 && q2 !== 0;
+        const hasForce = Math.abs(forceN) > 0.0001;
+        const forceScale = clamp(Math.abs(forceN) / 900, 0.08, 1);
+        const arrowLen = 22 + (forceScale * 58);
+
+        el.forceLeft.style.opacity = hasForce ? "1" : "0";
+        el.forceRight.style.opacity = hasForce ? "1" : "0";
+        el.forceLeft.style.width = `${arrowLen.toFixed(1)}px`;
+        el.forceRight.style.width = `${arrowLen.toFixed(1)}px`;
+
+        if (!hasForce) {
+          el.forceLeft.style.transform = "translateY(-50%) rotate(180deg)";
+          el.forceRight.style.transform = "translateY(-50%)";
+          return;
+        }
+
+        if (sameSign) {
+          el.forceLeft.style.transform = "translateY(-50%) rotate(180deg)";
+          el.forceRight.style.transform = "translateY(-50%)";
+        } else {
+          el.forceLeft.style.transform = "translateY(-50%)";
+          el.forceRight.style.transform = "translateY(-50%) rotate(180deg)";
+        }
+      }
+
+      function update() {
+        const q1 = clamp(el.q1.value, -10, 10);
+        const q2 = clamp(el.q2.value, -10, 10);
+        const distance = clamp(el.dist.value, 0.1, 5);
+
+        const q1C = q1 * 1e-6;
+        const q2C = q2 * 1e-6;
+        const forceSigned = (CONSTANTS.k * q1C * q2C) / (distance * distance);
+        const forceMag = Math.abs(forceSigned);
+        const midpointR = Math.max(0.05, distance / 2);
+        const fieldMid = Math.abs((CONSTANTS.k * q1C) / (midpointR * midpointR)) + Math.abs((CONSTANTS.k * q2C) / (midpointR * midpointR));
+        const potentialEnergy = (CONSTANTS.k * q1C * q2C) / distance;
+
+        const interaction = q1 === 0 || q2 === 0 ? "Neutral" : Math.sign(q1) === Math.sign(q2) ? "Repulsive" : "Attractive";
+        const interpretation = classify(interaction, forceMag);
+
+        el.q1v.textContent = q1.toFixed(1);
+        el.q2v.textContent = q2.toFixed(1);
+        el.distv.textContent = distance.toFixed(2);
+
+        el.force.textContent = forceMag.toFixed(2);
+        el.field.textContent = fieldMid.toFixed(1);
+        el.energy.textContent = potentialEnergy.toFixed(3);
+        el.interaction.textContent = interaction;
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        updateModel(q1, q2, distance, forceMag);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.q1.value = preset.q1;
+        el.q2.value = preset.q2;
+        el.dist.value = preset.dist;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      [el.q1, el.q2, el.dist].forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.q1.value = defaults.q1;
+        el.q2.value = defaults.q2;
+        el.dist.value = defaults.dist;
+        setActivePreset("baseline");
+        update();
+      });
+
+      applyPreset("baseline");
+    })();
+  </script>
+</body>
+</html>

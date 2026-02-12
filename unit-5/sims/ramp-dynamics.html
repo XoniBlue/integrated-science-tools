@@ -7,73 +7,433 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Ramp Dynamics | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/ramp-dynamics.css">
 </head>
-<body data-site-root="../.." data-page="unit-5">
+<body data-site-root="../.." data-page="unit-5" data-sim-page="ramp-dynamics">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
-    <h1>Ramp Dynamics</h1>
-    <p class="subtitle">Analyze incline motion with friction and calculate time to bottom.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 5</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Ramp Angle (degrees): <span class="value" id="angv">25</span></label><input id="angle" type="range" min="1" max="60" step="1" value="25">
-        <label>Ramp Length (m): <span class="value" id="lenv">8.0</span></label><input id="length" type="range" min="1" max="30" step="0.5" value="8">
-        <label>Friction Coefficient mu: <span class="value" id="muv">0.20</span></label><input id="mu" type="range" min="0" max="1" step="0.01" value="0.2">
+        <h1>Ramp Dynamics</h1>
+        <p class="subtitle">Connect angle, friction, and ramp length to acceleration and travel time.</p>
+
+        <div class="sim-toolbar">
+          <div class="preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="classroom">Classroom Ramp</button>
+            <button class="preset-btn" type="button" data-preset="steep">Steep + Slick</button>
+            <button class="preset-btn" type="button" data-preset="long">Long Ramp</button>
+            <button class="preset-btn" type="button" data-preset="stuck">High Friction</button>
+            <button class="preset-btn" type="button" data-preset="gentle">Gentle Training Ramp</button>
+          </div>
+          <div class="toolbar-end">
+            <button id="resetBtn" class="btn-reset" type="button">Reset</button>
+            <div class="sim-help">
+              <button
+                id="help-toggle"
+                class="help-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="sim-instructions"
+                title="How to use this simulator"
+              >
+                i
+              </button>
+              <section id="sim-instructions" class="instructions" aria-label="Instructions" hidden>
+                <h2>How To Use</h2>
+                <ol>
+                  <li>Choose a preset to start with a realistic ramp scenario.</li>
+                  <li>Adjust angle, ramp length, and friction coefficient.</li>
+                  <li>Read acceleration, final speed, and travel time outputs.</li>
+                  <li>Watch the ramp model panel update force balance and block position.</li>
+                  <li>Reset and compare low-friction vs high-friction cases.</li>
+                </ol>
+                <button id="help-close" class="help-close" type="button" aria-label="Close instructions">Close</button>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <section class="panel input-panel" aria-label="Inputs">
+            <h2 class="panel-title">Inputs</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="angle">Ramp Angle (degrees)</label>
+                <span class="slider-value" id="angv">25</span>
+              </div>
+              <input id="angle" type="range" min="1" max="60" step="1" value="25">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="length">Ramp Length (m)</label>
+                <span class="slider-value" id="lenv">8.0</span>
+              </div>
+              <input id="length" type="range" min="1" max="30" step="0.5" value="8">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mu">Friction Coefficient (mu)</label>
+                <span class="slider-value" id="muv">0.20</span>
+              </div>
+              <input id="mu" type="range" min="0" max="1" step="0.01" value="0.2">
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-label="Ramp model outputs">
+            <h2 class="panel-title">Ramp Model</h2>
+
+            <div class="model-panel">
+              <canvas id="ramp-canvas" class="ramp-canvas" role="img" aria-label="Ramp with block and force vectors"></canvas>
+              <div class="meter-grid">
+                <div class="meter-group">
+                  <div class="meter-row">
+                    <span>Down-slope gravity component</span>
+                    <span id="g-parallel">0.00 N/kg</span>
+                  </div>
+                  <div class="meter"><div id="gravity-fill" class="meter-fill"></div></div>
+                </div>
+                <div class="meter-group">
+                  <div class="meter-row">
+                    <span>Friction component</span>
+                    <span id="friction-force">0.00 N/kg</span>
+                  </div>
+                  <div class="meter"><div id="friction-fill" class="meter-fill alt"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Net Acceleration</p>
+                <p class="result-value"><span id="acc">0.00</span> m/s^2</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Final Speed</p>
+                <p class="result-value"><span id="vf">0.00</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Travel Time</p>
+                <p class="result-value" id="time">No slide</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Ramp Height</p>
+                <p class="result-value"><span id="height">0.00</span> m</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="state">Static friction holds</p>
+              <p class="status-note" id="note">Friction matches the downhill component, so the object does not move.</p>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Net Acceleration: <span class="value" id="acc">0</span> m/s^2</p>
-        <p>Final Speed at Bottom: <span class="value" id="vf">0</span> m/s</p>
-        <p>Travel Time: <span class="value" id="time">0</span> s</p>
-        <p>Motion State: <span class="value" id="state">Slides</span></p>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    const g = 9.8;
-    function update() {
-      const theta = Number(angle.value) * Math.PI / 180;
-      const L = Number(length.value);
-      const muVal = Number(mu.value);
+    (() => {
+      const CONSTANTS = {
+        g: 9.81
+      };
 
-      angv.textContent = (theta * 180 / Math.PI).toFixed(0);
-      lenv.textContent = L.toFixed(1);
-      muv.textContent = muVal.toFixed(2);
+      const defaults = { angle: 25, length: 8, mu: 0.2 };
 
-      const a = g * (Math.sin(theta) - muVal * Math.cos(theta));
-      if (a <= 0) {
-        acc.textContent = "0.00";
-        vf.textContent = "0.00";
-        time.textContent = "No slide";
-        state.textContent = "Static friction holds";
-        return;
+      const presets = {
+        classroom: { angle: 25, length: 8, mu: 0.2 },
+        steep: { angle: 52, length: 6, mu: 0.05 },
+        long: { angle: 18, length: 22, mu: 0.14 },
+        stuck: { angle: 20, length: 10, mu: 0.52 },
+        gentle: { angle: 9, length: 12, mu: 0.08 }
+      };
+
+      const el = {
+        angle: document.getElementById("angle"),
+        length: document.getElementById("length"),
+        mu: document.getElementById("mu"),
+        angv: document.getElementById("angv"),
+        lenv: document.getElementById("lenv"),
+        muv: document.getElementById("muv"),
+        acc: document.getElementById("acc"),
+        vf: document.getElementById("vf"),
+        time: document.getElementById("time"),
+        height: document.getElementById("height"),
+        gParallel: document.getElementById("g-parallel"),
+        frictionForce: document.getElementById("friction-force"),
+        gravityFill: document.getElementById("gravity-fill"),
+        frictionFill: document.getElementById("friction-fill"),
+        state: document.getElementById("state"),
+        note: document.getElementById("note"),
+        rampCanvas: document.getElementById("ramp-canvas"),
+        helpToggle: document.getElementById("help-toggle"),
+        helpClose: document.getElementById("help-close"),
+        instructionsPanel: document.getElementById("sim-instructions"),
+        simHelpWrap: document.querySelector(".sim-help"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      const canvasState = {
+        dpr: window.devicePixelRatio || 1,
+        width: 0,
+        height: 0
+      };
+
+      let currentModel = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
       }
 
-      const vFinal = Math.sqrt(2 * a * L);
-      const tTravel = Math.sqrt(2 * L / a);
+      function setActivePreset(activeKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === activeKey);
+        });
+      }
 
-      acc.textContent = a.toFixed(2);
-      vf.textContent = vFinal.toFixed(2);
-      time.textContent = tTravel.toFixed(2);
-      state.textContent = "Slides down ramp";
-    }
-    [angle, length, mu].forEach(el => el.addEventListener("input", update));
-    update();
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.angle.value = preset.angle;
+        el.length.value = preset.length;
+        el.mu.value = preset.mu;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function resizeCanvas() {
+        const rect = el.rampCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvasState.dpr = dpr;
+        canvasState.width = rect.width;
+        canvasState.height = rect.height;
+        el.rampCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+        el.rampCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+        if (currentModel) {
+          drawModel(currentModel);
+        }
+      }
+
+      function drawArrow(ctx, x1, y1, x2, y2, color) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len = Math.hypot(dx, dy) || 1;
+        const ux = dx / len;
+        const uy = dy / len;
+
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        const head = 8;
+        ctx.beginPath();
+        ctx.moveTo(x2, y2);
+        ctx.lineTo(x2 - ux * head - uy * 4, y2 - uy * head + ux * 4);
+        ctx.lineTo(x2 - ux * head + uy * 4, y2 - uy * head - ux * 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      function drawModel(model) {
+        const ctx = el.rampCanvas.getContext("2d");
+        const width = canvasState.width;
+        const height = canvasState.height;
+        if (!ctx || width <= 0 || height <= 0) return;
+
+        ctx.setTransform(canvasState.dpr, 0, 0, canvasState.dpr, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+
+        const angleRad = model.theta;
+        const rampLengthPx = Math.min(width * 0.7, 180 + model.length * 3);
+        const startX = width * 0.16;
+        const startY = height * 0.2;
+        const endX = startX + Math.cos(angleRad) * rampLengthPx;
+        const endY = startY + Math.sin(angleRad) * rampLengthPx;
+
+        ctx.strokeStyle = "rgba(125, 214, 255, 0.9)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255,255,255,0.14)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(startX, endY);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+
+        const progress = model.sliding ? clamp(model.acc / 7, 0.1, 0.95) : 0.08;
+        const cartX = startX + (endX - startX) * progress;
+        const cartY = startY + (endY - startY) * progress;
+        const cartSize = 18;
+
+        ctx.save();
+        ctx.translate(cartX, cartY);
+        ctx.rotate(angleRad);
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(-cartSize / 2, -cartSize / 2, cartSize, cartSize);
+        ctx.strokeStyle = "rgba(0,0,0,0.35)";
+        ctx.strokeRect(-cartSize / 2, -cartSize / 2, cartSize, cartSize);
+        ctx.restore();
+
+        drawArrow(ctx, cartX, cartY, cartX + Math.cos(angleRad) * 42, cartY + Math.sin(angleRad) * 42, "#6dcfff");
+        drawArrow(ctx, cartX, cartY, cartX + Math.cos(angleRad) * -34, cartY + Math.sin(angleRad) * -34, "#ff5ea8");
+
+        ctx.fillStyle = "rgba(255,255,255,0.78)";
+        ctx.font = "12px Segoe UI";
+        ctx.fillText("g sin(theta)", cartX + Math.cos(angleRad) * 44, cartY + Math.sin(angleRad) * 44);
+        ctx.fillText("friction", cartX + Math.cos(angleRad) * -72, cartY + Math.sin(angleRad) * -38);
+      }
+
+      function update() {
+        const angleDeg = clamp(el.angle.value, 1, 60);
+        const length = clamp(el.length.value, 1, 30);
+        const mu = clamp(el.mu.value, 0, 1);
+
+        const theta = angleDeg * Math.PI / 180;
+        const gParallel = CONSTANTS.g * Math.sin(theta);
+        const frictionComp = mu * CONSTANTS.g * Math.cos(theta);
+        const acc = gParallel - frictionComp;
+        const height = length * Math.sin(theta);
+        const sliding = acc > 0;
+
+        el.angv.textContent = angleDeg.toFixed(0);
+        el.lenv.textContent = length.toFixed(1);
+        el.muv.textContent = mu.toFixed(2);
+
+        el.gParallel.textContent = `${gParallel.toFixed(2)} N/kg`;
+        el.frictionForce.textContent = `${frictionComp.toFixed(2)} N/kg`;
+
+        el.gravityFill.style.width = `${clamp((gParallel / 9.81) * 100, 0, 100).toFixed(1)}%`;
+        el.frictionFill.style.width = `${clamp((frictionComp / 9.81) * 100, 0, 100).toFixed(1)}%`;
+
+        if (!sliding) {
+          el.acc.textContent = "0.00";
+          el.vf.textContent = "0.00";
+          el.time.textContent = "No slide";
+          el.state.textContent = "Static friction holds";
+          el.note.textContent = "Friction cancels the downhill component, so acceleration is effectively zero.";
+        } else {
+          const vFinal = Math.sqrt(2 * acc * length);
+          const tTravel = Math.sqrt((2 * length) / acc);
+          el.acc.textContent = acc.toFixed(2);
+          el.vf.textContent = vFinal.toFixed(2);
+          el.time.textContent = `${tTravel.toFixed(2)} s`;
+
+          if (acc > 4) {
+            el.state.textContent = "Rapid slide";
+            el.note.textContent = "A strong downhill component dominates friction, producing a quick descent.";
+          } else {
+            el.state.textContent = "Controlled slide";
+            el.note.textContent = "The object slides, but friction still limits the acceleration and speed growth.";
+          }
+        }
+
+        el.height.textContent = height.toFixed(2);
+
+        currentModel = { theta, length, acc: Math.max(0, acc), sliding };
+        drawModel(currentModel);
+      }
+
+      [el.angle, el.length, el.mu].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.angle.value = defaults.angle;
+        el.length.value = defaults.length;
+        el.mu.value = defaults.mu;
+        setActivePreset("classroom");
+        update();
+      });
+
+      if (el.helpToggle && el.instructionsPanel && el.simHelpWrap) {
+        let helpCloseTimer = null;
+        const setHelpOpen = (isOpen) => {
+          el.helpToggle.setAttribute("aria-expanded", String(isOpen));
+          el.instructionsPanel.hidden = !isOpen;
+        };
+        const cancelHelpClose = () => {
+          if (helpCloseTimer !== null) {
+            window.clearTimeout(helpCloseTimer);
+            helpCloseTimer = null;
+          }
+        };
+        const scheduleHelpClose = () => {
+          cancelHelpClose();
+          helpCloseTimer = window.setTimeout(() => {
+            setHelpOpen(false);
+          }, 140);
+        };
+
+        el.helpToggle.addEventListener("click", () => {
+          const isOpen = el.helpToggle.getAttribute("aria-expanded") === "true";
+          setHelpOpen(!isOpen);
+        });
+        el.helpToggle.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.helpToggle.addEventListener("focus", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseleave", scheduleHelpClose);
+        document.addEventListener("click", (event) => {
+          if (el.instructionsPanel.hidden || el.simHelpWrap.contains(event.target)) {
+            return;
+          }
+          setHelpOpen(false);
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            setHelpOpen(false);
+          }
+        });
+        if (el.helpClose) {
+          el.helpClose.addEventListener("click", () => {
+            setHelpOpen(false);
+          });
+        }
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+
+      resizeCanvas();
+      applyPreset("classroom");
+    })();
   </script>
 </body>
 </html>

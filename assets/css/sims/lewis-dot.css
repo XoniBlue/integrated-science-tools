@@ -18,16 +18,6 @@
             border: 1px solid rgba(255, 158, 212, 0.3);
             box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55);
         }
-        .sim-wrap h1 {
-            text-align: center;
-            color: #ffd7f0;
-            margin-bottom: 10px;
-        }
-        .sim-wrap .subtitle {
-            text-align: center;
-            color: #c6b5de;
-            margin-bottom: 30px;
-        }
         .sim-wrap .controls {
             display: flex;
             gap: 20px;
@@ -269,25 +259,6 @@
             font-size: 16px;
             line-height: 1.5;
         }
-        .sim-wrap .top-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .sim-wrap .top-actions a {
-            display: inline-block;
-            padding: 0.5rem 0.8rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 158, 212, 0.4);
-            color: #ffd7f0;
-            background: rgba(255, 94, 168, 0.1);
-        }
-        .sim-wrap .top-actions a:hover {
-            background: rgba(255, 94, 168, 0.2);
-            color: #fff2f9;
-        }
         :root[data-theme="ocean"] .sim-wrap .container {
             background: rgba(12, 35, 58, 0.92);
             border-color: rgba(66, 213, 141, 0.35);
@@ -375,8 +346,91 @@
             .sim-wrap .container {
                 padding: 18px;
             }
-            .sim-wrap h1 {
-                font-size: 1.5rem;
-            }
         }
+
+:root {
+    --sim-text: var(--text);
+    --sim-muted: var(--muted);
+    --sim-title: var(--text);
+    --sim-surface: var(--surface);
+    --sim-surface-alt: var(--surface-2);
+    --sim-panel-border: var(--border);
+    --sim-accent: var(--accent);
+    --sim-accent-2: var(--accent2);
+    --sim-soft: var(--accent2);
+    --sim-btn: color-mix(in srgb, var(--surface-2) 88%, black 12%);
+    --sim-btn-hover: color-mix(in srgb, var(--surface-2) 72%, var(--accent2) 28%);
+    --sim-btn-active-text: var(--button-text);
+    --sim-success: #6deca4;
+    --sim-danger: #ff7c93;
+    --sim-canvas-border: color-mix(in srgb, var(--accent2) 45%, var(--border) 55%);
+}
+
+.sim-wrap {
+    color: var(--sim-text) !important;
+}
+
+.sim-wrap h1,
+.sim-wrap .panel-title {
+    color: var(--sim-title) !important;
+}
+
+.sim-wrap .subtitle,
+.sim-wrap .info-label,
+.sim-wrap .step-counter {
+    color: var(--sim-muted) !important;
+}
+
+.sim-wrap .container,
+.sim-wrap .panel,
+.sim-wrap .info-box,
+.sim-wrap .instruction,
+.sim-wrap .hint-box {
+    background: var(--sim-surface) !important;
+    border-color: var(--sim-panel-border) !important;
+}
+
+.sim-wrap .canvas-container {
+    background: var(--sim-surface-alt) !important;
+    border-color: var(--sim-canvas-border) !important;
+}
+
+.sim-wrap .molecule-btn,
+.sim-wrap .btn {
+    background: var(--sim-btn) !important;
+    color: var(--sim-text) !important;
+    border-color: var(--sim-panel-border) !important;
+}
+
+.sim-wrap .molecule-btn:hover,
+.sim-wrap .btn:hover {
+    background: var(--sim-btn-hover) !important;
+}
+
+.sim-wrap .molecule-btn.active,
+.sim-wrap .btn-check {
+    background: var(--sim-accent) !important;
+    color: var(--sim-btn-active-text) !important;
+}
+
+.sim-wrap .btn-clear,
+.sim-wrap .btn-hint {
+    background: var(--sim-soft) !important;
+    color: var(--sim-btn-active-text) !important;
+}
+
+.sim-wrap .atom-option {
+    border-color: color-mix(in srgb, var(--sim-accent) 58%, var(--sim-panel-border) 42%) !important;
+    background: color-mix(in srgb, var(--sim-surface-alt) 88%, black 12%) !important;
+    color: var(--sim-title) !important;
+}
+
+.sim-wrap .atom-option.selected {
+    background: var(--sim-accent) !important;
+    color: var(--sim-btn-active-text) !important;
+}
+
+.sim-wrap .electron-dot {
+    background: color-mix(in srgb, var(--sim-accent) 68%, var(--sim-accent-2) 32%) !important;
+}
     

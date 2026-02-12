@@ -1,74 +1,5 @@
-
-    :root { --sim-text: var(--text); --sim-muted: var(--muted); --sim-title: var(--text); --sim-surface: var(--surface); --sim-surface-alt: var(--surface-2); --sim-panel-border: var(--border); --sim-accent: var(--accent); --sim-accent-2: var(--accent2); --sim-btn: color-mix(in srgb, var(--sim-accent) 25%, var(--sim-surface)); --sim-btn-hover: color-mix(in srgb, var(--sim-accent) 38%, var(--sim-surface)); --sim-btn-active-text: var(--button-text); --sim-canvas-bg: color-mix(in srgb, var(--sim-surface-alt) 75%, #000); --sim-canvas-border: color-mix(in srgb, var(--sim-accent) 30%, var(--sim-accent-2)); }
-    .sim-wrap * { box-sizing: border-box; margin: 0; padding: 0; }
-    .sim-wrap { 
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; 
-      padding: 0; 
-      color: var(--sim-text); 
-    }
-    .container { 
-      max-width: 1200px; 
-      margin: 0 auto; 
-      background: var(--sim-surface); 
-      border-radius: 20px; 
-      padding: 30px; 
-      border: 1px solid var(--sim-panel-border); 
-      box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55); 
-    }
-    .top-actions { 
-      display: flex; 
-      justify-content: space-between; 
-      gap: 0.5rem; 
-      margin-bottom: 1rem; 
-      flex-wrap: wrap; 
-    }
-    .top-actions a { 
-      padding: 0.5rem 0.8rem; 
-      border-radius: 8px; 
-      border: 1px solid var(--sim-panel-border); 
-      color: var(--sim-title); 
-      background: var(--sim-btn);
-      text-decoration: none;
-      transition: all 0.25s;
-    }
-    .top-actions a:hover {
-      background: var(--sim-btn-hover);
-      transform: translateY(-2px);
-    }
-    h1 { 
-      text-align: center; 
-      color: var(--sim-title); 
-      margin: 0 0 10px 0; 
-    }
-    .subtitle { 
-      text-align: center; 
-      color: var(--sim-muted); 
-      margin: 0.4rem 0 1.6rem; 
-    }
-    
-    .instructions {
-      background: var(--sim-surface);
-      border-radius: 15px;
-      padding: 20px;
-      margin-bottom: 25px;
-      border: 2px solid var(--sim-panel-border);
-    }
-    .instructions h3 {
-      color: var(--sim-title);
-      margin-bottom: 12px;
-      font-size: 18px;
-      text-align: center;
-    }
-    .instructions div {
-      color: var(--sim-muted);
-      line-height: 1.8;
-      font-size: 14px;
-    }
-    .instructions strong {
-      color: var(--sim-accent-2);
-    }
-    
-    .molecule-selector {
+:root { --sim-text: var(--text); --sim-muted: var(--muted); --sim-title: var(--text); --sim-surface: var(--surface); --sim-surface-alt: var(--surface-2); --sim-panel-border: var(--border); --sim-accent: var(--accent); --sim-accent-2: var(--accent2); --sim-btn: color-mix(in srgb, var(--sim-accent) 25%, var(--sim-surface)); --sim-btn-hover: color-mix(in srgb, var(--sim-accent) 38%, var(--sim-surface)); --sim-btn-active-text: var(--button-text); --sim-canvas-bg: color-mix(in srgb, var(--sim-surface-alt) 75%, #000); --sim-canvas-border: color-mix(in srgb, var(--sim-accent) 30%, var(--sim-accent-2)); }
+.molecule-selector {
       display: flex;
       gap: 10px;
       justify-content: center;
@@ -357,8 +288,7 @@
     
     @media (max-width: 900px) { 
       .workspace { grid-template-columns: 1fr; } 
-      .container { padding: 18px; }
-    }
+}
     @media (max-width: 700px) {
       .atom {
         width: 56px;
@@ -390,15 +320,3 @@
       width: 100%;
       justify-content: center;
     }
-
-    .sim-wrap .sim-help {
-      display: block !important;
-      align-self: center;
-    }
-
-    .sim-wrap .help-toggle {
-      display: inline-flex !important;
-      align-items: center;
-      justify-content: center;
-    }
-  

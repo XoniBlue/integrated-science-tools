@@ -1,0 +1,1330 @@
+/* Shared simulator UI styles (all units). Keep topic-specific visuals in per-sim CSS files. */
+:root {
+  --sim-text: var(--text);
+  --sim-muted: var(--muted);
+  --sim-title: var(--text);
+  --sim-surface: var(--surface);
+  --sim-surface-alt: var(--surface-2);
+  --sim-panel-border: var(--border);
+  --sim-accent: var(--accent);
+  --sim-accent-2: var(--accent2);
+}
+
+.sim-wrap {
+  color: var(--sim-text, var(--text));
+}
+
+.sim-wrap * {
+  box-sizing: border-box;
+}
+
+.sim-wrap .container {
+  width: min(100%, var(--sim-container-max, 1160px));
+  margin-inline: auto;
+  padding: var(--sim-container-padding, clamp(1rem, 2.4vw, 2rem));
+  border: 1px solid var(--sim-panel-border, var(--border));
+  border-radius: var(--sim-container-radius, 24px);
+  background: var(
+    --sim-container-bg,
+    linear-gradient(
+      150deg,
+      color-mix(in srgb, var(--header-bg, var(--sim-surface, var(--surface))) 94%, var(--sim-surface-alt, var(--surface-2)) 6%),
+      color-mix(in srgb, var(--header-bg, var(--sim-surface, var(--surface))) 88%, var(--sim-surface, var(--surface)) 12%)
+    )
+  );
+  box-shadow: var(--sim-container-shadow, 0 20px 36px color-mix(in srgb, var(--header-shadow, var(--sim-surface, var(--surface))) 65%, transparent));
+}
+
+body .sim-wrap > .container {
+  border-color: var(--sim-panel-border, var(--border)) !important;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--header-bg, var(--sim-surface, var(--surface))) 94%, var(--sim-surface-alt, var(--surface-2)) 6%),
+    color-mix(in srgb, var(--header-bg, var(--sim-surface, var(--surface))) 88%, var(--sim-surface, var(--surface)) 12%)
+  ) !important;
+  box-shadow: 0 20px 36px color-mix(in srgb, var(--header-shadow, var(--sim-surface, var(--surface))) 65%, transparent) !important;
+}
+
+.sim-wrap h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  text-align: center;
+}
+
+.sim-wrap .subtitle {
+  margin: 0.4rem 0 1.2rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.sim-wrap .action-buttons {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.9rem;
+}
+
+.sim-wrap .top-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0.55rem 0.92rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border) 65%);
+  background: color-mix(in srgb, var(--surface-2) 80%, var(--surface) 20%);
+  color: var(--text);
+  font-weight: 700;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+
+.sim-wrap .top-actions a:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface-2));
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--accent2) 50%);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.sim-wrap .top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.sim-wrap .sim-title-inline {
+  min-width: 0;
+  text-align: center;
+}
+
+.sim-wrap .sim-title-inline h1 {
+  margin: 0;
+}
+
+.sim-wrap .sim-title-inline .subtitle {
+  margin: 0.22rem 0 0;
+  color: var(--muted);
+}
+
+.sim-wrap .btn {
+  padding: 0.62rem 1rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border) 65%);
+  background: color-mix(in srgb, var(--surface-2) 78%, var(--surface) 22%);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent2) 12%, transparent);
+}
+
+.sim-wrap .btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--accent2) 50%);
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--accent) 18%, transparent);
+  transform: translateY(-2px);
+}
+
+.sim-wrap .btn-check {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface-2));
+}
+
+.sim-wrap .btn-clear {
+  background: color-mix(in srgb, var(--accent2) 20%, var(--surface-2));
+}
+
+.sim-wrap .btn-hint {
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface-2));
+  color: var(--text);
+}
+
+.sim-wrap .scenario-presets {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.sim-wrap .slider-row {
+  margin-bottom: 1rem;
+}
+
+.sim-wrap .slider-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.45rem;
+  color: var(--sim-muted);
+  font-weight: 700;
+}
+
+.sim-wrap .slider-label label {
+  margin: 0;
+  color: inherit;
+  font-weight: inherit;
+}
+
+.sim-wrap .slider-value {
+  color: var(--sim-accent-2);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.sim-wrap input[type="range"] {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  background: color-mix(in srgb, var(--sim-surface-alt) 82%, transparent);
+  outline: none;
+}
+
+.sim-wrap input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--sim-accent) 45%, var(--sim-accent-2) 55%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--sim-accent) 84%, white 16%), color-mix(in srgb, var(--sim-accent-2) 78%, white 22%));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--sim-accent) 36%, transparent);
+  cursor: pointer;
+}
+
+.sim-wrap input[type="range"]::-moz-range-thumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--sim-accent) 45%, var(--sim-accent-2) 55%);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--sim-accent) 84%, white 16%), color-mix(in srgb, var(--sim-accent-2) 78%, white 22%));
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--sim-accent) 36%, transparent);
+  cursor: pointer;
+}
+
+.sim-wrap input[type="range"]:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sim-accent-2) 65%, white 35%);
+  outline-offset: 2px;
+}
+
+.sim-wrap button,
+.sim-wrap input[type="button"],
+.sim-wrap input[type="submit"],
+.sim-wrap input[type="reset"] {
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.sim-wrap button:hover,
+.sim-wrap input[type="button"]:hover,
+.sim-wrap input[type="submit"]:hover,
+.sim-wrap input[type="reset"]:hover {
+  transform: translateY(-2px);
+}
+
+.sim-wrap .feedback {
+  margin-top: 0;
+  padding: 0 0.9rem;
+  border-radius: 10px;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  overflow: hidden;
+  border: 1px solid transparent;
+  font-weight: 700;
+  pointer-events: none;
+  transition:
+    max-height 260ms ease,
+    opacity 220ms ease,
+    transform 260ms ease,
+    margin-top 260ms ease,
+    padding 260ms ease,
+    border-color 220ms ease;
+}
+
+.sim-wrap .feedback.show {
+  margin-top: 0.9rem;
+  padding: 0.75rem 0.9rem;
+  max-height: 14rem;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  border-color: var(--border);
+}
+
+.sim-wrap .feedback.correct {
+  border-color: #6deca4;
+  background: rgba(109, 236, 164, 0.12);
+  color: #d5ffe8;
+}
+
+.sim-wrap .feedback.incorrect {
+  border-color: #ff7c93;
+  background: rgba(255, 124, 147, 0.12);
+  color: #ffd9e0;
+}
+
+.sim-wrap .feedback.hint {
+  border-color: var(--accent2);
+  background: rgba(109, 207, 255, 0.12);
+  color: var(--text);
+}
+
+.sim-wrap .sim-mission-panel {
+  margin-top: 1rem;
+}
+
+.sim-wrap .sim-mission-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.8rem;
+}
+
+.sim-wrap .sim-mission-box p {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+}
+
+.sim-wrap .sim-notebook {
+  margin-top: 0.8rem;
+}
+
+.sim-wrap .sim-notebook h4 {
+  margin: 0 0 0.45rem;
+  color: var(--text);
+}
+
+.sim-wrap .sim-notebook table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sim-wrap .sim-notebook th,
+.sim-wrap .sim-notebook td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.45rem;
+  text-align: left;
+  color: var(--muted);
+}
+
+.sim-wrap .sim-instructions-panel {
+  background: var(--surface);
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 25px;
+  border: 2px solid var(--border);
+}
+
+.sim-wrap .sim-instructions-title {
+  color: var(--text);
+  margin-bottom: 12px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.sim-wrap .sim-instructions-body {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.sim-wrap .sim-instructions-body strong {
+  color: var(--accent);
+}
+
+.sim-wrap .sim-muted-intro {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.sim-wrap .sim-muted-intro-lg {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.sim-wrap .sim-muted-label {
+  color: var(--muted);
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.sim-wrap .sim-relative {
+  position: relative;
+}
+
+.sim-wrap .sim-select-spacing {
+  margin-bottom: 10px;
+}
+
+.sim-wrap .sim-btn-block {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.sim-wrap .sim-help-text {
+  color: var(--muted);
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.sim-wrap .sim-molecule-name {
+  font-size: 24px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.sim-wrap .sim-total-electrons {
+  font-size: 20px;
+  color: var(--text);
+}
+
+.sim-wrap .sim-ordered-list {
+  margin-left: 20px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.sim-wrap .atom-option[data-atom="H"] {
+  color: #7ec4ff;
+}
+
+.sim-wrap .atom-option[data-atom="C"] {
+  color: #f4eeff;
+}
+
+.sim-wrap .atom-option[data-atom="N"] {
+  color: #e4b3ff;
+}
+
+.sim-wrap .atom-option[data-atom="O"] {
+  color: #ff9dbd;
+}
+
+.sim-wrap .atom-option[data-atom="electron"] {
+  background: #ff5ea8;
+  color: #190826;
+  font-size: 20px;
+}
+
+.sim-wrap .polarity-tip-box {
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.sim-wrap .electron-dot-card {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.sim-wrap .electron-dot-card-title {
+  color: var(--accent2);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.sim-wrap .electron-dot-card-body {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.sim-wrap .polarity-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sim-wrap .mol-label {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  color: var(--text);
+  font-size: 18px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.sim-wrap .container,
+.sim-wrap .workspace,
+.sim-wrap .panel,
+.sim-wrap .results-panel,
+.sim-wrap .molecule-viz,
+.sim-wrap .canvas-3d,
+.sim-wrap .beaker-container {
+  min-width: 0;
+}
+
+.sim-wrap .container {
+  min-width: 0;
+}
+
+.sim-wrap canvas,
+.sim-wrap svg,
+.sim-wrap img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Shared sim UX pattern: static panels + compact help popover */
+.sim-wrap .panel:hover {
+  transform: none !important;
+}
+
+.sim-wrap .sim-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.8rem;
+}
+
+body .sim-wrap .sim-toolbar {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+}
+
+.sim-wrap .sim-toolbar-actions {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+body .sim-wrap .sim-toolbar .preset-actions,
+body .sim-wrap .sim-toolbar .reaction-presets,
+body .sim-wrap .sim-toolbar .equation-selector,
+body .sim-wrap .sim-toolbar .molecule-selector,
+body .sim-wrap .sim-toolbar .sim-toolbar-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  width: 100% !important;
+}
+
+body .sim-wrap .preset-actions,
+body .sim-wrap .reaction-presets,
+body .sim-wrap .equation-selector,
+body .sim-wrap .molecule-selector {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+}
+
+.sim-wrap .sim-toolbar-help-only {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sim-wrap .sim-help {
+  position: relative;
+  justify-self: end;
+}
+
+.sim-wrap .help-toggle {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent2) 45%, transparent);
+  background: color-mix(in srgb, var(--accent2) 16%, transparent);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.sim-wrap .help-toggle:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--accent2) 28%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--accent2) 26%, transparent);
+}
+
+.sim-wrap .sim-help-panel {
+  position: absolute;
+  right: calc(100% + 0.5rem);
+  top: -0.2rem;
+  z-index: 18;
+  width: min(430px, 78vw);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+  color: var(--text);
+  padding: 0.85rem 0.95rem;
+  box-shadow: 0 14px 24px color-mix(in srgb, var(--surface) 45%, #000 55%);
+}
+
+body .sim-wrap .sim-help .sim-help-panel,
+body .sim-wrap .sim-help .instructions {
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent) !important;
+}
+
+.sim-wrap .sim-help-panel h2,
+.sim-wrap .sim-help-panel h3 {
+  margin: 0 0 0.5rem;
+}
+
+.sim-wrap .sim-help-panel ol {
+  margin: 0 0 0.65rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+}
+
+.sim-wrap .sim-help-panel div {
+  color: var(--muted);
+}
+
+.sim-wrap .sim-step-guide {
+  margin-top: 0.65rem;
+}
+
+.sim-wrap .sim-step-title {
+  margin: 0 0 0.4rem;
+  color: var(--text);
+  font-weight: 700;
+}
+
+body .sim-wrap .top-actions a {
+  border-radius: 10px !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border) 65%) !important;
+  background: color-mix(in srgb, var(--surface-2) 80%, var(--surface) 20%) !important;
+  color: var(--text) !important;
+}
+
+body .sim-wrap .top-actions a:hover {
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface-2)) !important;
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--accent2) 50%) !important;
+}
+
+body .sim-wrap .preset-btn,
+body .sim-wrap .molecule-btn,
+body .sim-wrap .equation-btn,
+body .sim-wrap .preset-actions > button,
+body .sim-wrap .scenario-presets > button,
+body .sim-wrap .molecule-selector > button,
+body .sim-wrap .reaction-presets button,
+body .sim-wrap .equation-selector button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.25rem !important;
+  min-height: 0 !important;
+  padding: 0.55rem 0.92rem !important;
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  font-family: inherit !important;
+  border-radius: 10px !important;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border) 65%) !important;
+  background: color-mix(in srgb, var(--surface-2) 78%, var(--surface) 22%) !important;
+  color: var(--text) !important;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent2) 12%, transparent) !important;
+}
+
+body .sim-wrap .preset-btn:hover,
+body .sim-wrap .molecule-btn:hover,
+body .sim-wrap .equation-btn:hover,
+body .sim-wrap .preset-actions > button:hover,
+body .sim-wrap .scenario-presets > button:hover,
+body .sim-wrap .molecule-selector > button:hover,
+body .sim-wrap .reaction-presets button:hover,
+body .sim-wrap .equation-selector button:hover {
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--accent2) 50%) !important;
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+  transform: translateY(-2px);
+}
+
+body .sim-wrap .preset-btn:focus-visible,
+body .sim-wrap .molecule-btn:focus-visible,
+body .sim-wrap .equation-btn:focus-visible,
+body .sim-wrap .preset-actions > button:focus-visible,
+body .sim-wrap .scenario-presets > button:focus-visible,
+body .sim-wrap .molecule-selector > button:focus-visible,
+body .sim-wrap .reaction-presets button:focus-visible,
+body .sim-wrap .equation-selector button:focus-visible,
+body .sim-wrap .btn-reset:focus-visible,
+body .sim-wrap .top-actions a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent2) 72%, white 28%);
+  outline-offset: 2px;
+}
+
+body .sim-wrap .preset-btn.active,
+body .sim-wrap .molecule-btn.active,
+body .sim-wrap .equation-btn.active,
+body .sim-wrap .preset-actions > button.active,
+body .sim-wrap .scenario-presets > button.active,
+body .sim-wrap .molecule-selector > button.active,
+body .sim-wrap .reaction-presets button.active,
+body .sim-wrap .equation-selector button.active {
+  background: var(--accent) !important;
+  color: var(--button-text) !important;
+}
+
+body .sim-wrap .btn-check,
+body .sim-wrap .action-btn.primary {
+  background: var(--accent) !important;
+  color: var(--button-text) !important;
+}
+
+body .sim-wrap .btn-clear,
+body .sim-wrap .btn-reset,
+body .sim-wrap .action-btn.secondary {
+  background: var(--accent2) !important;
+  color: #0d2740 !important;
+}
+
+body .sim-wrap .btn-hint,
+body .sim-wrap .action-btn.tertiary {
+  background: color-mix(in srgb, var(--accent) 30%, #ffd0ea 70%) !important;
+  color: #280d39 !important;
+}
+
+.sim-wrap .help-legends {
+  margin: 0 0 0.6rem;
+}
+
+.sim-wrap .help-legend {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.sim-wrap .help-close {
+  border: 1px solid color-mix(in srgb, var(--accent2) 38%, transparent);
+  background: color-mix(in srgb, var(--accent2) 14%, var(--surface));
+  color: var(--text);
+  border-radius: 10px;
+  padding: 0.32rem 0.62rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Shared layout template: Unit 4-6 two-panel control/output sims */
+body[data-sim-page="force-balance"] .sim-wrap .workspace,
+body[data-sim-page="gravity-well"] .sim-wrap .workspace,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .workspace,
+body[data-sim-page="crash-absorber"] .sim-wrap .workspace,
+body[data-sim-page="field-superposition"] .sim-wrap .workspace,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .workspace ,
+body[data-sim-page="electron-configuration"] .sim-wrap .workspace ,
+body[data-sim-page="energy-conversion"] .sim-wrap .workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .panel,
+body[data-sim-page="gravity-well"] .sim-wrap .panel,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .panel,
+body[data-sim-page="crash-absorber"] .sim-wrap .panel,
+body[data-sim-page="field-superposition"] .sim-wrap .panel,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .panel ,
+body[data-sim-page="electron-configuration"] .sim-wrap .panel ,
+body[data-sim-page="energy-conversion"] .sim-wrap .panel {
+  border: 2px solid var(--sim-panel-border);
+  border-radius: 14px;
+  padding: 1rem;
+  background: var(--sim-surface);
+}
+
+body[data-sim-page="force-balance"] .sim-wrap label,
+body[data-sim-page="gravity-well"] .sim-wrap label,
+body[data-sim-page="impulse-analyzer"] .sim-wrap label,
+body[data-sim-page="crash-absorber"] .sim-wrap label,
+body[data-sim-page="field-superposition"] .sim-wrap label,
+body[data-sim-page="motion-graph-lab"] .sim-wrap label ,
+body[data-sim-page="electron-configuration"] .sim-wrap label ,
+body[data-sim-page="energy-conversion"] .sim-wrap label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--sim-muted);
+}
+
+body[data-sim-page="force-balance"] .sim-wrap input,
+body[data-sim-page="gravity-well"] .sim-wrap input,
+body[data-sim-page="impulse-analyzer"] .sim-wrap input,
+body[data-sim-page="crash-absorber"] .sim-wrap input,
+body[data-sim-page="field-superposition"] .sim-wrap input,
+body[data-sim-page="motion-graph-lab"] .sim-wrap input ,
+body[data-sim-page="electron-configuration"] .sim-wrap input ,
+body[data-sim-page="energy-conversion"] .sim-wrap input {
+  width: 100%;
+  margin-bottom: 0.85rem;
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .result,
+body[data-sim-page="gravity-well"] .sim-wrap .result,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .result,
+body[data-sim-page="crash-absorber"] .sim-wrap .result,
+body[data-sim-page="field-superposition"] .sim-wrap .result,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .result ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result {
+  background: var(--sim-surface-alt);
+  border: 1px solid var(--sim-panel-border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .value,
+body[data-sim-page="gravity-well"] .sim-wrap .value,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .value,
+body[data-sim-page="crash-absorber"] .sim-wrap .value,
+body[data-sim-page="field-superposition"] .sim-wrap .value,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .value ,
+body[data-sim-page="electron-configuration"] .sim-wrap .value ,
+body[data-sim-page="energy-conversion"] .sim-wrap .value {
+  color: var(--sim-accent-2);
+  font-weight: 700;
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .meter,
+body[data-sim-page="field-superposition"] .sim-wrap .meter,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter {
+  height: 16px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--sim-panel-border);
+  background: var(--sim-surface-alt);
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .fill,
+body[data-sim-page="field-superposition"] .sim-wrap .fill,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .fill ,
+body[data-sim-page="electron-configuration"] .sim-wrap .fill ,
+body[data-sim-page="energy-conversion"] .sim-wrap .fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--sim-accent), var(--sim-accent-2));
+  transition: width 220ms ease;
+}
+
+body[data-sim-page="force-balance"] .sim-wrap .control-actions,
+body[data-sim-page="gravity-well"] .sim-wrap .control-actions,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .control-actions,
+body[data-sim-page="crash-absorber"] .sim-wrap .control-actions,
+body[data-sim-page="field-superposition"] .sim-wrap .control-actions,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .control-actions ,
+body[data-sim-page="electron-configuration"] .sim-wrap .control-actions ,
+body[data-sim-page="energy-conversion"] .sim-wrap .control-actions {
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 900px) {
+  body[data-sim-page="force-balance"] .sim-wrap .workspace,
+  body[data-sim-page="gravity-well"] .sim-wrap .workspace,
+  body[data-sim-page="impulse-analyzer"] .sim-wrap .workspace,
+  body[data-sim-page="crash-absorber"] .sim-wrap .workspace,
+  body[data-sim-page="field-superposition"] .sim-wrap .workspace,
+  body[data-sim-page="motion-graph-lab"] .sim-wrap .workspace ,
+body[data-sim-page="electron-configuration"] .sim-wrap .workspace ,
+body[data-sim-page="energy-conversion"] .sim-wrap .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Shared layout template: model-centric labs with meter/result cards */
+body[data-sim-page="collision-lab"] .sim-wrap .workspace,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .workspace,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .workspace,
+body[data-sim-page="force-balance"] .sim-wrap .workspace,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .workspace,
+body[data-sim-page="crash-absorber"] .sim-wrap .workspace,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .workspace ,
+body[data-sim-page="electron-configuration"] .sim-wrap .workspace ,
+body[data-sim-page="energy-conversion"] .sim-wrap .workspace {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .toolbar-end,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .toolbar-end,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .toolbar-end,
+body[data-sim-page="force-balance"] .sim-wrap .toolbar-end,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .toolbar-end,
+body[data-sim-page="crash-absorber"] .sim-wrap .toolbar-end,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .toolbar-end ,
+body[data-sim-page="electron-configuration"] .sim-wrap .toolbar-end ,
+body[data-sim-page="energy-conversion"] .sim-wrap .toolbar-end {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .instructions,
+body[data-sim-page="collision-lab"] .sim-wrap .panel,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .instructions,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .panel,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .instructions,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .panel,
+body[data-sim-page="force-balance"] .sim-wrap .instructions,
+body[data-sim-page="force-balance"] .sim-wrap .panel,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .instructions,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .panel,
+body[data-sim-page="crash-absorber"] .sim-wrap .instructions,
+body[data-sim-page="crash-absorber"] .sim-wrap .panel,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .instructions,
+body[data-sim-page="electron-configuration"] .sim-wrap .instructions,
+body[data-sim-page="energy-conversion"] .sim-wrap .instructions,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .panel ,
+body[data-sim-page="electron-configuration"] .sim-wrap .panel ,
+body[data-sim-page="energy-conversion"] .sim-wrap .panel {
+  border: 1px solid var(--sim-panel-border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--sim-surface-alt) 62%, var(--sim-surface) 38%);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .instructions,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .instructions,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .instructions,
+body[data-sim-page="force-balance"] .sim-wrap .instructions,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .instructions,
+body[data-sim-page="crash-absorber"] .sim-wrap .instructions,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .instructions ,
+body[data-sim-page="electron-configuration"] .sim-wrap .instructions ,
+body[data-sim-page="energy-conversion"] .sim-wrap .instructions {
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .panel,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .panel,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .panel,
+body[data-sim-page="force-balance"] .sim-wrap .panel,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .panel,
+body[data-sim-page="crash-absorber"] .sim-wrap .panel,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .panel ,
+body[data-sim-page="electron-configuration"] .sim-wrap .panel ,
+body[data-sim-page="energy-conversion"] .sim-wrap .panel {
+  padding: 1rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .panel h2,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .panel h2,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .panel h2,
+body[data-sim-page="force-balance"] .sim-wrap .panel h2,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .panel h2,
+body[data-sim-page="crash-absorber"] .sim-wrap .panel h2,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .panel h2 ,
+body[data-sim-page="electron-configuration"] .sim-wrap .panel h2 ,
+body[data-sim-page="energy-conversion"] .sim-wrap .panel h2 {
+  margin: 0 0 0.85rem;
+  font-size: 1.05rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap label,
+body[data-sim-page="cosmic-expansion"] .sim-wrap label,
+body[data-sim-page="ramp-dynamics"] .sim-wrap label,
+body[data-sim-page="force-balance"] .sim-wrap label,
+body[data-sim-page="impulse-analyzer"] .sim-wrap label,
+body[data-sim-page="crash-absorber"] .sim-wrap label,
+body[data-sim-page="motion-graph-lab"] .sim-wrap label ,
+body[data-sim-page="electron-configuration"] .sim-wrap label ,
+body[data-sim-page="energy-conversion"] .sim-wrap label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.7rem;
+  margin-bottom: 0.35rem;
+  color: var(--sim-muted);
+  font-weight: 600;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap input[type="range"],
+body[data-sim-page="cosmic-expansion"] .sim-wrap input[type="range"],
+body[data-sim-page="ramp-dynamics"] .sim-wrap input[type="range"],
+body[data-sim-page="force-balance"] .sim-wrap input[type="range"],
+body[data-sim-page="impulse-analyzer"] .sim-wrap input[type="range"],
+body[data-sim-page="crash-absorber"] .sim-wrap input[type="range"],
+body[data-sim-page="motion-graph-lab"] .sim-wrap input[type="range"] ,
+body[data-sim-page="electron-configuration"] .sim-wrap input[type="range"] ,
+body[data-sim-page="energy-conversion"] .sim-wrap input[type="range"] {
+  width: 100%;
+  margin: 0 0 1rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .value,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .value,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .value,
+body[data-sim-page="force-balance"] .sim-wrap .value,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .value,
+body[data-sim-page="crash-absorber"] .sim-wrap .value,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .value ,
+body[data-sim-page="electron-configuration"] .sim-wrap .value ,
+body[data-sim-page="energy-conversion"] .sim-wrap .value {
+  color: var(--sim-accent-2);
+  font-weight: 800;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .model-panel,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .model-panel,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .model-panel,
+body[data-sim-page="force-balance"] .sim-wrap .model-panel,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .model-panel,
+body[data-sim-page="crash-absorber"] .sim-wrap .model-panel,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .model-panel ,
+body[data-sim-page="electron-configuration"] .sim-wrap .model-panel ,
+body[data-sim-page="energy-conversion"] .sim-wrap .model-panel {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 65%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--sim-surface) 70%, transparent);
+  padding: 0.9rem;
+  margin-bottom: 0.9rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .meter-group,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .meter-group,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .meter-group,
+body[data-sim-page="force-balance"] .sim-wrap .meter-group,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .meter-group,
+body[data-sim-page="crash-absorber"] .sim-wrap .meter-group,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter-group ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter-group ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter-group {
+  display: grid;
+  gap: 0.35rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .meter-row,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .meter-row,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .meter-row,
+body[data-sim-page="force-balance"] .sim-wrap .meter-row,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .meter-row,
+body[data-sim-page="crash-absorber"] .sim-wrap .meter-row,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter-row ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter-row ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.7rem;
+  font-size: 0.9rem;
+  color: var(--sim-muted);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .meter,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .meter,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .meter,
+body[data-sim-page="force-balance"] .sim-wrap .meter,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .meter,
+body[data-sim-page="crash-absorber"] .sim-wrap .meter,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 65%, transparent);
+  background: color-mix(in srgb, var(--sim-surface-alt) 82%, transparent);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .meter-fill,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .meter-fill,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .meter-fill,
+body[data-sim-page="force-balance"] .sim-wrap .meter-fill,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .meter-fill,
+body[data-sim-page="crash-absorber"] .sim-wrap .meter-fill,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter-fill ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter-fill ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter-fill {
+  height: 100%;
+  width: 0;
+  transition: width 220ms ease;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sim-accent-2) 75%, white 25%), color-mix(in srgb, var(--sim-accent) 72%, white 28%));
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="force-balance"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="crash-absorber"] .sim-wrap .meter-fill.alt,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .meter-fill.alt ,
+body[data-sim-page="electron-configuration"] .sim-wrap .meter-fill.alt ,
+body[data-sim-page="energy-conversion"] .sim-wrap .meter-fill.alt {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sim-accent) 75%, white 25%), color-mix(in srgb, var(--sim-accent-2) 72%, white 28%));
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .result-cards,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .result-cards,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .result-cards,
+body[data-sim-page="force-balance"] .sim-wrap .result-cards,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .result-cards,
+body[data-sim-page="crash-absorber"] .sim-wrap .result-cards,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .result-cards ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result-cards ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 0.8rem;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .result-card,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .result-card,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .result-card,
+body[data-sim-page="force-balance"] .sim-wrap .result-card,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .result-card,
+body[data-sim-page="crash-absorber"] .sim-wrap .result-card,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .result-card ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result-card ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result-card {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 65%, transparent);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 72%, transparent);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .result-label,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .result-label,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .result-label,
+body[data-sim-page="force-balance"] .sim-wrap .result-label,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .result-label,
+body[data-sim-page="crash-absorber"] .sim-wrap .result-label,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .result-label ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result-label ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result-label {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--sim-muted);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .result-value,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .result-value,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .result-value,
+body[data-sim-page="force-balance"] .sim-wrap .result-value,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .result-value,
+body[data-sim-page="crash-absorber"] .sim-wrap .result-value,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .result-value ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result-value ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result-value {
+  margin: 0.35rem 0 0;
+  font-size: 1.06rem;
+  font-weight: 800;
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .status-block,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .status-block,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .status-block,
+body[data-sim-page="force-balance"] .sim-wrap .status-block,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .status-block,
+body[data-sim-page="crash-absorber"] .sim-wrap .status-block,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .status-block ,
+body[data-sim-page="electron-configuration"] .sim-wrap .status-block ,
+body[data-sim-page="energy-conversion"] .sim-wrap .status-block {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 64%, transparent);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 64%, transparent);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .status-label,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .status-label,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .status-label,
+body[data-sim-page="force-balance"] .sim-wrap .status-label,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .status-label,
+body[data-sim-page="crash-absorber"] .sim-wrap .status-label,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .status-label ,
+body[data-sim-page="electron-configuration"] .sim-wrap .status-label ,
+body[data-sim-page="energy-conversion"] .sim-wrap .status-label {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--sim-muted);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .status-badge,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .status-badge,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .status-badge,
+body[data-sim-page="force-balance"] .sim-wrap .status-badge,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .status-badge,
+body[data-sim-page="crash-absorber"] .sim-wrap .status-badge,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .status-badge ,
+body[data-sim-page="electron-configuration"] .sim-wrap .status-badge ,
+body[data-sim-page="energy-conversion"] .sim-wrap .status-badge {
+  margin: 0.35rem 0;
+  display: inline-flex;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--sim-accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sim-accent) 52%, transparent);
+}
+
+body[data-sim-page="collision-lab"] .sim-wrap .status-note,
+body[data-sim-page="cosmic-expansion"] .sim-wrap .status-note,
+body[data-sim-page="ramp-dynamics"] .sim-wrap .status-note,
+body[data-sim-page="force-balance"] .sim-wrap .status-note,
+body[data-sim-page="impulse-analyzer"] .sim-wrap .status-note,
+body[data-sim-page="crash-absorber"] .sim-wrap .status-note,
+body[data-sim-page="motion-graph-lab"] .sim-wrap .status-note ,
+body[data-sim-page="electron-configuration"] .sim-wrap .status-note ,
+body[data-sim-page="energy-conversion"] .sim-wrap .status-note {
+  margin: 0;
+  color: var(--sim-muted);
+}
+
+@media (max-width: 920px) {
+  body[data-sim-page="collision-lab"] .sim-wrap .workspace,
+  body[data-sim-page="cosmic-expansion"] .sim-wrap .workspace,
+  body[data-sim-page="ramp-dynamics"] .sim-wrap .workspace,
+  body[data-sim-page="force-balance"] .sim-wrap .workspace,
+  body[data-sim-page="impulse-analyzer"] .sim-wrap .workspace,
+  body[data-sim-page="crash-absorber"] .sim-wrap .workspace,
+  body[data-sim-page="motion-graph-lab"] .sim-wrap .workspace ,
+body[data-sim-page="electron-configuration"] .sim-wrap .workspace ,
+body[data-sim-page="energy-conversion"] .sim-wrap .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-sim-page="collision-lab"] .sim-wrap .result-cards,
+  body[data-sim-page="cosmic-expansion"] .sim-wrap .result-cards,
+  body[data-sim-page="ramp-dynamics"] .sim-wrap .result-cards,
+  body[data-sim-page="force-balance"] .sim-wrap .result-cards,
+  body[data-sim-page="impulse-analyzer"] .sim-wrap .result-cards,
+  body[data-sim-page="crash-absorber"] .sim-wrap .result-cards,
+  body[data-sim-page="motion-graph-lab"] .sim-wrap .result-cards ,
+body[data-sim-page="electron-configuration"] .sim-wrap .result-cards ,
+body[data-sim-page="energy-conversion"] .sim-wrap .result-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .sim-wrap .top-actions {
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.45rem !important;
+    flex-wrap: wrap;
+  }
+
+  .sim-wrap .sim-title-inline {
+    order: -1;
+  }
+
+  .sim-wrap .top-actions a {
+    justify-self: auto;
+  }
+
+  .sim-wrap .sim-toolbar {
+    grid-template-columns: 1fr;
+    justify-items: end;
+  }
+
+  .sim-wrap .sim-toolbar-actions {
+    width: 100%;
+  }
+
+  .sim-wrap .sim-help-panel {
+    position: static;
+    width: 100%;
+    margin-top: 0.55rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  body.sim-viewport-fit {
+    overflow: hidden;
+  }
+
+  body.sim-viewport-fit .page-main {
+    padding-block: var(--sim-target-top, 1rem) 0;
+    display: flex;
+    align-items: stretch;
+  }
+
+  body.sim-viewport-fit .sim-wrap {
+    width: 100%;
+  }
+
+  body.sim-viewport-fit .sim-wrap > .container {
+    height: var(--sim-target-height, calc(100vh - 2rem));
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body.sim-viewport-fit .sim-wrap > .container > .sim-fit-root {
+    transform-origin: top center;
+    will-change: transform;
+  }
+
+  body.sim-viewport-fit .sim-wrap .grid,
+  body.sim-viewport-fit .sim-wrap .workspace {
+    min-height: 0;
+    align-items: start !important;
+    gap: 12px !important;
+  }
+
+  body.sim-viewport-fit .sim-wrap .panel {
+    overflow: hidden;
+    min-height: 0;
+    align-self: start !important;
+    padding: 14px !important;
+  }
+
+  body.sim-viewport-fit .sim-wrap .panel-title {
+    margin-bottom: 10px !important;
+  }
+
+  body.sim-viewport-fit .sim-wrap .molecule-selector,
+  body.sim-viewport-fit .sim-wrap .preset-actions,
+  body.sim-viewport-fit .sim-wrap .reaction-presets,
+  body.sim-viewport-fit .sim-wrap .equation-selector,
+  body.sim-viewport-fit .sim-wrap .controls {
+    margin-bottom: 12px !important;
+  }
+
+  body.sim-viewport-fit .sim-wrap .results-panel,
+  body.sim-viewport-fit .sim-wrap .status-block,
+  body.sim-viewport-fit .sim-wrap .result-cards,
+  body.sim-viewport-fit .sim-wrap .derived-row,
+  body.sim-viewport-fit .sim-wrap .meter,
+  body.sim-viewport-fit .sim-wrap .polarity-meter {
+    margin-top: 10px !important;
+  }
+
+  body.sim-viewport-fit .sim-wrap .molecule-viz,
+  body.sim-viewport-fit .sim-wrap .oscillator-viz,
+  body.sim-viewport-fit .sim-wrap .orbit-visual,
+  body.sim-viewport-fit .sim-wrap .beaker-container,
+  body.sim-viewport-fit .sim-wrap .canvas-container,
+  body.sim-viewport-fit .sim-wrap .drop-zone {
+    min-height: 170px !important;
+    padding: 12px !important;
+  }
+}

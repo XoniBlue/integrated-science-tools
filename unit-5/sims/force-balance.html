@@ -6,68 +6,330 @@
   <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
   <script src="../../assets/js/theme-init.js"></script>
   <title>Force Balance Lab | Integrated Science Tools</title>
+  <meta name="description" content="Interactive force balance simulator for net force and acceleration with friction.">
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/force-balance.css">
 </head>
-<body data-site-root="../.." data-page="unit-5">
+<body data-site-root="../.." data-page="unit-5" data-sim-page="force-balance">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
-    <h1>Force Balance Lab</h1>
-    <p class="subtitle">Combine forces to determine net force and acceleration.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 5</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Mass (kg): <span class="value" id="mv">5.0</span></label><input id="mass" type="range" min="1" max="50" step="0.5" value="5">
-        <label>Applied Force Right (N): <span class="value" id="frv">40</span></label><input id="fr" type="range" min="0" max="200" step="1" value="40">
-        <label>Applied Force Left (N): <span class="value" id="flv">10</span></label><input id="fl" type="range" min="0" max="200" step="1" value="10">
-        <label>Friction Force (N): <span class="value" id="ffv">5</span></label><input id="ff" type="range" min="0" max="100" step="1" value="5">
+        <h1>Force Balance Lab</h1>
+        <p class="subtitle">Combine applied forces and friction to predict net force and acceleration.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Pick a preset force scenario to load a classroom-style setup.</li>
+            <li>Adjust mass, right/left pushes, and friction force.</li>
+            <li>Track vector bars, net force, and acceleration outputs together.</li>
+            <li>Use the interpretation badge to classify balanced vs unbalanced cases.</li>
+          </ol>
+        </section>
+
+        <div class="sim-toolbar">
+          <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="balanced">Near Balanced</button>
+            <button class="preset-btn" type="button" data-preset="right">Strong Right Push</button>
+            <button class="preset-btn" type="button" data-preset="left">Strong Left Push</button>
+            <button class="preset-btn" type="button" data-preset="heavy">Heavy Load</button>
+            <button class="preset-btn" type="button" data-preset="frictionlock">Friction Lock</button>
+          </div>
+          <div class="toolbar-end">
+            <button id="resetBtn" class="btn btn-reset" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <section class="panel input-panel" aria-labelledby="force-input-heading">
+            <h2 id="force-input-heading" class="panel-title">Inputs</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mass">Mass (kg)</label>
+                <span class="slider-value" id="mv">5.0</span>
+              </div>
+              <input id="mass" type="range" min="1" max="50" step="0.5" value="5">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="fr">Applied Force Right (N)</label>
+                <span class="slider-value" id="frv">40</span>
+              </div>
+              <input id="fr" type="range" min="0" max="200" step="1" value="40">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="fl">Applied Force Left (N)</label>
+                <span class="slider-value" id="flv">10</span>
+              </div>
+              <input id="fl" type="range" min="0" max="200" step="1" value="10">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="ff">Friction Force (N)</label>
+                <span class="slider-value" id="ffv">5</span>
+              </div>
+              <input id="ff" type="range" min="0" max="100" step="1" value="5">
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="force-output-heading">
+            <h2 id="force-output-heading" class="panel-title">Force Model</h2>
+
+            <div class="model-panel force-model" aria-label="Force vector model">
+              <div class="force-track" aria-hidden="true">
+                <div class="track-line"></div>
+                <div class="cart" id="cart"></div>
+              </div>
+
+              <div class="vector-meters">
+                <div class="meter-group">
+                  <div class="meter-row">
+                    <span>Right push</span>
+                    <span id="right-text">40.0 N</span>
+                  </div>
+                  <div class="meter"><div id="right-fill" class="meter-fill"></div></div>
+                </div>
+
+                <div class="meter-group">
+                  <div class="meter-row">
+                    <span>Left push</span>
+                    <span id="left-text">10.0 N</span>
+                  </div>
+                  <div class="meter"><div id="left-fill" class="meter-fill alt"></div></div>
+                </div>
+
+                <div class="meter-group">
+                  <div class="meter-row">
+                    <span>Friction used</span>
+                    <span id="friction-text">5.0 N</span>
+                  </div>
+                  <div class="meter"><div id="friction-fill" class="meter-fill"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Net Horizontal Force</p>
+                <p class="result-value"><span id="fn">0.00</span> N</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Acceleration</p>
+                <p class="result-value"><span id="acc">0.000</span> m/s^2</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Motion Prediction</p>
+                <p class="result-value" id="motion">At rest or constant speed</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Net-to-Applied Ratio</p>
+                <p class="result-value"><span id="ratio">0%</span></p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Near balanced system</p>
+              <p class="status-note" id="note">Applied forces and friction nearly cancel, so acceleration is very small.</p>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Net Horizontal Force: <span class="value" id="fn">0</span> N</p>
-        <p>Acceleration: <span class="value" id="acc">0</span> m/s^2</p>
-        <p>Motion Prediction: <span class="value" id="motion">At rest or constant speed</span></p>
-        <div class="meter"><div id="bar" class="fill"></div></div>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    function update() {
-      const m = Number(mass.value);
-      const right = Number(fr.value);
-      const left = Number(fl.value);
-      const friction = Number(ff.value);
-      mv.textContent = m.toFixed(1);
-      frv.textContent = right.toFixed(0);
-      flv.textContent = left.toFixed(0);
-      ffv.textContent = friction.toFixed(0);
+    (() => {
+      const LIMITS = {
+        mass: [1, 50],
+        fr: [0, 200],
+        fl: [0, 200],
+        ff: [0, 100]
+      };
 
-      const push = right - left;
-      const frictionDirection = push > 0 ? -1 : push < 0 ? 1 : 0;
-      const net = push + frictionDirection * Math.min(Math.abs(push), friction);
-      const a = net / m;
+      const defaults = { mass: 5, fr: 40, fl: 10, ff: 5 };
 
-      fn.textContent = net.toFixed(2);
-      acc.textContent = a.toFixed(3);
-      motion.textContent = Math.abs(net) < 0.01 ? "At rest or constant speed" : net > 0 ? "Accelerates right" : "Accelerates left";
-      bar.style.width = `${Math.min(100, Math.abs(a) / 12 * 100).toFixed(1)}%`;
-    }
-    [mass, fr, fl, ff].forEach(el => el.addEventListener("input", update));
-    update();
+      const presets = {
+        balanced: { mass: 5, fr: 40, fl: 10, ff: 5 },
+        right: { mass: 6, fr: 160, fl: 20, ff: 18 },
+        left: { mass: 4.5, fr: 30, fl: 140, ff: 15 },
+        heavy: { mass: 34, fr: 160, fl: 60, ff: 45 },
+        frictionlock: { mass: 8, fr: 80, fl: 70, ff: 50 }
+      };
+
+      const el = {
+        mass: document.getElementById("mass"),
+        fr: document.getElementById("fr"),
+        fl: document.getElementById("fl"),
+        ff: document.getElementById("ff"),
+        mv: document.getElementById("mv"),
+        frv: document.getElementById("frv"),
+        flv: document.getElementById("flv"),
+        ffv: document.getElementById("ffv"),
+        fn: document.getElementById("fn"),
+        acc: document.getElementById("acc"),
+        motion: document.getElementById("motion"),
+        ratio: document.getElementById("ratio"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        cart: document.getElementById("cart"),
+        rightText: document.getElementById("right-text"),
+        leftText: document.getElementById("left-text"),
+        frictionText: document.getElementById("friction-text"),
+        rightFill: document.getElementById("right-fill"),
+        leftFill: document.getElementById("left-fill"),
+        frictionFill: document.getElementById("friction-fill"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function readInputs() {
+        const mass = clamp(el.mass.value, LIMITS.mass[0], LIMITS.mass[1]);
+        const fr = clamp(el.fr.value, LIMITS.fr[0], LIMITS.fr[1]);
+        const fl = clamp(el.fl.value, LIMITS.fl[0], LIMITS.fl[1]);
+        const ff = clamp(el.ff.value, LIMITS.ff[0], LIMITS.ff[1]);
+
+        el.mass.value = mass;
+        el.fr.value = fr;
+        el.fl.value = fl;
+        el.ff.value = ff;
+
+        return { mass, fr, fl, ff };
+      }
+
+      function calculateModel(input) {
+        const push = input.fr - input.fl;
+        const frictionUsed = Math.min(Math.abs(push), input.ff);
+        const frictionDirection = push > 0 ? -1 : push < 0 ? 1 : 0;
+        const net = push + (frictionDirection * frictionUsed);
+        const acc = net / input.mass;
+        const appliedSpan = Math.max(1, input.fr + input.fl);
+        const ratio = Math.min(100, (Math.abs(net) / appliedSpan) * 100);
+
+        let status = "Near balanced system";
+        let note = "Applied forces and friction nearly cancel, so acceleration is very small.";
+        let motion = "At rest or constant speed";
+
+        if (Math.abs(net) >= 0.5) {
+          if (net > 0) {
+            status = "Rightward net force";
+            note = "Rightward push is larger than opposing effects, producing positive acceleration.";
+            motion = "Accelerates right";
+          } else {
+            status = "Leftward net force";
+            note = "Leftward effects dominate, so the object accelerates left.";
+            motion = "Accelerates left";
+          }
+        }
+
+        return {
+          push,
+          frictionUsed,
+          net,
+          acc,
+          ratio,
+          status,
+          note,
+          motion
+        };
+      }
+
+      function setActivePreset(activeKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === activeKey);
+        });
+      }
+
+      function updateVisualization(input, model) {
+        const travel = clamp((model.net / 200) * 38, -38, 38);
+        const frictionRatio = model.push === 0 ? 0 : clamp(model.frictionUsed / Math.abs(model.push), 0, 1);
+
+        el.cart.style.transform = `translate(-50%, -50%) translateX(${travel.toFixed(1)}px)`;
+
+        el.rightText.textContent = `${input.fr.toFixed(1)} N`;
+        el.leftText.textContent = `${input.fl.toFixed(1)} N`;
+        el.frictionText.textContent = `${model.frictionUsed.toFixed(1)} N`;
+
+        el.rightFill.style.width = `${((input.fr / LIMITS.fr[1]) * 100).toFixed(1)}%`;
+        el.leftFill.style.width = `${((input.fl / LIMITS.fl[1]) * 100).toFixed(1)}%`;
+        el.frictionFill.style.width = `${(frictionRatio * 100).toFixed(1)}%`;
+      }
+
+      function update() {
+        const input = readInputs();
+        const model = calculateModel(input);
+
+        el.mv.textContent = input.mass.toFixed(1);
+        el.frv.textContent = input.fr.toFixed(0);
+        el.flv.textContent = input.fl.toFixed(0);
+        el.ffv.textContent = input.ff.toFixed(0);
+
+        el.fn.textContent = model.net.toFixed(2);
+        el.acc.textContent = model.acc.toFixed(3);
+        el.motion.textContent = model.motion;
+        el.ratio.textContent = `${model.ratio.toFixed(0)}%`;
+        el.status.textContent = model.status;
+        el.note.textContent = model.note;
+
+        updateVisualization(input, model);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+
+        el.mass.value = preset.mass;
+        el.fr.value = preset.fr;
+        el.fl.value = preset.fl;
+        el.ff.value = preset.ff;
+
+        setActivePreset(presetKey);
+        update();
+      }
+
+      [el.mass, el.fr, el.fl, el.ff].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.mass.value = defaults.mass;
+        el.fr.value = defaults.fr;
+        el.fl.value = defaults.fl;
+        el.ff.value = defaults.ff;
+        setActivePreset("balanced");
+        update();
+      });
+
+      applyPreset("balanced");
+    })();
   </script>
 </body>
 </html>

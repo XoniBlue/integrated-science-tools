@@ -1,0 +1,16 @@
+.placeholder-copy {
+  margin: 0;
+  color: var(--sim-muted);
+  line-height: 1.6;
+}
+
+.placeholder-model {
+  border: 1px dashed color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  min-height: 140px;
+  display: grid;
+  place-items: center;
+  color: var(--sim-muted);
+  background: color-mix(in srgb, var(--sim-surface-alt) 70%, transparent);
+  font-weight: 700;
+}

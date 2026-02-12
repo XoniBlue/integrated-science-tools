@@ -11,63 +11,11 @@
 
 .sim-wrap * { box-sizing: border-box; }
 .sim-wrap { color: var(--sim-text); }
-.sim-wrap .container { position: relative; width: min(1120px, 100%); margin: 0 auto; padding: 1.1rem 1.3rem; border-radius: 20px; border: 1px solid var(--sim-panel-border); background: linear-gradient(150deg, color-mix(in srgb, var(--sim-surface) 92%, transparent), color-mix(in srgb, var(--sim-surface-alt) 78%, transparent)); box-shadow: 0 16px 38px color-mix(in srgb, var(--sim-accent-2) 12%, transparent); }
-.sim-wrap .top-actions { display: flex; justify-content: space-between; gap: 0.7rem; margin-bottom: 0.65rem; flex-wrap: wrap; }
-.sim-wrap .top-actions a { display: inline-block; padding: 0.52rem 0.86rem; border-radius: 9px; border: 1px solid color-mix(in srgb, var(--sim-accent-2) 45%, transparent); color: var(--sim-title); background: color-mix(in srgb, var(--sim-accent-2) 12%, transparent); transition: transform 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease; }
-.sim-wrap .top-actions a:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--sim-accent-2) 24%, transparent); box-shadow: 0 10px 18px color-mix(in srgb, var(--sim-accent-2) 20%, transparent); }
-.sim-wrap h1 { margin: 0; text-align: center; }
-.sim-wrap .subtitle { margin: 0.36rem 0 0.75rem; color: var(--sim-muted); text-align: center; }
-.sim-wrap .sim-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 0.7rem; margin-bottom: 0.7rem; }
-.sim-wrap .sim-help { position: relative; justify-self: end; }
-.sim-wrap .help-toggle {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--sim-accent-2) 52%, transparent);
-  background: color-mix(in srgb, var(--sim-accent-2) 18%, transparent);
-  color: var(--sim-title);
-  font-weight: 800;
-  font-size: 1rem;
-  line-height: 1;
-  flex: 0 0 auto;
-  cursor: pointer;
-  transition: transform 0.24s ease, background-color 0.24s ease, box-shadow 0.24s ease;
-}
-.sim-wrap .help-toggle:hover {
-  transform: translateY(-2px);
-  background: color-mix(in srgb, var(--sim-accent-2) 30%, transparent);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--sim-accent-2) 28%, transparent);
-}
-.sim-wrap .instructions {
-  position: absolute;
-  right: calc(100% + 0.5rem);
-  top: -0.2rem;
-  width: min(420px, 78vw);
-  margin-bottom: 1.1rem;
-  border-radius: 15px;
-  border: 1px solid var(--sim-panel-border);
-  background: color-mix(in srgb, var(--sim-surface-alt) 90%, transparent);
-  padding: 0.8rem 0.9rem;
-  box-shadow: 0 14px 24px color-mix(in srgb, var(--sim-surface) 45%, #000 55%);
-  z-index: 8;
-}
-.sim-wrap .instructions h2 { margin: 0 0 0.55rem; font-size: 1rem; }
-.sim-wrap .instructions ol { margin: 0 0 0.7rem; padding-left: 1.2rem; color: var(--sim-muted); }
-.sim-wrap .instructions li { margin-bottom: 0.3rem; }
-.sim-wrap .help-legend { margin: 0 0 0.7rem; color: var(--sim-muted); font-size: 0.9rem; }
-.sim-wrap .help-close {
-  border: 1px solid color-mix(in srgb, var(--sim-accent-2) 40%, transparent);
-  background: color-mix(in srgb, var(--sim-accent-2) 16%, var(--sim-surface));
-  color: var(--sim-text);
-  border-radius: 10px;
-  padding: 0.3rem 0.62rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-.sim-wrap .preset-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 0; }
-.sim-wrap .preset-btn { border: 1px solid color-mix(in srgb, var(--sim-accent-2) 38%, transparent); background: color-mix(in srgb, var(--sim-accent-2) 14%, var(--sim-surface)); color: var(--sim-text); border-radius: 999px; padding: 0.52rem 0.85rem; font-weight: 700; cursor: pointer; transition: transform 0.26s ease, background-color 0.26s ease, box-shadow 0.26s ease; }
-.sim-wrap .preset-btn:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--sim-accent-2) 30%, var(--sim-surface)); box-shadow: 0 8px 16px color-mix(in srgb, var(--sim-accent-2) 28%, transparent); }
-.sim-wrap .preset-btn.active { background: var(--sim-accent); color: var(--button-text); }
+
+
+
+
+
 .sim-wrap .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; min-height: 0; }
 .sim-wrap .panel { border-radius: 16px; border: 1px solid var(--sim-panel-border); background: color-mix(in srgb, var(--sim-surface) 92%, transparent); padding: 0.8rem; transition: transform 0.3s ease; min-height: 0; }
 .sim-wrap .panel:hover { transform: none; }
@@ -136,12 +84,7 @@
     width: 100%;
   }
 
-  body[data-sim-page="orbital-motion"] .sim-wrap .container {
-    height: var(--orbital-target-height, calc(100vh - 2rem));
-    display: grid;
-    grid-template-rows: auto auto auto minmax(0, 1fr);
-    overflow: hidden;
-  }
+  body[data-sim-page="orbital-motion"] 
 
   body[data-sim-page="orbital-motion"] .sim-wrap .grid {
     min-height: 0;
@@ -157,14 +100,7 @@
   }
 }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-@media (max-width: 900px) {
-  .sim-wrap .container { padding: 1.1rem; }
-  .sim-wrap .sim-toolbar { align-items: flex-start; }
-  .sim-wrap .instructions {
-    position: static;
-    width: 100%;
-    margin-bottom: 0.7rem;
-  }
+@media (max-width: 900px) {  
   .sim-wrap .grid { grid-template-columns: 1fr; }
   .sim-wrap .result-cards { grid-template-columns: 1fr; }
 }

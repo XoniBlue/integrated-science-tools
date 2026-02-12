@@ -7,65 +7,260 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Gravity Well Mapper | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/gravity-well.css">
 </head>
-<body data-site-root="../.." data-page="unit-4">
+<body data-site-root="../.." data-page="unit-4" data-sim-page="gravity-well">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
-    <h1>Gravity Well Mapper</h1>
-    <p class="subtitle">Map how planet mass and radius change gravity, orbital speed, and escape velocity.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 4</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Planet Mass (x Earth): <span class="value" id="mv">1.0</span></label><input id="mass" type="range" min="0.2" max="20" step="0.1" value="1">
-        <label>Planet Radius (x Earth): <span class="value" id="rv">1.0</span></label><input id="radius" type="range" min="0.4" max="4" step="0.05" value="1">
+        <h1>Gravity Well Mapper</h1>
+        <p class="subtitle">Map how planet mass and radius change gravity, orbital speed, and escape velocity.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Select a preset world or adjust mass and radius using the sliders.</li>
+            <li>Compare surface gravity, orbital speed, and escape speed outputs together.</li>
+            <li>Use the model panel to see how gravity level and density trend shift visually.</li>
+            <li>Run two or more trials to isolate mass-only or radius-only effects.</li>
+            <li>Reset and test why larger radius can reduce gravity even at higher mass.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="earth">Earth-like</button>
+          <button class="preset-btn" type="button" data-preset="mars">Mars-like</button>
+          <button class="preset-btn" type="button" data-preset="super">Super Earth</button>
+          <button class="preset-btn" type="button" data-preset="puffy">Puffy Planet</button>
+          <button class="preset-btn" type="button" data-preset="dense">Dense Core</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mass">Planet Mass (x Earth)</label>
+                <span class="slider-value" id="mv">1.0</span>
+              </div>
+              <input id="mass" type="range" min="0.2" max="20" step="0.1" value="1">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="radius">Planet Radius (x Earth)</label>
+                <span class="slider-value" id="rv">1.00</span>
+              </div>
+              <input id="radius" type="range" min="0.4" max="4" step="0.05" value="1">
+            </div>
+
+            <div class="control-actions">
+              <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Surface Gravity</p>
+                <p class="result-value"><span id="g-val">9.81</span> m/s^2</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Escape Velocity</p>
+                <p class="result-value"><span id="ve">11.19</span> km/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Low Orbit Velocity</p>
+                <p class="result-value"><span id="vo">7.91</span> km/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Density Index</p>
+                <p class="result-value"><span id="density-index">1.00</span> x Earth</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Earth-like gravity</p>
+              <p class="status-note" id="note">Surface gravity remains close to Earth standards.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel gravity-model">
+              <div class="well-visual">
+                <div id="planet-core" class="planet-core">Planet</div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Gravity load</span>
+                  <span id="gravity-meter-label">0%</span>
+                </div>
+                <div class="meter"><div id="gravity-fill" class="meter-fill"></div></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Escape challenge</span>
+                  <span id="escape-meter-label">0%</span>
+                </div>
+                <div class="meter"><div id="escape-fill" class="meter-fill alt"></div></div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
-      <div class="panel"><div class="result">
-        <p>Surface Gravity: <span class="value" id="gVal">9.8</span> m/s^2</p>
-        <p>Escape Velocity: <span class="value" id="ve">11.2</span> km/s</p>
-        <p>Low Orbit Velocity: <span class="value" id="vo">7.9</span> km/s</p>
-        <p>Gravity Class: <span class="value" id="label">Earth-like</span></p>
-      </div></div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    const gEarth = 9.80665;
-    const muEarth = 398600.4418;
-    const rEarth = 6371;
-    function update() {
-      const m = Number(mass.value);
-      const r = Number(radius.value);
-      mv.textContent = m.toFixed(1);
-      rv.textContent = r.toFixed(2);
+    (() => {
+      const CONSTANTS = {
+        gEarth: 9.80665,
+        muEarth: 398600.4418,
+        rEarth: 6371,
+        maxGravity: 120,
+        maxEscape: 35
+      };
 
-      const g = gEarth * m / (r * r);
-      const mu = muEarth * m;
-      const rad = rEarth * r;
-      const vEscape = Math.sqrt(2 * mu / rad);
-      const vOrbit = Math.sqrt(mu / rad);
+      const presets = {
+        earth: { mass: 1, radius: 1 },
+        mars: { mass: 0.2, radius: 0.53 },
+        super: { mass: 8.4, radius: 1.9 },
+        puffy: { mass: 2.8, radius: 3.5 },
+        dense: { mass: 14, radius: 1.2 }
+      };
 
-      gVal.textContent = g.toFixed(2);
-      ve.textContent = vEscape.toFixed(2);
-      vo.textContent = vOrbit.toFixed(2);
-      label.textContent = g < 5 ? "Low-gravity world" : g < 15 ? "Earth-like" : "High-gravity world";
-    }
-    [mass, radius].forEach(el => el.addEventListener("input", update));
-    update();
+      const el = {
+        mass: document.getElementById("mass"),
+        radius: document.getElementById("radius"),
+        mv: document.getElementById("mv"),
+        rv: document.getElementById("rv"),
+        gVal: document.getElementById("g-val"),
+        ve: document.getElementById("ve"),
+        vo: document.getElementById("vo"),
+        densityIndex: document.getElementById("density-index"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        planetCore: document.getElementById("planet-core"),
+        gravityMeterLabel: document.getElementById("gravity-meter-label"),
+        escapeMeterLabel: document.getElementById("escape-meter-label"),
+        gravityFill: document.getElementById("gravity-fill"),
+        escapeFill: document.getElementById("escape-fill"),
+        resetBtn: document.getElementById("reset-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(presetKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === presetKey);
+        });
+      }
+
+      function classify(gravity, density) {
+        if (gravity < 5) {
+          return {
+            status: "Low-gravity world",
+            note: "Objects would weigh much less; launches need less speed."
+          };
+        }
+
+        if (gravity < 15) {
+          return {
+            status: "Earth-like gravity",
+            note: "Surface gravity remains in a range similar to familiar terrestrial conditions."
+          };
+        }
+
+        if (density > 3) {
+          return {
+            status: "Dense high-gravity world",
+            note: "High mass packed into modest radius drives very strong surface gravity."
+          };
+        }
+
+        return {
+          status: "High-gravity world",
+          note: "Large gravity increases both orbital and escape speed requirements."
+        };
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.mass.value = preset.mass;
+        el.radius.value = preset.radius;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function update() {
+        const mass = clamp(el.mass.value, 0.2, 20);
+        const radius = clamp(el.radius.value, 0.4, 4);
+
+        const gravity = CONSTANTS.gEarth * mass / (radius * radius);
+        const mu = CONSTANTS.muEarth * mass;
+        const rad = CONSTANTS.rEarth * radius;
+        const vEscape = Math.sqrt((2 * mu) / rad);
+        const vOrbit = Math.sqrt(mu / rad);
+        const densityIndex = mass / (radius * radius * radius);
+
+        const interpretation = classify(gravity, densityIndex);
+        const gravityPct = clamp((gravity / CONSTANTS.maxGravity) * 100, 0, 100);
+        const escapePct = clamp((vEscape / CONSTANTS.maxEscape) * 100, 0, 100);
+        const coreScale = clamp(0.68 + (radius / 4) * 0.62, 0.68, 1.3);
+
+        el.mv.textContent = mass.toFixed(1);
+        el.rv.textContent = radius.toFixed(2);
+        el.gVal.textContent = gravity.toFixed(2);
+        el.ve.textContent = vEscape.toFixed(2);
+        el.vo.textContent = vOrbit.toFixed(2);
+        el.densityIndex.textContent = densityIndex.toFixed(2);
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        el.gravityMeterLabel.textContent = `${gravityPct.toFixed(0)}%`;
+        el.escapeMeterLabel.textContent = `${escapePct.toFixed(0)}%`;
+        el.gravityFill.style.width = `${gravityPct.toFixed(1)}%`;
+        el.escapeFill.style.width = `${escapePct.toFixed(1)}%`;
+        el.planetCore.style.transform = `scale(${coreScale.toFixed(3)})`;
+      }
+
+      [el.mass, el.radius].forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        applyPreset("earth");
+      });
+
+      applyPreset("earth");
+    })();
   </script>
 </body>
 </html>

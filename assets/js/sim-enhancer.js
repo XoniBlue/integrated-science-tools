@@ -59,28 +59,6 @@
     return panel;
   }
 
-  function promoteHeaderIntoTopActions(container) {
-    const topActions = container.querySelector(".top-actions");
-    const heading = container.querySelector("h1");
-    const subtitle = container.querySelector(".subtitle");
-    if (!topActions || !heading || topActions.querySelector(".sim-title-inline")) {
-      return;
-    }
-
-    const titleWrap = createEl("div", "sim-title-inline");
-    titleWrap.appendChild(heading);
-    if (subtitle) {
-      titleWrap.appendChild(subtitle);
-    }
-
-    const actionLinks = Array.from(topActions.querySelectorAll("a, button"));
-    if (actionLinks.length >= 2) {
-      topActions.insertBefore(titleWrap, actionLinks[1]);
-    } else {
-      topActions.appendChild(titleWrap);
-    }
-  }
-
   function bindHelpPopover(helpWrap, toggleButton, instructionsPanel) {
     let closeTimer = null;
 
@@ -253,6 +231,9 @@
     if (!body || body.dataset.simPage === "orbital-motion") {
       return;
     }
+    if (body.dataset.simViewportFit !== "true") {
+      return;
+    }
 
     if (!container.querySelector(".panel, .workspace, .grid")) {
       return;
@@ -372,7 +353,6 @@
       return;
     }
 
-    promoteHeaderIntoTopActions(container);
     enhanceHelpUI(container);
     enableViewportFit(container);
   }

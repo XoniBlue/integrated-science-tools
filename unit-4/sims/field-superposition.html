@@ -7,75 +7,284 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Field Superposition Explorer | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/field-superposition.css">
 </head>
-<body data-site-root="../.." data-page="unit-4">
+<body data-site-root="../.." data-page="unit-4" data-sim-page="field-superposition">
   <header id="site-header" class="site-header"></header>
+
   <main class="page-main">
     <section class="sim-wrap">
       <div class="container">
-        <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 4</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
         <h1>Field Superposition Explorer</h1>
         <p class="subtitle">Compute net electric field at a target point from two source charges.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Pick a preset field setup or adjust each charge and distance manually.</li>
+            <li>Track each field contribution separately before interpreting the net field.</li>
+            <li>Use the direction and balance outputs to identify dominance or cancellation.</li>
+            <li>Compare at least two presets to explain how distance changes field strength.</li>
+            <li>Reset and test how opposite signs can cancel while same signs reinforce.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="opposite">Opposite Charges</button>
+          <button class="preset-btn" type="button" data-preset="same">Same Sign</button>
+          <button class="preset-btn" type="button" data-preset="balanced">Balanced Distances</button>
+          <button class="preset-btn" type="button" data-preset="dominant">Dominant Q1</button>
+          <button class="preset-btn" type="button" data-preset="cancel">Near Cancel</button>
         </div>
 
         <div class="workspace">
-          <div class="panel">
-            <label>Charge 1 (microC): <span class="value" id="q1v">4.0</span></label><input id="q1" type="range" min="-10" max="10" step="0.1" value="4">
-            <label>Distance 1 (m): <span class="value" id="r1v">0.8</span></label><input id="r1" type="range" min="0.2" max="3" step="0.1" value="0.8">
-            <label>Charge 2 (microC): <span class="value" id="q2v">-3.0</span></label><input id="q2" type="range" min="-10" max="10" step="0.1" value="-3">
-            <label>Distance 2 (m): <span class="value" id="r2v">1.2</span></label><input id="r2" type="range" min="0.2" max="3" step="0.1" value="1.2">
-          </div>
-          <div class="panel">
-            <div class="result">
-              <p>Field from Charge 1: <span class="value" id="e1">0</span> N/C</p>
-              <p>Field from Charge 2: <span class="value" id="e2">0</span> N/C</p>
-              <p>Net Field: <span class="value" id="en">0</span> N/C</p>
-              <p>Direction at Point: <span class="value" id="dir">-</span></p>
-              <div class="meter"><div id="bar" class="fill"></div></div>
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="q1">Charge 1 (microC)</label>
+                <span class="slider-value" id="q1v">4.0</span>
+              </div>
+              <input id="q1" type="range" min="-10" max="10" step="0.1" value="4">
             </div>
-          </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="r1">Distance 1 (m)</label>
+                <span class="slider-value" id="r1v">0.80</span>
+              </div>
+              <input id="r1" type="range" min="0.2" max="3" step="0.1" value="0.8">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="q2">Charge 2 (microC)</label>
+                <span class="slider-value" id="q2v">-3.0</span>
+              </div>
+              <input id="q2" type="range" min="-10" max="10" step="0.1" value="-3">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="r2">Distance 2 (m)</label>
+                <span class="slider-value" id="r2v">1.20</span>
+              </div>
+              <input id="r2" type="range" min="0.2" max="3" step="0.1" value="1.2">
+            </div>
+
+            <div class="control-actions">
+              <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Field from Charge 1</p>
+                <p class="result-value"><span id="e1">0</span> N/C</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Field from Charge 2</p>
+                <p class="result-value"><span id="e2">0</span> N/C</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Net Field</p>
+                <p class="result-value"><span id="en">0</span> N/C</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Direction</p>
+                <p class="result-value" id="dir">Balanced</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Charge 1 dominates</p>
+              <p class="status-note" id="note">The first source contributes a larger field magnitude at the target point.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel superposition-model">
+              <div class="target-line">
+                <div class="source-chip" id="q1-chip">Q1 +</div>
+                <div class="target-chip">Target Point</div>
+                <div class="source-chip" id="q2-chip">Q2 -</div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Net field intensity</span>
+                  <span id="net-meter-label">0%</span>
+                </div>
+                <div class="meter"><div id="net-fill" class="meter-fill"></div></div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Balance index</span>
+                  <span id="balance">0%</span>
+                </div>
+                <div class="meter"><div id="balance-fill" class="meter-fill alt"></div></div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </section>
   </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    const k = 8.99e9;
-    function update() {
-      const q1u = Number(q1.value);
-      const q2u = Number(q2.value);
-      const r1m = Number(r1.value);
-      const r2m = Number(r2.value);
-      q1v.textContent = q1u.toFixed(1);
-      q2v.textContent = q2u.toFixed(1);
-      r1v.textContent = r1m.toFixed(1);
-      r2v.textContent = r2m.toFixed(1);
+    (() => {
+      const CONSTANTS = {
+        k: 8.99e9,
+        maxMeterField: 250000
+      };
 
-      const E1 = k * (q1u * 1e-6) / (r1m * r1m);
-      const E2 = k * (q2u * 1e-6) / (r2m * r2m);
-      const En = E1 + E2;
+      const presets = {
+        opposite: { q1: 4, r1: 0.8, q2: -3, r2: 1.2 },
+        same: { q1: 5, r1: 0.9, q2: 3, r2: 1.1 },
+        balanced: { q1: 6, r1: 1.4, q2: -6, r2: 1.4 },
+        dominant: { q1: 9, r1: 0.6, q2: -2, r2: 2.2 },
+        cancel: { q1: 3, r1: 0.8, q2: -3, r2: 0.8 }
+      };
 
-      e1.textContent = E1.toFixed(1);
-      e2.textContent = E2.toFixed(1);
-      en.textContent = En.toFixed(1);
-      dir.textContent = En > 0 ? "Right / +x" : En < 0 ? "Left / -x" : "Balanced";
-      bar.style.width = `${Math.min(100, Math.abs(En) / 250000 * 100).toFixed(1)}%`;
-    }
-    [q1, q2, r1, r2].forEach(el => el.addEventListener("input", update));
-    update();
+      const el = {
+        q1: document.getElementById("q1"),
+        q2: document.getElementById("q2"),
+        r1: document.getElementById("r1"),
+        r2: document.getElementById("r2"),
+        q1v: document.getElementById("q1v"),
+        q2v: document.getElementById("q2v"),
+        r1v: document.getElementById("r1v"),
+        r2v: document.getElementById("r2v"),
+        e1: document.getElementById("e1"),
+        e2: document.getElementById("e2"),
+        en: document.getElementById("en"),
+        dir: document.getElementById("dir"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        q1Chip: document.getElementById("q1-chip"),
+        q2Chip: document.getElementById("q2-chip"),
+        netMeterLabel: document.getElementById("net-meter-label"),
+        netFill: document.getElementById("net-fill"),
+        balance: document.getElementById("balance"),
+        balanceFill: document.getElementById("balance-fill"),
+        resetBtn: document.getElementById("reset-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(presetKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === presetKey);
+        });
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.q1.value = preset.q1;
+        el.r1.value = preset.r1;
+        el.q2.value = preset.q2;
+        el.r2.value = preset.r2;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function classify(netField, e1, e2) {
+        if (Math.abs(netField) < 10) {
+          return {
+            status: "Near cancellation",
+            note: "The two field contributions are close in magnitude and mostly cancel."
+          };
+        }
+
+        if (Math.abs(e1) >= Math.abs(e2)) {
+          return {
+            status: "Charge 1 dominates",
+            note: "Field from charge 1 contributes the larger share at the target point."
+          };
+        }
+
+        return {
+          status: "Charge 2 dominates",
+          note: "Field from charge 2 contributes the larger share at the target point."
+        };
+      }
+
+      function chargeLabel(prefix, value) {
+        if (value > 0) return `${prefix} +`;
+        if (value < 0) return `${prefix} -`;
+        return `${prefix} 0`;
+      }
+
+      function update() {
+        const q1u = clamp(el.q1.value, -10, 10);
+        const q2u = clamp(el.q2.value, -10, 10);
+        const r1m = clamp(el.r1.value, 0.2, 3);
+        const r2m = clamp(el.r2.value, 0.2, 3);
+
+        const e1 = CONSTANTS.k * (q1u * 1e-6) / (r1m * r1m);
+        const e2 = CONSTANTS.k * (q2u * 1e-6) / (r2m * r2m);
+        const netField = e1 + e2;
+        const dominant = Math.max(Math.abs(e1), Math.abs(e2));
+        const balancePct = dominant > 0 ? (Math.abs(netField) / dominant) * 100 : 0;
+        const netMeterPct = clamp((Math.abs(netField) / CONSTANTS.maxMeterField) * 100, 0, 100);
+
+        const interpretation = classify(netField, e1, e2);
+
+        el.q1v.textContent = q1u.toFixed(1);
+        el.q2v.textContent = q2u.toFixed(1);
+        el.r1v.textContent = r1m.toFixed(2);
+        el.r2v.textContent = r2m.toFixed(2);
+
+        el.e1.textContent = e1.toFixed(1);
+        el.e2.textContent = e2.toFixed(1);
+        el.en.textContent = netField.toFixed(1);
+        el.dir.textContent = netField > 0 ? "Right / +x" : netField < 0 ? "Left / -x" : "Balanced";
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        el.q1Chip.textContent = chargeLabel("Q1", q1u);
+        el.q2Chip.textContent = chargeLabel("Q2", q2u);
+        el.netMeterLabel.textContent = `${netMeterPct.toFixed(0)}%`;
+        el.netFill.style.width = `${netMeterPct.toFixed(1)}%`;
+        el.balance.textContent = `${Math.min(100, balancePct).toFixed(0)}%`;
+        el.balanceFill.style.width = `${Math.min(100, balancePct).toFixed(1)}%`;
+      }
+
+      [el.q1, el.q2, el.r1, el.r2].forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        applyPreset("opposite");
+      });
+
+      applyPreset("opposite");
+    })();
   </script>
 </body>
 </html>

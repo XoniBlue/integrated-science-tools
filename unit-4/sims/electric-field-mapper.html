@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Electric Field Mapper | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/electric-field-mapper.css">
+</head>
+<body data-site-root="../.." data-page="unit-4" data-sim-page="electric-field-mapper">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 4</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Electric Field Mapper</h1>
+        <p class="subtitle">Map field strength and direction around a point charge using distance and angle.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Select a preset field setup or adjust charge and probe position sliders.</li>
+            <li>Use distance to test inverse-square behavior of electric field strength.</li>
+            <li>Rotate probe angle to inspect field direction around the source charge.</li>
+            <li>Read field, potential, and force-on-test-charge outputs together.</li>
+            <li>Reset and compare positive-source and negative-source cases.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+          <button class="preset-btn" type="button" data-preset="positive-near">Positive Near</button>
+          <button class="preset-btn" type="button" data-preset="negative-far">Negative Far</button>
+          <button class="preset-btn" type="button" data-preset="high-charge">High Charge</button>
+          <button class="preset-btn" type="button" data-preset="axis-scan">Axis Scan</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="source">Source Charge (microC)</label>
+                <span class="slider-value" id="sourcev">5.0</span>
+              </div>
+              <input id="source" type="range" min="-12" max="12" step="0.1" value="5">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="distance">Probe Distance (m)</label>
+                <span class="slider-value" id="distancev">1.20</span>
+              </div>
+              <input id="distance" type="range" min="0.2" max="5" step="0.01" value="1.2">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="angle">Probe Angle (deg)</label>
+                <span class="slider-value" id="anglev">45</span>
+              </div>
+              <input id="angle" type="range" min="0" max="360" step="1" value="45">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="test">Test Charge (microC)</label>
+                <span class="slider-value" id="testv">1.0</span>
+              </div>
+              <input id="test" type="range" min="-3" max="3" step="0.1" value="1">
+            </div>
+
+            <div class="control-actions">
+              <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Electric Field Magnitude</p>
+                <p class="result-value"><span id="field">0</span> N/C</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Electric Potential</p>
+                <p class="result-value"><span id="potential">0</span> V</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Force on Test Charge</p>
+                <p class="result-value"><span id="force">0</span> N</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Field Direction</p>
+                <p class="result-value" id="direction">Outward</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Moderate field region</p>
+              <p class="status-note" id="note">At this distance, field strength is measurable but not extreme.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel">
+              <svg id="field-map" viewBox="0 0 280 220" role="img" aria-label="Source charge with probe point and field arrow">
+                <circle cx="140" cy="110" r="26" class="source-node" />
+                <text id="source-symbol" x="140" y="116" text-anchor="middle">+</text>
+                <circle id="probe-node" cx="200" cy="70" r="10" class="probe-node" />
+                <line id="field-arrow" x1="200" y1="70" x2="240" y2="70" class="field-arrow" marker-end="url(#arrowhead)" />
+                <line x1="140" y1="110" x2="200" y2="70" class="radius-line" />
+                <defs>
+                  <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                    <polygon points="0 0, 8 4, 0 8" fill="currentColor"></polygon>
+                  </marker>
+                </defs>
+              </svg>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const CONSTANTS = {
+        k: 8.9875517923e9
+      };
+
+      const presets = {
+        baseline: { source: 5, distance: 1.2, angle: 45, test: 1 },
+        "positive-near": { source: 7.5, distance: 0.45, angle: 20, test: 1.5 },
+        "negative-far": { source: -6, distance: 3.4, angle: 230, test: 0.8 },
+        "high-charge": { source: 11, distance: 0.8, angle: 310, test: -1.4 },
+        "axis-scan": { source: -4, distance: 2, angle: 90, test: 2 }
+      };
+
+      const defaults = presets.baseline;
+
+      const el = {
+        source: document.getElementById("source"),
+        distance: document.getElementById("distance"),
+        angle: document.getElementById("angle"),
+        test: document.getElementById("test"),
+        sourcev: document.getElementById("sourcev"),
+        distancev: document.getElementById("distancev"),
+        anglev: document.getElementById("anglev"),
+        testv: document.getElementById("testv"),
+        field: document.getElementById("field"),
+        potential: document.getElementById("potential"),
+        force: document.getElementById("force"),
+        direction: document.getElementById("direction"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        sourceSymbol: document.getElementById("source-symbol"),
+        probeNode: document.getElementById("probe-node"),
+        fieldArrow: document.getElementById("field-arrow"),
+        resetBtn: document.getElementById("reset-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(key) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === key);
+        });
+      }
+
+      function classify(fieldMag) {
+        if (fieldMag < 2000) {
+          return {
+            status: "Weak field region",
+            note: "Large distance reduces the electric field sharply (inverse-square behavior)."
+          };
+        }
+        if (fieldMag < 20000) {
+          return {
+            status: "Moderate field region",
+            note: "Probe is in a range where both direction and magnitude are easy to compare."
+          };
+        }
+        return {
+          status: "Strong field region",
+          note: "Short distance and/or large source charge produce very high field strength."
+        };
+      }
+
+      function updateModel(sourceCharge, distance, angleDeg) {
+        const cx = 140;
+        const cy = 110;
+        const angle = angleDeg * Math.PI / 180;
+        const mapRadius = 22 + clamp((distance / 5) * 82, 0, 82);
+        const px = cx + Math.cos(angle) * mapRadius;
+        const py = cy - Math.sin(angle) * mapRadius;
+
+        const sign = sourceCharge >= 0 ? 1 : -1;
+        const arrowLen = 22;
+        const ux = Math.cos(angle) * sign;
+        const uy = -Math.sin(angle) * sign;
+
+        const ax = px + ux * arrowLen;
+        const ay = py + uy * arrowLen;
+
+        el.probeNode.setAttribute("cx", px.toFixed(2));
+        el.probeNode.setAttribute("cy", py.toFixed(2));
+        el.fieldArrow.setAttribute("x1", px.toFixed(2));
+        el.fieldArrow.setAttribute("y1", py.toFixed(2));
+        el.fieldArrow.setAttribute("x2", ax.toFixed(2));
+        el.fieldArrow.setAttribute("y2", ay.toFixed(2));
+        el.sourceSymbol.textContent = sourceCharge > 0 ? "+" : sourceCharge < 0 ? "-" : "0";
+      }
+
+      function update() {
+        const source = clamp(el.source.value, -12, 12);
+        const distance = clamp(el.distance.value, 0.2, 5);
+        const angle = clamp(el.angle.value, 0, 360);
+        const test = clamp(el.test.value, -3, 3);
+
+        const sourceC = source * 1e-6;
+        const testC = test * 1e-6;
+
+        const fieldMag = Math.abs((CONSTANTS.k * sourceC) / (distance * distance));
+        const potential = (CONSTANTS.k * sourceC) / distance;
+        const forceOnTest = testC * ((CONSTANTS.k * sourceC) / (distance * distance));
+
+        const direction = source >= 0 ? "Outward from source" : "Toward source";
+        const interpretation = classify(fieldMag);
+
+        el.sourcev.textContent = source.toFixed(1);
+        el.distancev.textContent = distance.toFixed(2);
+        el.anglev.textContent = angle.toFixed(0);
+        el.testv.textContent = test.toFixed(1);
+
+        el.field.textContent = fieldMag.toFixed(1);
+        el.potential.textContent = potential.toFixed(1);
+        el.force.textContent = forceOnTest.toExponential(2);
+        el.direction.textContent = direction;
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        updateModel(source, distance, angle);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.source.value = preset.source;
+        el.distance.value = preset.distance;
+        el.angle.value = preset.angle;
+        el.test.value = preset.test;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      [el.source, el.distance, el.angle, el.test].forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.source.value = defaults.source;
+        el.distance.value = defaults.distance;
+        el.angle.value = defaults.angle;
+        el.test.value = defaults.test;
+        setActivePreset("baseline");
+        update();
+      });
+
+      applyPreset("baseline");
+    })();
+  </script>
+</body>
+</html>

@@ -7,60 +7,331 @@
   <script src="../../assets/js/theme-init.js"></script>
   <title>Cosmic Expansion Model | Integrated Science Tools</title>
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/cosmic-expansion.css">
 </head>
-<body data-site-root="../.." data-page="unit-4">
+<body data-site-root="../.." data-page="unit-4" data-sim-page="cosmic-expansion">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 4</a><a href="../../index.html">Home</a></div>
-    <h1>Cosmic Expansion Model</h1>
-    <p class="subtitle">Use a Hubble-law model to estimate recession velocity and travel-time scale.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
-            </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 4</a>
+          <a href="../../index.html">Home</a>
         </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Distance to Galaxy (Mpc): <span class="value" id="dv">100</span></label><input id="dist" type="range" min="1" max="5000" step="1" value="100">
-        <label>Hubble Constant (km/s/Mpc): <span class="value" id="hv">70</span></label><input id="h0" type="range" min="50" max="90" step="1" value="70">
-      </div>
-      <div class="panel"><div class="result">
-        <p>Recession Velocity: <span class="value" id="vel">0</span> km/s</p>
-        <p>Fraction of Light Speed: <span class="value" id="frac">0.000</span> c</p>
-        <p>Hubble Time Scale: <span class="value" id="age">0</span> billion years</p>
-        <p>Model Note: <span class="value" id="note">Local linear regime</span></p>
-      </div></div>
-    </div>
-  </div></section></main>
-  <footer id="site-footer" class="site-footer"></footer>
-  <script>
-    const c = 299792.458;
-    function update() {
-      const d = Number(dist.value);
-      const H0 = Number(h0.value);
-      const v = H0 * d;
-      const cFrac = v / c;
-      const hubbleTimeGyr = 978 / H0;
+        <h1>Cosmic Expansion Model</h1>
+        <p class="subtitle">Estimate recession velocity with Hubble's law and compare distance scales.</p>
 
-      dv.textContent = d.toFixed(0);
-      hv.textContent = H0.toFixed(0);
-      vel.textContent = v.toFixed(0);
-      frac.textContent = cFrac.toFixed(3);
-      age.textContent = hubbleTimeGyr.toFixed(2);
-      note.textContent = d < 300 ? "Local linear regime" : d < 1500 ? "Intermediate expansion range" : "Distant-universe approximation";
-    }
-    [dist, h0].forEach(el => el.addEventListener("input", update));
-    update();
+        <div class="sim-toolbar">
+          <div class="preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+            <button class="preset-btn" type="button" data-preset="local">Local Group</button>
+            <button class="preset-btn" type="button" data-preset="deep">Deep Field</button>
+            <button class="preset-btn" type="button" data-preset="highh0">High H0 Tension</button>
+            <button class="preset-btn" type="button" data-preset="nearflat">Nearby Slow Drift</button>
+          </div>
+          <div class="toolbar-end">
+            <button id="resetBtn" class="btn-reset" type="button">Reset</button>
+            <div class="sim-help">
+              <button
+                id="help-toggle"
+                class="help-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="sim-instructions"
+                title="How to use this simulator"
+              >
+                i
+              </button>
+              <section id="sim-instructions" class="instructions" aria-label="Instructions" hidden>
+                <h2>How To Use</h2>
+                <ol>
+                  <li>Choose a scenario preset to load a realistic observation case.</li>
+                  <li>Adjust galaxy distance and Hubble constant sliders.</li>
+                  <li>Read velocity, light-speed fraction, and expansion time outputs.</li>
+                  <li>Use the model panel to compare nearby and distant-galaxy behavior.</li>
+                  <li>Reset to baseline and test how changing one variable alters the trend.</li>
+                </ol>
+                <button id="help-close" class="help-close" type="button" aria-label="Close instructions">Close</button>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <section class="panel input-panel" aria-label="Model inputs">
+            <h2 class="panel-title">Inputs</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="dist">Distance to Galaxy (Mpc)</label>
+                <span class="slider-value" id="dv">100</span>
+              </div>
+              <input id="dist" type="range" min="1" max="5000" step="1" value="100">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="h0">Hubble Constant (km/s/Mpc)</label>
+                <span class="slider-value" id="hv">70</span>
+              </div>
+              <input id="h0" type="range" min="50" max="90" step="1" value="70">
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-label="Model outputs">
+            <h2 class="panel-title">Model View</h2>
+
+            <div class="model-panel" aria-label="Expansion model panel">
+              <div class="galaxy-track" id="galaxy-track">
+                <span class="galaxy-label start">Milky Way</span>
+                <span class="galaxy-dot start"></span>
+                <span class="galaxy-dot target" id="galaxy-target"></span>
+                <span class="galaxy-label target" id="target-label">Target Galaxy</span>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Speed Fraction of c</span>
+                  <span id="frac">0.000 c</span>
+                </div>
+                <div class="meter">
+                  <div class="meter-fill" id="speed-fill"></div>
+                </div>
+              </div>
+
+              <div class="meter-group">
+                <div class="meter-row">
+                  <span>Hubble Time Scale</span>
+                  <span id="age">0.00 Gyr</span>
+                </div>
+                <div class="meter">
+                  <div class="meter-fill alt" id="time-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Recession Velocity</p>
+                <p class="result-value"><span id="vel">0</span> km/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Distance Scale</p>
+                <p class="result-value" id="scale-text">Local scale</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Linear local regime</p>
+              <p class="status-note" id="note">At this distance, Hubble-law linear scaling is a good approximation.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const CONSTANTS = {
+        cKmPerSec: 299792.458
+      };
+
+      const defaults = { dist: 100, h0: 70 };
+
+      const presets = {
+        baseline: { dist: 100, h0: 70 },
+        local: { dist: 35, h0: 68 },
+        deep: { dist: 3200, h0: 67 },
+        highh0: { dist: 1200, h0: 82 },
+        nearflat: { dist: 8, h0: 62 }
+      };
+
+      const el = {
+        dist: document.getElementById("dist"),
+        h0: document.getElementById("h0"),
+        dv: document.getElementById("dv"),
+        hv: document.getElementById("hv"),
+        vel: document.getElementById("vel"),
+        frac: document.getElementById("frac"),
+        age: document.getElementById("age"),
+        scaleText: document.getElementById("scale-text"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        speedFill: document.getElementById("speed-fill"),
+        timeFill: document.getElementById("time-fill"),
+        galaxyTarget: document.getElementById("galaxy-target"),
+        targetLabel: document.getElementById("target-label"),
+        helpToggle: document.getElementById("help-toggle"),
+        helpClose: document.getElementById("help-close"),
+        instructionsPanel: document.getElementById("sim-instructions"),
+        simHelpWrap: document.querySelector(".sim-help"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(activeKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === activeKey);
+        });
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.dist.value = preset.dist;
+        el.h0.value = preset.h0;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      function classify(dist, frac) {
+        if (frac >= 1) {
+          return {
+            status: "Model exceeds relativistic range",
+            note: "The simple v = H0d model predicts superluminal recession at very large distances; use GR interpretation.",
+            scaleText: "Ultra-deep cosmological"
+          };
+        }
+
+        if (dist < 100) {
+          return {
+            status: "Linear local regime",
+            note: "Nearby galaxies are in the cleanest linear segment for comparing Hubble flow.",
+            scaleText: "Local scale"
+          };
+        }
+
+        if (dist < 1800) {
+          return {
+            status: "Intermediate expansion range",
+            note: "Velocity still tracks distance linearly, but interpretation depends on larger-scale structure.",
+            scaleText: "Intermediate scale"
+          };
+        }
+
+        return {
+          status: "Deep-field approximation",
+          note: "Large distances emphasize cosmological expansion and need careful model assumptions.",
+          scaleText: "Deep-field scale"
+        };
+      }
+
+      function update() {
+        const dist = clamp(el.dist.value, 1, 5000);
+        const h0 = clamp(el.h0.value, 50, 90);
+
+        const velocity = h0 * dist;
+        const fracC = velocity / CONSTANTS.cKmPerSec;
+        const hubbleTimeGyr = 978 / h0;
+
+        const classification = classify(dist, fracC);
+
+        el.dv.textContent = dist.toFixed(0);
+        el.hv.textContent = h0.toFixed(0);
+        el.vel.textContent = velocity.toFixed(0);
+        el.frac.textContent = `${fracC.toFixed(3)} c`;
+        el.age.textContent = `${hubbleTimeGyr.toFixed(2)} Gyr`;
+        el.scaleText.textContent = classification.scaleText;
+        el.status.textContent = classification.status;
+        el.note.textContent = classification.note;
+
+        const speedWidth = clamp((fracC / 1.2) * 100, 0, 100);
+        const timeWidth = clamp(((hubbleTimeGyr - 10) / 10) * 100, 0, 100);
+        const galaxyPosition = clamp((dist / 5000) * 100, 3, 97);
+
+        el.speedFill.style.width = `${speedWidth.toFixed(1)}%`;
+        el.timeFill.style.width = `${timeWidth.toFixed(1)}%`;
+        el.galaxyTarget.style.left = `${galaxyPosition.toFixed(1)}%`;
+        el.targetLabel.style.left = `${galaxyPosition.toFixed(1)}%`;
+      }
+
+      [el.dist, el.h0].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.dist.value = defaults.dist;
+        el.h0.value = defaults.h0;
+        setActivePreset("baseline");
+        update();
+      });
+
+      if (el.helpToggle && el.instructionsPanel && el.simHelpWrap) {
+        let helpCloseTimer = null;
+        const setHelpOpen = (isOpen) => {
+          el.helpToggle.setAttribute("aria-expanded", String(isOpen));
+          el.instructionsPanel.hidden = !isOpen;
+        };
+        const cancelHelpClose = () => {
+          if (helpCloseTimer !== null) {
+            window.clearTimeout(helpCloseTimer);
+            helpCloseTimer = null;
+          }
+        };
+        const scheduleHelpClose = () => {
+          cancelHelpClose();
+          helpCloseTimer = window.setTimeout(() => {
+            setHelpOpen(false);
+          }, 140);
+        };
+
+        el.helpToggle.addEventListener("click", () => {
+          const isOpen = el.helpToggle.getAttribute("aria-expanded") === "true";
+          setHelpOpen(!isOpen);
+        });
+        el.helpToggle.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.helpToggle.addEventListener("focus", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseenter", () => {
+          cancelHelpClose();
+          setHelpOpen(true);
+        });
+        el.simHelpWrap.addEventListener("mouseleave", scheduleHelpClose);
+        document.addEventListener("click", (event) => {
+          if (el.instructionsPanel.hidden || el.simHelpWrap.contains(event.target)) {
+            return;
+          }
+          setHelpOpen(false);
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            setHelpOpen(false);
+          }
+        });
+        if (el.helpClose) {
+          el.helpClose.addEventListener("click", () => {
+            setHelpOpen(false);
+          });
+        }
+      }
+
+      applyPreset("baseline");
+    })();
   </script>
 </body>
 </html>

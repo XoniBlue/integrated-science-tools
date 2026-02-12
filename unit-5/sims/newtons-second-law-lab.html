@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Newton's 2nd Law Lab | Integrated Science Tools</title>
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/newtons-second-law-lab.css">
+</head>
+<body data-site-root="../.." data-page="unit-5" data-sim-page="newtons-second-law-lab">
+  <header id="site-header" class="site-header"></header>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 5</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Newton's 2nd Law Lab</h1>
+        <p class="subtitle">Investigate how net force and mass determine acceleration and motion outcomes.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Pick a preset scenario or set force, friction, mass, and time.</li>
+            <li>Observe acceleration from the net force over mass relationship.</li>
+            <li>Compare final speed and displacement after the selected time window.</li>
+            <li>Use the cart model and force meter to interpret motion direction.</li>
+            <li>Reset and test what happens when mass doubles at fixed net force.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="balanced">Balanced</button>
+          <button class="preset-btn" type="button" data-preset="sprinter">Sprinter</button>
+          <button class="preset-btn" type="button" data-preset="heavy">Heavy Cart</button>
+          <button class="preset-btn" type="button" data-preset="friction">High Friction</button>
+          <button class="preset-btn" type="button" data-preset="reverse">Reverse Motion</button>
+        </div>
+
+        <div class="workspace">
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="mass">Mass (kg)</label>
+                <span class="slider-value" id="massv">8.0</span>
+              </div>
+              <input id="mass" type="range" min="1" max="60" step="0.1" value="8">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="applied">Applied Force (N)</label>
+                <span class="slider-value" id="appliedv">56</span>
+              </div>
+              <input id="applied" type="range" min="0" max="300" step="1" value="56">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="friction">Friction Force (N)</label>
+                <span class="slider-value" id="frictionv">12</span>
+              </div>
+              <input id="friction" type="range" min="0" max="180" step="1" value="12">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="time">Time Interval (s)</label>
+                <span class="slider-value" id="timev">4.0</span>
+              </div>
+              <input id="time" type="range" min="0.5" max="12" step="0.1" value="4">
+            </div>
+
+            <div class="control-actions">
+              <button id="reset-btn" class="btn btn-reset" type="button">Reset</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Net Force</p>
+                <p class="result-value"><span id="net-force">0</span> N</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Acceleration</p>
+                <p class="result-value"><span id="acc">0</span> m/s^2</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Final Speed</p>
+                <p class="result-value"><span id="vf">0</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Displacement</p>
+                <p class="result-value"><span id="dx">0</span> m</p>
+              </article>
+            </div>
+
+            <div class="meter-group">
+              <div class="meter-row">
+                <span>Net force ratio</span>
+                <span id="meter-label">0%</span>
+              </div>
+              <div class="meter"><div id="force-fill" class="meter-fill"></div></div>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Accelerating right</p>
+              <p class="status-note" id="note">Positive net force produces acceleration in the force direction.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel">
+              <div class="track" aria-hidden="true">
+                <div class="cart" id="cart">m</div>
+                <div class="arrow applied" id="arrow-applied">Applied</div>
+                <div class="arrow friction" id="arrow-friction">Friction</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script>
+    (() => {
+      const presets = {
+        balanced: { mass: 8, applied: 56, friction: 12, time: 4 },
+        sprinter: { mass: 4, applied: 150, friction: 18, time: 3 },
+        heavy: { mass: 28, applied: 130, friction: 20, time: 5 },
+        friction: { mass: 9, applied: 85, friction: 70, time: 4 },
+        reverse: { mass: 12, applied: 42, friction: 90, time: 3.5 }
+      };
+
+      const defaults = presets.balanced;
+
+      const el = {
+        mass: document.getElementById("mass"),
+        applied: document.getElementById("applied"),
+        friction: document.getElementById("friction"),
+        time: document.getElementById("time"),
+        massv: document.getElementById("massv"),
+        appliedv: document.getElementById("appliedv"),
+        frictionv: document.getElementById("frictionv"),
+        timev: document.getElementById("timev"),
+        netForce: document.getElementById("net-force"),
+        acc: document.getElementById("acc"),
+        vf: document.getElementById("vf"),
+        dx: document.getElementById("dx"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        meterLabel: document.getElementById("meter-label"),
+        forceFill: document.getElementById("force-fill"),
+        cart: document.getElementById("cart"),
+        arrowApplied: document.getElementById("arrow-applied"),
+        arrowFriction: document.getElementById("arrow-friction"),
+        resetBtn: document.getElementById("reset-btn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function setActivePreset(key) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === key);
+        });
+      }
+
+      function classify(netForce, acceleration) {
+        if (Math.abs(netForce) < 0.05) {
+          return {
+            status: "Net force near zero",
+            note: "Balanced forces produce near-constant velocity or rest."
+          };
+        }
+
+        if (acceleration > 0) {
+          return {
+            status: "Accelerating right",
+            note: "Applied force exceeds friction, so velocity increases to the right."
+          };
+        }
+
+        return {
+          status: "Accelerating left",
+          note: "Friction dominates applied push, so acceleration points left."
+        };
+      }
+
+      function updateModel(applied, friction, netForce, mass) {
+        const appliedScale = clamp(applied / 300, 0.05, 1);
+        const frictionScale = clamp(friction / 180, 0.05, 1);
+        const netScale = clamp(Math.abs(netForce) / 220, 0, 1);
+
+        el.arrowApplied.style.width = `${(22 + appliedScale * 90).toFixed(1)}px`;
+        el.arrowFriction.style.width = `${(22 + frictionScale * 90).toFixed(1)}px`;
+
+        const cartOffset = (netForce >= 0 ? 1 : -1) * netScale * 30;
+        el.cart.style.transform = `translateX(${cartOffset.toFixed(1)}px)`;
+        el.cart.textContent = `${mass.toFixed(1)} kg`;
+      }
+
+      function update() {
+        const mass = clamp(el.mass.value, 1, 60);
+        const applied = clamp(el.applied.value, 0, 300);
+        const friction = clamp(el.friction.value, 0, 180);
+        const time = clamp(el.time.value, 0.5, 12);
+
+        const netForce = applied - friction;
+        const acceleration = netForce / mass;
+        const finalSpeed = acceleration * time;
+        const displacement = 0.5 * acceleration * time * time;
+
+        const interpretation = classify(netForce, acceleration);
+
+        el.massv.textContent = mass.toFixed(1);
+        el.appliedv.textContent = applied.toFixed(0);
+        el.frictionv.textContent = friction.toFixed(0);
+        el.timev.textContent = time.toFixed(1);
+
+        el.netForce.textContent = netForce.toFixed(2);
+        el.acc.textContent = acceleration.toFixed(3);
+        el.vf.textContent = finalSpeed.toFixed(2);
+        el.dx.textContent = displacement.toFixed(2);
+        el.status.textContent = interpretation.status;
+        el.note.textContent = interpretation.note;
+
+        const meterPct = clamp((Math.abs(netForce) / 220) * 100, 0, 100);
+        el.forceFill.style.width = `${meterPct.toFixed(1)}%`;
+        el.meterLabel.textContent = `${meterPct.toFixed(0)}%`;
+
+        updateModel(applied, friction, netForce, mass);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+        el.mass.value = preset.mass;
+        el.applied.value = preset.applied;
+        el.friction.value = preset.friction;
+        el.time.value = preset.time;
+        setActivePreset(presetKey);
+        update();
+      }
+
+      [el.mass, el.applied, el.friction, el.time].forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.mass.value = defaults.mass;
+        el.applied.value = defaults.applied;
+        el.friction.value = defaults.friction;
+        el.time.value = defaults.time;
+        setActivePreset("balanced");
+        update();
+      });
+
+      applyPreset("balanced");
+    })();
+  </script>
+</body>
+</html>

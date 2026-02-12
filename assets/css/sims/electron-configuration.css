@@ -1,333 +1,126 @@
+.sim-wrap .element-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
 
-        .sim-wrap * { margin: 0; padding: 0; box-sizing: border-box; }
-        .sim-wrap {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            padding: 0;
-            color: #f3ecff;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: rgba(31, 14, 50, 0.92);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255, 158, 212, 0.3);
-            box-shadow: 0 14px 40px rgba(6, 2, 11, 0.55);
-        }
-        .sim-wrap h1 { text-align: center; color: #ffd7f0; margin-bottom: 10px; font-size: 36px; }
-        .sim-wrap .subtitle { text-align: center; color: #c6b5de; margin-bottom: 30px; font-size: 18px; }
-        .sim-wrap .top-actions {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .sim-wrap .top-actions a {
-            display: inline-block;
-            padding: 0.5rem 0.8rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 158, 212, 0.4);
-            color: #ffd7f0;
-            background: rgba(255, 94, 168, 0.1);
-        }
-        .sim-wrap .top-actions a:hover {
-            background: rgba(255, 94, 168, 0.2);
-            color: #fff2f9;
-        }
-        .element-selector {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-            gap: 10px;
-            margin-bottom: 30px;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .element-btn {
-            padding: 12px 8px;
-            background: #3a1a59;
-            color: #f8edff;
-            border: 1px solid rgba(255, 158, 212, 0.35);
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.25s;
-            text-align: center;
-        }
-        .element-btn:hover {
-            background: #55277d;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 94, 168, 0.18);
-        }
-        .element-btn.active { background: #ff5ea8; color: #200a2d; }
-        .element-number { font-size: 11px; opacity: 0.7; margin-bottom: 4px; }
-        .element-symbol { font-size: 22px; }
-        .workspace {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        @media (max-width: 1000px) { .workspace { grid-template-columns: 1fr; } }
-        .panel {
-            background: #23113a;
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid #3d215f;
-        }
-        .panel-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ffd7f0;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .energy-levels { margin: 20px 0; }
-        .orbital-row {
-            display: flex;
-            align-items: center;
-            margin: 12px 0;
-            padding: 12px;
-            background: #160a25;
-            border-radius: 10px;
-            border-left: 4px solid #ff5ea8;
-        }
-        .orbital-label {
-            min-width: 60px;
-            font-weight: bold;
-            color: #ffd7f0;
-            font-size: 18px;
-        }
-        .orbital-boxes { display: flex; gap: 8px; flex: 1; }
-        .orbital-box {
-            width: 55px;
-            height: 75px;
-            border: 3px solid #9f7cd4;
-            border-radius: 8px;
-            background: #23113a;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: inset 0 0 6px rgba(255, 94, 168, 0.14);
-            animation: ec-orbital-glow 4.333s linear infinite;
-        }
-        .orbital-box:hover {
-            border-color: #ff5ea8;
-            transform: scale(1.05);
-        }
-        .electron-arrow {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .electron-arrow.up { bottom: 12px; border-bottom: 28px solid #ff8dc6; }
-        .electron-arrow.down { top: 12px; border-top: 28px solid #ff8dc6; }
-        .electron-arrow {
-            transform: translateX(-50%) translateY(0);
-            animation: ec-arrow-bob 2.856s linear infinite;
-        }
-        @keyframes ec-orbital-glow {
-            0%, 50%, 100% {
-                box-shadow: inset 0 0 6px rgba(255, 94, 168, 0.14);
-            }
-            25% {
-                box-shadow: inset 0 0 14px rgba(255, 94, 168, 0.14);
-            }
-            75% {
-                box-shadow: inset 0 0 2px rgba(255, 94, 168, 0.14);
-            }
-        }
-        @keyframes ec-arrow-bob {
-            0%, 50%, 100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            25% {
-                transform: translateX(-50%) translateY(-2px);
-            }
-            75% {
-                transform: translateX(-50%) translateY(2px);
-            }
-        }
-        .notation-display {
-            background: #160a25;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #5e3b88;
-            min-height: 80px;
-        }
-        .notation-text {
-            font-family: 'Courier New', monospace;
-            font-size: 18px;
-            color: #ffd7f0;
-            text-align: center;
-            line-height: 1.8;
-        }
-        .electron-count {
-            background: #ff5ea8;
-            color: #200a2d;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-left: 2px;
-            font-size: 14px;
-            vertical-align: super;
-        }
-        .info-box {
-            background: #160a25;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 4px solid #9f7cd4;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #e4d7f5;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        .info-value { color: #ff8dc6; font-size: 18px; }
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-fill { background: #ff5ea8; color: #220b2f; }
-        .btn-fill:hover { background: #ff7dba; transform: translateY(-2px); }
-        .btn-clear { background: #9f7cd4; color: #12061f; }
-        .btn-clear:hover { background: #b594e4; }
-        .btn-check { background: #ffd0ea; color: #280d39; }
-        .btn-check:hover { background: #ffe3f2; }
-        .feedback {
-            margin-top: 20px;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            display: none;
-        }
-        .feedback.show { display: block; }
-        .feedback.correct {
-            background: rgba(109, 236, 164, 0.18);
-            color: #b7ffd9;
-            border: 2px solid #6deca4;
-        }
-        .feedback.incorrect {
-            background: rgba(255, 124, 147, 0.16);
-            color: #ffced8;
-            border: 2px solid #ff7c93;
-        }
-        .noble-gas-notation {
-            margin-top: 15px;
-            padding: 15px;
-            background: #23113a;
-            border-radius: 8px;
-            border: 2px solid #5e3b88;
-            min-height: 60px;
-        }
-        .noble-gas-label { color: #c6b5de; font-size: 14px; margin-bottom: 8px; }
-        :root {
-            --sim-bg-start: var(--bg-top);
-            --sim-bg-end: var(--bg-mid);
-            --sim-text: var(--text);
-            --sim-muted: var(--muted);
-            --sim-title: var(--text);
-            --sim-surface: var(--surface);
-            --sim-surface-alt: var(--surface-2);
-            --sim-panel-border: var(--border);
-            --sim-accent: var(--accent);
-            --sim-accent-2: var(--accent2);
-            --sim-soft: var(--accent2);
-            --sim-btn: color-mix(in srgb, var(--surface-2) 88%, black 12%);
-            --sim-btn-hover: color-mix(in srgb, var(--surface-2) 72%, var(--accent2) 28%);
-            --sim-btn-active-text: var(--button-text);
-            --sim-success: #6deca4;
-            --sim-danger: #ff7c93;
-            --sim-canvas-border: color-mix(in srgb, var(--accent2) 45%, var(--border) 55%);
-            --sim-canvas-bg: color-mix(in srgb, var(--surface) 70%, black 30%);
-            --sim-canvas-stroke: color-mix(in srgb, var(--accent2) 55%, white 45%);
-            --sim-lone-pair: color-mix(in srgb, var(--accent2) 20%, transparent);
-        }
-        .sim-wrap {
-            color: var(--sim-text) !important;
-        }
-        .sim-wrap h1,
-        .sim-wrap .panel-title {
-            color: var(--sim-title) !important;
-        }
-        .sim-wrap .subtitle,
-        .sim-wrap .info-label,
-        .sim-wrap .noble-gas-label {
-            color: var(--sim-muted) !important;
-        }
-        .sim-wrap .container,
-        .sim-wrap .panel,
-        .sim-wrap .instructions,
-        .sim-wrap .info-box,
-        .sim-wrap .notation-display,
-        .sim-wrap .noble-gas-notation,
-        .sim-wrap .orbital-row {
-            background: var(--sim-surface) !important;
-            border-color: var(--sim-panel-border) !important;
-        }
-        .sim-wrap .orbital-box {
-            background: var(--sim-surface-alt) !important;
-            border-color: var(--sim-canvas-border) !important;
-        }
-        .sim-wrap .element-btn,
-        .sim-wrap .btn {
-            background: var(--sim-btn) !important;
-            color: var(--sim-text) !important;
-            border-color: var(--sim-panel-border) !important;
-        }
-        .sim-wrap .element-btn:hover,
-        .sim-wrap .btn:hover {
-            background: var(--sim-btn-hover) !important;
-        }
-        .sim-wrap .element-btn.active,
-        .sim-wrap .btn-fill,
-        .sim-wrap .btn-check {
-            background: var(--sim-accent) !important;
-            color: var(--sim-btn-active-text) !important;
-        }
-        .sim-wrap .btn-clear {
-            background: var(--sim-soft) !important;
-            color: var(--sim-btn-active-text) !important;
-        }
-        .sim-wrap .info-value,
-        .sim-wrap .electron-count {
-            color: var(--sim-accent-2) !important;
-        }
-        .sim-wrap .feedback.correct {
-            border-color: var(--sim-success) !important;
-        }
-        .sim-wrap .feedback.incorrect {
-            border-color: var(--sim-danger) !important;
-        }
-        .sim-wrap .top-actions a {
-            border-color: color-mix(in srgb, var(--sim-accent) 45%, transparent) !important;
-            color: var(--sim-title) !important;
-            background: color-mix(in srgb, var(--sim-accent) 12%, transparent) !important;
-        }
-        .sim-wrap .top-actions a:hover {
-            background: color-mix(in srgb, var(--sim-accent) 22%, transparent) !important;
-            color: var(--sim-text) !important;
-        }
-    
+.sim-wrap .element-btn {
+  display: grid;
+  gap: 0.15rem;
+  align-items: center;
+  justify-items: center;
+  padding: 0.5rem 0.35rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 75%, transparent);
+  background: color-mix(in srgb, var(--sim-surface-alt) 78%, transparent);
+  color: var(--sim-text);
+  font-weight: 700;
+}
+
+.sim-wrap .element-btn:hover {
+  border-color: color-mix(in srgb, var(--sim-accent) 45%, var(--sim-accent-2) 55%);
+  transform: translateY(-1px);
+}
+
+.sim-wrap .element-btn.active {
+  border-color: color-mix(in srgb, var(--sim-accent) 70%, transparent);
+  background: color-mix(in srgb, var(--sim-accent) 24%, var(--sim-surface-alt) 76%);
+}
+
+.sim-wrap .element-btn:focus-visible,
+.sim-wrap .orbital-box:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--sim-accent-2) 65%, white 35%);
+  outline-offset: 2px;
+}
+
+.sim-wrap .element-number {
+  font-size: 0.72rem;
+  color: var(--sim-muted);
+}
+
+.sim-wrap .element-symbol {
+  font-size: 1.02rem;
+}
+
+.sim-wrap .orbital-model {
+  gap: 0.7rem;
+}
+
+.sim-wrap .energy-levels {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.sim-wrap .orbital-row {
+  display: grid;
+  grid-template-columns: minmax(2.6rem, auto) 1fr;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.sim-wrap .orbital-label {
+  font-weight: 700;
+  color: var(--sim-muted);
+}
+
+.sim-wrap .orbital-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.sim-wrap .orbital-box {
+  width: 2.45rem;
+  height: 3.1rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 72%, transparent);
+  background: color-mix(in srgb, var(--sim-surface-alt) 70%, transparent);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  cursor: pointer;
+}
+
+.sim-wrap .orbital-box:hover {
+  border-color: color-mix(in srgb, var(--sim-accent) 45%, var(--sim-accent-2) 55%);
+}
+
+.sim-wrap .electron-arrow {
+  line-height: 1;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: var(--sim-accent-2);
+}
+
+.sim-wrap .notation-stack {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--sim-surface-alt) 76%, transparent);
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.sim-wrap .notation-label {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--sim-muted);
+}
+
+.sim-wrap .notation-value {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--sim-text);
+  word-break: break-word;
+}
+
+@media (max-width: 920px) {
+  .sim-wrap .orbital-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -6,80 +6,436 @@
   <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
   <script src="../../assets/js/theme-init.js"></script>
   <title>Motion Graph Lab | Integrated Science Tools</title>
+  <meta name="description" content="Interactive motion graph simulator for position and velocity under constant acceleration.">
   <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
   <script src="../../assets/js/site.js" defer></script>
   <script src="../../assets/js/sim-enhancer.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/sims/motion-graph-lab.css">
 </head>
-<body data-site-root="../.." data-page="unit-5">
+<body data-site-root="../.." data-page="unit-5" data-sim-page="motion-graph-lab">
   <header id="site-header" class="site-header"></header>
-  <main class="page-main"><section class="sim-wrap"><div class="container">
-    <div class="top-actions"><a href="../index.html">Back to Unit 5</a><a href="../../index.html">Home</a></div>
-    <h1>Motion Graph Lab</h1>
-    <p class="subtitle">Model position and velocity over time with constant acceleration.</p>
 
-        <div class="instructions">
-            <h3>📖 How to Use This Simulator</h3>
-            <div>
-                <strong>1. Set the Scenario:</strong> Use the controls to define starting values for the model.<br>
-                <strong>2. Adjust One Variable:</strong> Change one input at a time to isolate cause and effect.<br>
-                <strong>3. Read the Outputs:</strong> Watch the calculated results panel update immediately.<br>
-                <strong>4. Compare Trials:</strong> Test at least two additional cases and note the trend.<br>
-                <strong>5. Explain the Pattern:</strong> Use your results to justify a scientific claim.
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 5</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
+        <h1>Motion Graph Lab</h1>
+        <p class="subtitle">Model position and velocity over time with constant acceleration.</p>
+
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Choose a preset, then adjust one motion variable at a time.</li>
+            <li>Read live values for position, velocity, and displacement at time <em>t</em>.</li>
+            <li>Use the graph panel to compare x(t) and v(t) trends across the interval.</li>
+            <li>Check the status badge to classify motion behavior.</li>
+          </ol>
+        </section>
+
+        <div class="sim-toolbar">
+          <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+            <button class="preset-btn active" type="button" data-preset="baseline">Baseline</button>
+            <button class="preset-btn" type="button" data-preset="braking">Braking</button>
+            <button class="preset-btn" type="button" data-preset="speedup">Speed Up</button>
+            <button class="preset-btn" type="button" data-preset="reverse">Reverse Direction</button>
+            <button class="preset-btn" type="button" data-preset="coast">Constant Velocity</button>
+          </div>
+          <div class="toolbar-end">
+            <button id="resetBtn" class="btn btn-reset" type="button">Reset</button>
+          </div>
+        </div>
+
+        <div class="workspace">
+          <section class="panel input-panel" aria-labelledby="motion-input-heading">
+            <h2 id="motion-input-heading" class="panel-title">Inputs</h2>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="x0">Initial Position x0 (m)</label>
+                <span class="slider-value" id="x0v">0.0</span>
+              </div>
+              <input id="x0" type="range" min="-50" max="50" step="1" value="0">
             </div>
-        </div>
 
-    <div class="workspace">
-      <div class="panel">
-        <label>Initial Position x0 (m): <span class="value" id="x0v">0.0</span></label><input id="x0" type="range" min="-50" max="50" step="1" value="0">
-        <label>Initial Velocity v0 (m/s): <span class="value" id="v0v">4.0</span></label><input id="v0" type="range" min="-20" max="20" step="0.5" value="4">
-        <label>Acceleration a (m/s^2): <span class="value" id="av">-1.0</span></label><input id="a" type="range" min="-10" max="10" step="0.5" value="-1">
-        <label>Elapsed Time t (s): <span class="value" id="tv">6.0</span></label><input id="t" type="range" min="0" max="20" step="0.5" value="6">
-      </div>
-      <div class="panel">
-        <div class="result">
-          <p>Position x(t): <span class="value" id="xt">0</span> m</p>
-          <p>Velocity v(t): <span class="value" id="vt">0</span> m/s</p>
-          <p>Displacement: <span class="value" id="dx">0</span> m</p>
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="v0">Initial Velocity v0 (m/s)</label>
+                <span class="slider-value" id="v0v">4.0</span>
+              </div>
+              <input id="v0" type="range" min="-20" max="20" step="0.5" value="4">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="a">Acceleration a (m/s^2)</label>
+                <span class="slider-value" id="av">-1.0</span>
+              </div>
+              <input id="a" type="range" min="-10" max="10" step="0.5" value="-1">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-label">
+                <label for="t">Elapsed Time t (s)</label>
+                <span class="slider-value" id="tv">6.0</span>
+              </div>
+              <input id="t" type="range" min="0" max="20" step="0.5" value="6">
+            </div>
+          </section>
+
+          <section class="panel output-panel" aria-labelledby="motion-output-heading">
+            <h2 id="motion-output-heading" class="panel-title">Graph + Results</h2>
+
+            <div class="model-panel motion-model" aria-label="Motion graph panel">
+              <canvas id="motion-canvas" class="motion-canvas" role="img" aria-label="Position and velocity curves vs time"></canvas>
+              <p class="plot-legend">Blue line: position x(t). Pink line: velocity v(t). Marker shows current time setting.</p>
+            </div>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Position x(t)</p>
+                <p class="result-value"><span id="xt">0.00</span> m</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Velocity v(t)</p>
+                <p class="result-value"><span id="vt">0.00</span> m/s</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Displacement</p>
+                <p class="result-value"><span id="dx">0.00</span> m</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Average Velocity</p>
+                <p class="result-value"><span id="vavg">0.00</span> m/s</p>
+              </article>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Changing speed while moving forward</p>
+              <p class="status-note" id="note">Nonzero acceleration means the velocity graph has a slope and position graph is curved.</p>
+            </div>
+
+            <div class="sample-table-wrap" aria-label="Sample values table">
+              <table class="sample-table">
+                <thead>
+                  <tr><th>Time (s)</th><th>Position (m)</th><th>Velocity (m/s)</th></tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+          </section>
         </div>
-        <table>
-          <thead><tr><th>Time (s)</th><th>Position (m)</th><th>Velocity (m/s)</th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
       </div>
-    </div>
-  </div></section></main>
+    </section>
+  </main>
+
   <footer id="site-footer" class="site-footer"></footer>
+
   <script>
-    function stateAt(time, x0Val, v0Val, aVal) {
-      const x = x0Val + v0Val * time + 0.5 * aVal * time * time;
-      const v = v0Val + aVal * time;
-      return { x, v };
-    }
-    function update() {
-      const x0Val = Number(x0.value);
-      const v0Val = Number(v0.value);
-      const aVal = Number(a.value);
-      const tVal = Number(t.value);
+    (() => {
+      const LIMITS = {
+        x0: [-50, 50],
+        v0: [-20, 20],
+        a: [-10, 10],
+        t: [0, 20]
+      };
 
-      x0v.textContent = x0Val.toFixed(1);
-      v0v.textContent = v0Val.toFixed(1);
-      av.textContent = aVal.toFixed(1);
-      tv.textContent = tVal.toFixed(1);
+      const defaults = { x0: 0, v0: 4, a: -1, t: 6 };
 
-      const now = stateAt(tVal, x0Val, v0Val, aVal);
-      xt.textContent = now.x.toFixed(2);
-      vt.textContent = now.v.toFixed(2);
-      dx.textContent = (now.x - x0Val).toFixed(2);
+      const presets = {
+        baseline: { x0: 0, v0: 4, a: -1, t: 6 },
+        braking: { x0: 12, v0: 18, a: -4, t: 5 },
+        speedup: { x0: -20, v0: 2, a: 3.5, t: 7 },
+        reverse: { x0: 8, v0: 10, a: -5.5, t: 4.5 },
+        coast: { x0: -10, v0: 6, a: 0, t: 8 }
+      };
 
-      const sampleTimes = [0, Math.max(0, tVal / 3), Math.max(0, (2 * tVal) / 3), tVal];
-      rows.innerHTML = sampleTimes.map(time => {
-        const s = stateAt(time, x0Val, v0Val, aVal);
-        return `<tr><td>${time.toFixed(2)}</td><td>${s.x.toFixed(2)}</td><td>${s.v.toFixed(2)}</td></tr>`;
-      }).join("");
-    }
-    [x0, v0, a, t].forEach(el => el.addEventListener("input", update));
-    update();
+      const el = {
+        x0: document.getElementById("x0"),
+        v0: document.getElementById("v0"),
+        a: document.getElementById("a"),
+        t: document.getElementById("t"),
+        x0v: document.getElementById("x0v"),
+        v0v: document.getElementById("v0v"),
+        av: document.getElementById("av"),
+        tv: document.getElementById("tv"),
+        xt: document.getElementById("xt"),
+        vt: document.getElementById("vt"),
+        dx: document.getElementById("dx"),
+        vavg: document.getElementById("vavg"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        rows: document.getElementById("rows"),
+        motionCanvas: document.getElementById("motion-canvas"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      const canvasState = {
+        dpr: window.devicePixelRatio || 1,
+        width: 0,
+        height: 0
+      };
+
+      let currentModel = null;
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, Number(value)));
+      }
+
+      function stateAt(time, x0Val, v0Val, aVal) {
+        const x = x0Val + (v0Val * time) + (0.5 * aVal * time * time);
+        const v = v0Val + (aVal * time);
+        return { x, v };
+      }
+
+      function readInputs() {
+        const x0 = clamp(el.x0.value, LIMITS.x0[0], LIMITS.x0[1]);
+        const v0 = clamp(el.v0.value, LIMITS.v0[0], LIMITS.v0[1]);
+        const a = clamp(el.a.value, LIMITS.a[0], LIMITS.a[1]);
+        const t = clamp(el.t.value, LIMITS.t[0], LIMITS.t[1]);
+
+        el.x0.value = x0;
+        el.v0.value = v0;
+        el.a.value = a;
+        el.t.value = t;
+
+        return { x0, v0, a, t };
+      }
+
+      function classifyMotion(input, currentState) {
+        if (Math.abs(input.a) < 0.05) {
+          return {
+            status: "Constant velocity motion",
+            note: "Acceleration is near zero, so velocity is approximately constant and position changes linearly."
+          };
+        }
+
+        if (Math.sign(input.v0 || 1) !== Math.sign(currentState.v || 1) && Math.abs(currentState.v) < Math.abs(input.v0)) {
+          return {
+            status: "Direction reversal in progress",
+            note: "Acceleration opposes initial motion strongly enough to bring velocity through zero."
+          };
+        }
+
+        if (Math.sign(input.a) === Math.sign(currentState.v || input.v0 || 1)) {
+          return {
+            status: "Speeding up",
+            note: "Acceleration and velocity have the same sign, so speed magnitude increases with time."
+          };
+        }
+
+        return {
+          status: "Slowing down",
+          note: "Acceleration opposes velocity, so speed magnitude decreases over this interval."
+        };
+      }
+
+      function calculateModel(input) {
+        const currentState = stateAt(input.t, input.x0, input.v0, input.a);
+        const displacement = currentState.x - input.x0;
+        const averageVelocity = input.t > 0 ? displacement / input.t : input.v0;
+        const classification = classifyMotion(input, currentState);
+
+        return {
+          currentState,
+          displacement,
+          averageVelocity,
+          classification
+        };
+      }
+
+      function setActivePreset(activeKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === activeKey);
+        });
+      }
+
+      function resizeCanvas() {
+        const rect = el.motionCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvasState.dpr = dpr;
+        canvasState.width = rect.width;
+        canvasState.height = rect.height;
+        el.motionCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+        el.motionCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+        if (currentModel) {
+          drawGraph(currentModel.input, currentModel.model);
+        }
+      }
+
+      function drawGraph(input, model) {
+        const ctx = el.motionCanvas.getContext("2d");
+        if (!ctx || canvasState.width <= 0 || canvasState.height <= 0) return;
+
+        const width = canvasState.width;
+        const height = canvasState.height;
+        const pad = { left: 36, right: 14, top: 12, bottom: 26 };
+
+        ctx.setTransform(canvasState.dpr, 0, 0, canvasState.dpr, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+
+        ctx.fillStyle = "rgba(0, 0, 0, 0.16)";
+        ctx.fillRect(0, 0, width, height);
+
+        const graphWidth = width - pad.left - pad.right;
+        const graphHeight = height - pad.top - pad.bottom;
+
+        const steps = 40;
+        const samples = [];
+        for (let i = 0; i <= steps; i += 1) {
+          const tVal = (i / steps) * Math.max(0.001, input.t);
+          const point = stateAt(tVal, input.x0, input.v0, input.a);
+          samples.push({ t: tVal, x: point.x, v: point.v });
+        }
+
+        const xValues = samples.map((sample) => sample.x);
+        const vValues = samples.map((sample) => sample.v);
+        const allValues = xValues.concat(vValues);
+        const minY = Math.min(...allValues);
+        const maxY = Math.max(...allValues);
+        const ySpan = Math.max(1, maxY - minY);
+
+        function pxX(timeValue) {
+          return pad.left + ((timeValue / Math.max(0.001, input.t)) * graphWidth);
+        }
+
+        function pxY(value) {
+          const normalized = (value - minY) / ySpan;
+          return pad.top + ((1 - normalized) * graphHeight);
+        }
+
+        ctx.strokeStyle = "rgba(255,255,255,0.28)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, pad.top);
+        ctx.lineTo(pad.left, pad.top + graphHeight);
+        ctx.lineTo(pad.left + graphWidth, pad.top + graphHeight);
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(109, 207, 255, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        samples.forEach((sample, index) => {
+          const xPos = pxX(sample.t);
+          const yPos = pxY(sample.x);
+          if (index === 0) {
+            ctx.moveTo(xPos, yPos);
+          } else {
+            ctx.lineTo(xPos, yPos);
+          }
+        });
+        ctx.stroke();
+
+        ctx.strokeStyle = "rgba(255, 140, 197, 0.95)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        samples.forEach((sample, index) => {
+          const xPos = pxX(sample.t);
+          const yPos = pxY(sample.v);
+          if (index === 0) {
+            ctx.moveTo(xPos, yPos);
+          } else {
+            ctx.lineTo(xPos, yPos);
+          }
+        });
+        ctx.stroke();
+
+        const markerX = pxX(input.t);
+        const markerYPos = pxY(model.currentState.x);
+        const markerYVel = pxY(model.currentState.v);
+
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = "rgba(255,255,255,0.4)";
+        ctx.beginPath();
+        ctx.moveTo(markerX, pad.top);
+        ctx.lineTo(markerX, pad.top + graphHeight);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "#6dcfff";
+        ctx.beginPath();
+        ctx.arc(markerX, markerYPos, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#ff8cc5";
+        ctx.beginPath();
+        ctx.arc(markerX, markerYVel, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function updateTable(input) {
+        const sampleTimes = [0, Math.max(0, input.t / 3), Math.max(0, (2 * input.t) / 3), input.t];
+        el.rows.innerHTML = sampleTimes.map((timePoint) => {
+          const state = stateAt(timePoint, input.x0, input.v0, input.a);
+          return `<tr><td>${timePoint.toFixed(2)}</td><td>${state.x.toFixed(2)}</td><td>${state.v.toFixed(2)}</td></tr>`;
+        }).join("");
+      }
+
+      function update() {
+        const input = readInputs();
+        const model = calculateModel(input);
+
+        el.x0v.textContent = input.x0.toFixed(1);
+        el.v0v.textContent = input.v0.toFixed(1);
+        el.av.textContent = input.a.toFixed(1);
+        el.tv.textContent = input.t.toFixed(1);
+
+        el.xt.textContent = model.currentState.x.toFixed(2);
+        el.vt.textContent = model.currentState.v.toFixed(2);
+        el.dx.textContent = model.displacement.toFixed(2);
+        el.vavg.textContent = model.averageVelocity.toFixed(2);
+        el.status.textContent = model.classification.status;
+        el.note.textContent = model.classification.note;
+
+        currentModel = { input, model };
+        drawGraph(input, model);
+        updateTable(input);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = presets[presetKey];
+        if (!preset) return;
+
+        el.x0.value = preset.x0;
+        el.v0.value = preset.v0;
+        el.a.value = preset.a;
+        el.t.value = preset.t;
+
+        setActivePreset(presetKey);
+        update();
+      }
+
+      [el.x0, el.v0, el.a, el.t].forEach((input) => {
+        input.addEventListener("input", () => {
+          setActivePreset("");
+          update();
+        });
+      });
+
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => applyPreset(button.dataset.preset));
+      });
+
+      el.resetBtn.addEventListener("click", () => {
+        el.x0.value = defaults.x0;
+        el.v0.value = defaults.v0;
+        el.a.value = defaults.a;
+        el.t.value = defaults.t;
+        setActivePreset("baseline");
+        update();
+      });
+
+      window.addEventListener("resize", resizeCanvas);
+
+      resizeCanvas();
+      applyPreset("baseline");
+    })();
   </script>
 </body>
 </html>

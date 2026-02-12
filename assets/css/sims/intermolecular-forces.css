@@ -1,0 +1,226 @@
+body[data-sim-page="intermolecular-forces"] .sim-wrap .workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(300px, 360px);
+  grid-template-areas:
+    "model model result"
+    "controls controls result";
+  gap: 0.9rem;
+  align-items: start;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .panel {
+  border: 2px solid var(--sim-panel-border);
+  border-radius: 14px;
+  padding: 0.95rem;
+  background: color-mix(in srgb, var(--sim-surface) 88%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .panel-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .controls {
+  grid-area: controls;
+  align-self: stretch;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .result {
+  grid-area: result;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .model {
+  grid-area: model;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .top-control-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .result-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .result-card {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  padding: 0.68rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 72%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .result-label {
+  margin: 0;
+  color: var(--sim-muted);
+  font-size: 0.82rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .result-value {
+  margin: 0.28rem 0 0;
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .status-block {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  padding: 0.72rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 62%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .status-label,
+body[data-sim-page="intermolecular-forces"] .sim-wrap .status-note {
+  margin: 0;
+  color: var(--sim-muted);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .status-label {
+  font-size: 0.8rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .status-badge {
+  margin: 0.36rem 0;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.62rem;
+  font-weight: 800;
+  border: 1px solid color-mix(in srgb, var(--sim-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--sim-accent) 18%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-details {
+  margin-top: 0.82rem;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 68%, transparent);
+  border-radius: 12px;
+  padding: 0.7rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 68%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-label,
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-copy,
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-example {
+  margin: 0;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-label {
+  font-size: 0.94rem;
+  font-weight: 800;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-copy,
+body[data-sim-page="intermolecular-forces"] .sim-wrap .force-example {
+  margin-top: 0.4rem;
+  color: var(--sim-muted);
+  line-height: 1.45;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .model-panel {
+  display: grid;
+  gap: 0.72rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .model-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .model .panel-title {
+  margin: 0;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .canvas-wrap {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  border-radius: 12px;
+  padding: 0.45rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 58%, transparent);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap #force-canvas {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend {
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 68%, transparent);
+  border-radius: 12px;
+  padding: 0.62rem;
+  background: color-mix(in srgb, var(--sim-surface-alt) 72%, transparent);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 0.7rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--sim-muted);
+  font-size: 0.84rem;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot {
+  width: 0.86rem;
+  height: 0.86rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--sim-panel-border) 70%, transparent);
+  display: inline-block;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-molecule {
+  background: #38bdf8;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-positive {
+  background: #60a5fa;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-london-positive {
+  background: #ef4444;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-negative {
+  background: #fb7185;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-hydrogen {
+  background: #e2e8f0;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-dot-water {
+  background: #c084fc;
+}
+
+body[data-sim-page="intermolecular-forces"] .sim-wrap .legend-line {
+  width: 1.25rem;
+  height: 0;
+  border-top: 2px dashed color-mix(in srgb, var(--sim-accent2) 60%, white 40%);
+  display: inline-block;
+}
+
+@media (max-width: 1100px) {
+  body[data-sim-page="intermolecular-forces"] .sim-wrap .workspace {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "model"
+      "controls"
+      "result";
+  }
+
+  body[data-sim-page="intermolecular-forces"] .sim-wrap .legend {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-sim-page="intermolecular-forces"] .sim-wrap .model-header {
+    flex-wrap: wrap;
+  }
+}

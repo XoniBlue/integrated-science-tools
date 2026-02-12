@@ -10,6 +10,32 @@
   const MOBILE_NAV_BREAKPOINT = 1024;
   const THEMES = ["purple", "ocean"];
   const TAB_TRANSITION_FALLBACK_MS = 320;
+  const SIM_BADGE_LABELS = {
+    "lewis-dot": "Lewis Dot Structure",
+    "electron-configuration": "Electron Configuration",
+    "equation-balancer": "Equation Balancer",
+    "molecular-geometry": "Molecular Geometry",
+    "ph-titration": "pH Titration",
+    "coulombs-law-playground": "Coulomb's Law",
+    "material-selector": "Material Selector",
+    "molecular-polarity": "Molecular Polarity",
+    "solution-mixer": "Solution Mixer",
+    "energy-conversion": "Energy Conversion",
+    "orbital-motion": "Orbital Motion",
+    "resonance-lab": "Resonance Lab",
+    "cosmic-expansion": "Cosmic Expansion",
+    "field-superposition": "Field Superposition",
+    "gravity-well": "Gravity Well",
+    "electric-field-mapper": "E-Field Mapper",
+    "force-balance": "Force Balance",
+    "newtons-second-law-lab": "Newton 2nd Law",
+    "motion-graph-lab": "Motion Graph Lab",
+    "ramp-dynamics": "Ramp Dynamics",
+    "collision-lab": "Collision Lab",
+    "crash-absorber": "Crash Absorber",
+    "impulse-analyzer": "Impulse Analyzer",
+    "unit-3-test-checklist": "Unit 3 Test Checklist"
+  };
 
   const fallbackNav = `
 <nav class="site-header-shell" aria-label="Site navigation">
@@ -31,7 +57,7 @@
       <span class="brand-title">Integrated Science Tools</span>
     </a>
     <div class="header-controls">
-      <span class="nav-badge" aria-live="polite">Now: Home</span>
+      <span class="nav-badge" aria-live="polite">Home</span>
       <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">◐</button>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Toggle navigation">
         <span></span><span></span><span></span>
@@ -248,6 +274,41 @@
     }
   }
 
+  function cleanLabel(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function getSimContextLabel() {
+    const isSimPage = Boolean(document.body.dataset.simPage) || window.location.pathname.includes("/sims/");
+    if (!isSimPage) {
+      return "";
+    }
+
+    const simKey = cleanLabel(document.body.dataset.simPage) || cleanLabel(window.location.pathname.split("/").pop() || "").replace(/\.html$/i, "");
+    if (simKey && SIM_BADGE_LABELS[simKey]) {
+      return SIM_BADGE_LABELS[simKey];
+    }
+
+    const heading = document.querySelector(".sim-wrap h1, main h1");
+    if (heading) {
+      const headingText = cleanLabel(heading.textContent)
+        .replace(/\bInteractive\b/gi, "")
+        .replace(/\bSimulator\b/gi, "")
+        .replace(/\bBuilder\b/gi, "")
+        .replace(/\bDesigner\b/gi, "")
+        .replace(/\bExplorer\b/gi, "")
+        .replace(/\bModel\b/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
+      if (headingText) {
+        return headingText;
+      }
+    }
+
+    const pageTitle = cleanLabel(document.title).replace(/\s*\|\s*Integrated Science Tools\s*$/i, "");
+    return cleanLabel(pageTitle);
+  }
+
   function wireNav(root, pageId) {
     document.querySelectorAll("[data-link]").forEach((element) => {
       element.setAttribute("href", resolveHref(root, element.getAttribute("data-link")));
@@ -262,8 +323,12 @@
 
     const activeLink = document.querySelector("[data-page-link].active");
     const badge = document.querySelector(".nav-badge");
-    if (badge && activeLink) {
-      badge.textContent = `Now: ${activeLink.textContent.trim()}`;
+    if (badge) {
+      const simLabel = getSimContextLabel();
+      const unitText = activeLink ? (cleanLabel(activeLink.textContent) || "Page") : "Page";
+      const fullLabel = simLabel || unitText;
+      badge.textContent = fullLabel;
+      badge.setAttribute("title", fullLabel);
     }
 
     const button = document.querySelector(".nav-toggle");
@@ -483,6 +548,101 @@
     });
   }
 
+  function initSectionCarousels() {
+    const grids = document.querySelectorAll(".page-panel .section-grid");
+    grids.forEach((grid) => {
+      if (grid.closest(".section-carousel")) {
+        return;
+      }
+
+      const cards = Array.from(grid.querySelectorAll(".card"));
+      if (!cards.length) {
+        return;
+      }
+
+      const carousel = document.createElement("div");
+      carousel.className = "section-carousel";
+
+      const prev = document.createElement("button");
+      prev.type = "button";
+      prev.className = "section-carousel-arrow section-carousel-prev";
+      prev.setAttribute("aria-label", "Previous simulations");
+      prev.textContent = "‹";
+
+      const next = document.createElement("button");
+      next.type = "button";
+      next.className = "section-carousel-arrow section-carousel-next";
+      next.setAttribute("aria-label", "Next simulations");
+      next.textContent = "›";
+
+      const viewport = document.createElement("div");
+      viewport.className = "section-carousel-viewport";
+
+      grid.classList.add("section-grid--carousel");
+
+      const parent = grid.parentElement;
+      if (!parent) {
+        return;
+      }
+      parent.insertBefore(carousel, grid);
+      viewport.appendChild(grid);
+      carousel.append(prev, viewport, next);
+
+      cards.forEach((card) => {
+        const link = card.querySelector('a.button-link[href], a[href]');
+        if (!link) {
+          return;
+        }
+        card.classList.add("card-clickable");
+        card.addEventListener("click", (event) => {
+          if (event.target.closest("a, button, input, select, textarea, label")) {
+            return;
+          }
+          link.click();
+        });
+      });
+
+      const columnsPerView = () => {
+        const width = viewport.clientWidth;
+        if (width >= 1280) return 4;
+        if (width >= 980) return 3;
+        if (width >= 680) return 2;
+        return 1;
+      };
+
+      const stepSize = () => Math.max(220, viewport.clientWidth);
+
+      const sync = () => {
+        carousel.style.setProperty("--carousel-cols", String(columnsPerView()));
+        const max = grid.scrollWidth - viewport.clientWidth;
+        const hasOverflow = max > 4;
+        carousel.classList.toggle("is-static", !hasOverflow);
+        prev.disabled = !hasOverflow || grid.scrollLeft <= 2;
+        next.disabled = !hasOverflow || grid.scrollLeft >= max - 2;
+      };
+
+      prev.addEventListener("click", () => {
+        grid.scrollBy({ left: -stepSize(), behavior: "smooth" });
+      });
+
+      next.addEventListener("click", () => {
+        grid.scrollBy({ left: stepSize(), behavior: "smooth" });
+      });
+
+      grid.addEventListener("scroll", () => {
+        window.requestAnimationFrame(sync);
+      }, { passive: true });
+
+      window.addEventListener("resize", sync);
+      if (typeof ResizeObserver !== "undefined") {
+        const observer = new ResizeObserver(sync);
+        observer.observe(viewport);
+        observer.observe(grid);
+      }
+      sync();
+    });
+  }
+
   function syncHeaderOffset() {
     const header = document.getElementById("site-header");
     if (!header) {
@@ -584,6 +744,7 @@
     initSkipLink();
     initSharedChrome();
     initUnitTabs();
+    initSectionCarousels();
   });
 
   window.addEventListener("storage", (event) => {

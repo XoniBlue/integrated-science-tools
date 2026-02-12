@@ -1,0 +1,2409 @@
+{
+  "version": 1,
+  "last_updated": "2026-02-11T17:33:10Z",
+  "run_history": [
+    {
+      "run_id": "2026-02-11T06:11:13.161Z",
+      "summary": "Quality gate enforced in polish mode. Upgraded field-superposition and gravity-well to match gold chassis patterns; full Unit 1-6 audit generated.",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "field-superposition",
+          "unit": "unit-4",
+          "files": [
+            "unit-4/sims/field-superposition.html",
+            "assets/css/sims/field-superposition.css"
+          ],
+          "summary": "Refactored to gold chassis controls/results/model structure with preserved superposition mechanics."
+        },
+        {
+          "slug": "gravity-well",
+          "unit": "unit-4",
+          "files": [
+            "unit-4/sims/gravity-well.html",
+            "assets/css/sims/gravity-well.css"
+          ],
+          "summary": "Refactored to gold chassis controls/results/model structure with preserved gravity calculations."
+        }
+      ],
+      "skipped_existing": [
+        {
+          "slug": "coulombs-law-playground",
+          "unit": "unit-1",
+          "reason": "Existing full sim found (HTML/CSS present and SIM_BADGE_LABELS entry exists).",
+          "evidence": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "assets/css/sims/coulombs-law-playground.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "newtons-second-law-lab",
+          "unit": "unit-5",
+          "reason": "Existing full sim found (HTML/CSS present and SIM_BADGE_LABELS entry exists).",
+          "evidence": [
+            "unit-5/sims/newtons-second-law-lab.html",
+            "assets/css/sims/newtons-second-law-lab.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "orbit-builder",
+          "unit": "unit-3",
+          "reason": "Similar existing slug found; orbital mechanics simulator already present.",
+          "evidence": [
+            "unit-3/sims/orbital-motion.html",
+            "assets/css/sims/orbital-motion.css"
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "2026-02-11T06:37:54.468Z",
+      "summary": "Quality gate enforced in polish mode. Upgraded cosmic-expansion and ramp-dynamics chassis parity; full Unit 1-6 audit generated. Blocked new full builds due to: collision-lab, energy-conversion, material-selector, molecular-geometry, orbital-motion, ph-titration, resonance-lab, solution-mixer",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "cosmic-expansion",
+          "unit": "unit-4",
+          "files": ["unit-4/sims/cosmic-expansion.html"],
+          "summary": "Refactored controls and panel headings to gold chassis classes (.panel-title, .slider-row, .slider-label, .slider-value)."
+        },
+        {
+          "slug": "ramp-dynamics",
+          "unit": "unit-5",
+          "files": ["unit-5/sims/ramp-dynamics.html"],
+          "summary": "Refactored controls and panel headings to gold chassis classes (.panel-title, .slider-row, .slider-label, .slider-value)."
+        }
+      ],
+      "skipped_existing": [
+        {
+          "slug": "coulombs-law-playground",
+          "unit": "unit-1",
+          "reason": "Existing full sim found; quality gate blocked new full builds this run.",
+          "evidence": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "assets/css/sims/coulombs-law-playground.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "newtons-second-law-lab",
+          "unit": "unit-5",
+          "reason": "Existing full sim found; quality gate blocked new full builds this run.",
+          "evidence": [
+            "unit-5/sims/newtons-second-law-lab.html",
+            "assets/css/sims/newtons-second-law-lab.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "orbit-builder",
+          "unit": "unit-3",
+          "reason": "Similar existing slug found; orbital mechanics simulator already present, and quality gate blocked new full builds.",
+          "evidence": [
+            "unit-3/sims/orbital-motion.html",
+            "assets/css/sims/orbital-motion.css"
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "2026-02-11T08:34:07.073Z",
+      "summary": "Quality gate enforced in polish mode. Upgraded collision-lab and material-selector chassis parity; full Unit 1-6 audit generated. Blocked new full builds due to: electron-configuration, energy-conversion, equation-balancer, lewis-dot, molecular-geometry, molecular-polarity, orbital-motion, ph-titration, resonance-lab, solution-mixer, unit-3-test-checklist",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "collision-lab",
+          "unit": "unit-6",
+          "files": ["unit-6/sims/collision-lab.html"],
+          "summary": "Refactored control rows and panel headings to strict gold chassis classes while preserving collision mechanics."
+        },
+        {
+          "slug": "material-selector",
+          "unit": "unit-2",
+          "files": [
+            "unit-2/sims/material-selector.html",
+            "assets/css/sims/material-selector.css"
+          ],
+          "summary": "Refactored to gold chassis layout with top preset/reset placement, layered results/status model, and payload-only per-sim CSS."
+        }
+      ],
+      "skipped_existing": [
+        {
+          "slug": "coulombs-law-playground",
+          "unit": "unit-1",
+          "reason": "Existing full sim found (HTML/CSS present and SIM_BADGE_LABELS entry exists).",
+          "evidence": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "assets/css/sims/coulombs-law-playground.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "newtons-second-law-lab",
+          "unit": "unit-5",
+          "reason": "Existing full sim found (HTML/CSS present and SIM_BADGE_LABELS entry exists).",
+          "evidence": [
+            "unit-5/sims/newtons-second-law-lab.html",
+            "assets/css/sims/newtons-second-law-lab.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "orbit-builder",
+          "unit": "unit-3",
+          "reason": "Similar existing slug found; orbital mechanics simulator already present.",
+          "evidence": [
+            "unit-3/sims/orbital-motion.html",
+            "assets/css/sims/orbital-motion.css"
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "2026-02-11T08:44:26.323Z",
+      "summary": "Quality gate blocked new full builds; upgraded two existing sims toward gold (electron-configuration, energy-conversion).",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "electron-configuration",
+          "unit": "unit-1",
+          "files": [
+            "unit-1/sims/electron-configuration.html",
+            "assets/css/sims/electron-configuration.css",
+            "assets/css/sims/sim-base.css"
+          ],
+          "summary": "Refactored to gold chassis with top preset/reset region, shared panel/result/status structure, and payload-only orbital CSS."
+        },
+        {
+          "slug": "energy-conversion",
+          "unit": "unit-3",
+          "files": [
+            "unit-3/sims/energy-conversion.html",
+            "assets/css/sims/energy-conversion.css",
+            "assets/css/sims/sim-base.css"
+          ],
+          "summary": "Refactored to gold chassis with top preset/reset toolbar, shared slider/result/status patterns, and payload-only model CSS."
+        }
+      ],
+      "skipped_existing": [
+        {
+          "slug": "coulombs-law-playground",
+          "unit": "unit-1",
+          "reason": "Existing full simulator found during existence check; not overwritten.",
+          "evidence": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "assets/css/sims/coulombs-law-playground.css"
+          ]
+        },
+        {
+          "slug": "newtons-second-law-lab",
+          "unit": "unit-5",
+          "reason": "Existing full simulator found during existence check; not overwritten.",
+          "evidence": [
+            "unit-5/sims/newtons-second-law-lab.html",
+            "assets/css/sims/newtons-second-law-lab.css"
+          ]
+        },
+        {
+          "slug": "orbital-motion",
+          "unit": "unit-3",
+          "reason": "Existing simulator route found during existence check; upgraded path deferred by quality-gate priority.",
+          "evidence": [
+            "unit-3/sims/orbital-motion.html",
+            "assets/css/sims/orbital-motion.css"
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "2026-02-11T09:43:16.174Z",
+      "summary": "Quality gate blocked new full builds; upgraded two existing sims toward gold (force-balance, motion-graph-lab). Blocking slugs: energy-conversion, molecular-geometry, orbital-motion, ph-titration, resonance-lab, solution-mixer",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "force-balance",
+          "unit": "unit-5",
+          "files": [
+            "unit-5/sims/force-balance.html",
+            "assets/css/sims/sim-base.css"
+          ],
+          "summary": "Aligned preset container class with gold vocabulary (`scenario-presets preset-actions`) and strengthened shared focus-visible affordances without layout changes."
+        },
+        {
+          "slug": "motion-graph-lab",
+          "unit": "unit-5",
+          "files": [
+            "unit-5/sims/motion-graph-lab.html",
+            "assets/css/sims/sim-base.css"
+          ],
+          "summary": "Aligned preset container class with gold vocabulary (`scenario-presets preset-actions`) and strengthened shared focus-visible affordances without layout changes."
+        }
+      ],
+      "skipped_existing": [
+        {
+          "slug": "coulombs-law-playground",
+          "unit": "unit-1",
+          "reason": "Existing full simulator found during existence check; not overwritten.",
+          "evidence": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "assets/css/sims/coulombs-law-playground.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "newtons-second-law-lab",
+          "unit": "unit-5",
+          "reason": "Existing full simulator found during existence check; not overwritten.",
+          "evidence": [
+            "unit-5/sims/newtons-second-law-lab.html",
+            "assets/css/sims/newtons-second-law-lab.css",
+            "assets/js/site.js"
+          ]
+        },
+        {
+          "slug": "orbit-builder",
+          "unit": "unit-3",
+          "reason": "Similar existing slug found (`orbital-motion`) with full HTML/CSS route.",
+          "evidence": [
+            "unit-3/sims/orbital-motion.html",
+            "assets/css/sims/orbital-motion.css"
+          ]
+        }
+      ]
+    },
+    {
+      "run_id": "2026-02-11T09:53:42.954Z",
+      "summary": "Quality gate blocked new full builds; upgraded two existing sims toward gold (force-balance, motion-graph-lab). Blocking slugs: collision-lab, cosmic-expansion, energy-conversion, equation-balancer, lewis-dot, molecular-geometry, molecular-polarity, orbital-motion, ph-titration, ramp-dynamics, resonance-lab, solution-mixer, unit-3-test-checklist",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "force-balance",
+          "unit": "unit-5",
+          "files": ["unit-5/sims/force-balance.html"],
+          "summary": "Aligned reset control to strict gold class token (`btn btn-reset`) without changing DOM order or panel layout.",
+          "layout_changed": false,
+          "controls_moved": false,
+          "preset_before_workspace_check": "pass"
+        },
+        {
+          "slug": "motion-graph-lab",
+          "unit": "unit-5",
+          "files": ["unit-5/sims/motion-graph-lab.html"],
+          "summary": "Aligned reset control to strict gold class token (`btn btn-reset`) without changing DOM order or panel layout.",
+          "layout_changed": false,
+          "controls_moved": false,
+          "preset_before_workspace_check": "pass"
+        }
+      ],
+      "skipped_existing": [],
+      "meta": {
+        "audit_report": {
+          "by_quality": {
+            "placeholder": 16,
+            "gold": 11,
+            "needs_work": 5,
+            "acceptable": 8
+          },
+          "blockers": [
+            "collision-lab",
+            "cosmic-expansion",
+            "energy-conversion",
+            "equation-balancer",
+            "lewis-dot",
+            "molecular-geometry",
+            "molecular-polarity",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ]
+        },
+        "quality_gate": {
+          "triggered": true,
+          "blocked_slugs": [
+            "collision-lab",
+            "cosmic-expansion",
+            "energy-conversion",
+            "equation-balancer",
+            "lewis-dot",
+            "molecular-geometry",
+            "molecular-polarity",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ],
+          "max_full_sims": 0,
+          "max_upgrade_sims": 2
+        }
+      }
+    },
+    {
+      "run_id": "2026-02-11T10:01:33.772655Z",
+      "summary": "Quality gate enforced by v2 prompt. Full Unit 1-6 audit generated. No new full builds allowed this run.",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [],
+      "skipped_existing": [],
+      "meta": {
+        "audit_report": {
+          "generated_at": "2026-02-11T10:01:33.772655Z",
+          "by_quality": {
+            "gold": 7,
+            "acceptable": 0,
+            "needs_work": 17,
+            "placeholder": 16
+          },
+          "blockers": [
+            "collision-lab",
+            "cosmic-expansion",
+            "crash-absorber",
+            "energy-conversion",
+            "equation-balancer",
+            "force-balance",
+            "lewis-dot",
+            "material-selector",
+            "molecular-geometry",
+            "molecular-polarity",
+            "newtons-second-law-lab",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ]
+        },
+        "quality_gate": {
+          "triggered": true,
+          "blocked_slugs": [
+            "collision-lab",
+            "cosmic-expansion",
+            "crash-absorber",
+            "energy-conversion",
+            "equation-balancer",
+            "force-balance",
+            "lewis-dot",
+            "material-selector",
+            "molecular-geometry",
+            "molecular-polarity",
+            "newtons-second-law-lab",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ],
+          "max_full_sims": 0,
+          "max_upgrade_sims": 2,
+          "reason": "Found sims with quality acceptable/needs_work. Last created_full quality is none."
+        }
+      }
+    },
+    {
+      "run_id": "2026-02-11T17:20:54.445115Z",
+      "summary": "Quality gate enforced by v2 prompt. Full Unit 1-6 audit generated; non-structural upgrades logged where resolved.",
+      "created_full": [],
+      "created_placeholders": [],
+      "upgraded_existing": [
+        {
+          "slug": "crash-absorber",
+          "from_quality": "needs_work",
+          "to_quality": "gold",
+          "layout_changed": false,
+          "controls_moved": false,
+          "preset_before_workspace_check": "pass",
+          "reason": "Audit lock-rule correction confirmed no forbidden container overflow lock."
+        },
+        {
+          "slug": "force-balance",
+          "from_quality": "needs_work",
+          "to_quality": "gold",
+          "layout_changed": false,
+          "controls_moved": false,
+          "preset_before_workspace_check": "pass",
+          "reason": "Audit lock-rule correction confirmed no forbidden container overflow lock."
+        }
+      ],
+      "skipped_existing": [],
+      "meta": {
+        "audit_report": {
+          "generated_at": "2026-02-11T17:20:54.445115Z",
+          "by_quality": {
+            "gold": 10,
+            "acceptable": 0,
+            "needs_work": 14,
+            "placeholder": 16
+          },
+          "blockers": [
+            "collision-lab",
+            "cosmic-expansion",
+            "energy-conversion",
+            "equation-balancer",
+            "lewis-dot",
+            "material-selector",
+            "molecular-geometry",
+            "molecular-polarity",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ]
+        },
+        "quality_gate": {
+          "triggered": true,
+          "blocked_slugs": [
+            "collision-lab",
+            "cosmic-expansion",
+            "energy-conversion",
+            "equation-balancer",
+            "lewis-dot",
+            "material-selector",
+            "molecular-geometry",
+            "molecular-polarity",
+            "orbital-motion",
+            "ph-titration",
+            "ramp-dynamics",
+            "resonance-lab",
+            "solution-mixer",
+            "unit-3-test-checklist"
+          ],
+          "max_full_sims": 0,
+          "max_upgrade_sims": 2,
+          "reason": "Found sims with quality acceptable/needs_work. Last created_full quality is none."
+        }
+      }
+    }
+  ],
+  "sims": {
+    "beam-design-lab": {
+      "unit": "unit-2",
+      "title": "Bridge Beam Design Lab",
+      "html_path": "unit-2/sims/beam-design-lab.html",
+      "css_path": "assets/css/sims/beam-design-lab.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "beam-design-lab",
+      "evidence_paths": [
+        "assets/css/sims/beam-design-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-2/sims/beam-design-lab.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "bond-type-predictor": {
+      "unit": "unit-1",
+      "title": "Bond Type Predictor",
+      "html_path": "unit-1/sims/bond-type-predictor.html",
+      "css_path": "assets/css/sims/bond-type-predictor.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "bond-type-predictor",
+      "evidence_paths": [
+        "assets/css/sims/bond-type-predictor.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/bond-type-predictor.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "cmb-temperature-timeline": {
+      "unit": "unit-4",
+      "title": "CMB and Temperature Timeline",
+      "html_path": "unit-4/sims/cmb-temperature-timeline.html",
+      "css_path": "assets/css/sims/cmb-temperature-timeline.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "cmb-temperature-timeline",
+      "evidence_paths": [
+        "assets/css/sims/cmb-temperature-timeline.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/cmb-temperature-timeline.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "collision-lab": {
+      "unit": "unit-6",
+      "title": "Collision Lab",
+      "html_path": "unit-6/sims/collision-lab.html",
+      "css_path": "assets/css/sims/collision-lab.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": ["has_presets", "has_reset"],
+      "next_actions": ["has_presets"],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "collision-lab",
+      "evidence_paths": [
+        "assets/css/sims/collision-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-6/sims/collision-lab.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "constraint-tradeoff-optimizer": {
+      "unit": "unit-2",
+      "title": "Constraint-Tradeoff Optimizer",
+      "html_path": "unit-2/sims/constraint-tradeoff-optimizer.html",
+      "css_path": "assets/css/sims/constraint-tradeoff-optimizer.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "constraint-tradeoff-optimizer",
+      "evidence_paths": [
+        "assets/css/sims/constraint-tradeoff-optimizer.css",
+        "assets/css/sims/sim-base.css",
+        "unit-2/sims/constraint-tradeoff-optimizer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "cosmic-expansion": {
+      "unit": "unit-4",
+      "title": "Cosmic Expansion Model",
+      "html_path": "unit-4/sims/cosmic-expansion.html",
+      "css_path": "assets/css/sims/cosmic-expansion.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": ["has_presets", "has_reset"],
+      "next_actions": ["has_presets"],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "cosmic-expansion",
+      "evidence_paths": [
+        "assets/css/sims/cosmic-expansion.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/cosmic-expansion.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "coulombs-law-playground": {
+      "unit": "unit-1",
+      "title": "Coulomb's Law Playground",
+      "html_path": "unit-1/sims/coulombs-law-playground.html",
+      "css_path": "assets/css/sims/coulombs-law-playground.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "coulombs-law-playground",
+      "evidence_paths": [
+        "assets/css/sims/coulombs-law-playground.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/coulombs-law-playground.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "crash-absorber": {
+      "unit": "unit-6",
+      "title": "Crash Absorber Designer",
+      "html_path": "unit-6/sims/crash-absorber.html",
+      "css_path": "assets/css/sims/crash-absorber.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "crash-absorber",
+      "evidence_paths": [
+        "assets/css/sims/crash-absorber.css",
+        "assets/css/sims/sim-base.css",
+        "unit-6/sims/crash-absorber.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "design-a-device-challenge": {
+      "unit": "unit-6",
+      "title": "Design a Device Challenge",
+      "html_path": "unit-6/sims/design-a-device-challenge.html",
+      "css_path": "assets/css/sims/design-a-device-challenge.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "design-a-device-challenge",
+      "evidence_paths": [
+        "assets/css/sims/design-a-device-challenge.css",
+        "assets/css/sims/sim-base.css",
+        "unit-6/sims/design-a-device-challenge.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "electric-field-mapper": {
+      "unit": "unit-4",
+      "title": "Electric Field Mapper",
+      "html_path": "unit-4/sims/electric-field-mapper.html",
+      "css_path": "assets/css/sims/electric-field-mapper.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "electric-field-mapper",
+      "evidence_paths": [
+        "assets/css/sims/electric-field-mapper.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/electric-field-mapper.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "electron-configuration": {
+      "unit": "unit-1",
+      "title": "Electron Configuration Builder",
+      "html_path": "unit-1/sims/electron-configuration.html",
+      "css_path": "assets/css/sims/electron-configuration.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "electron-configuration",
+      "evidence_paths": [
+        "assets/css/sims/electron-configuration.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/electron-configuration.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "energy-conversion": {
+      "unit": "unit-3",
+      "title": "Energy Conversion Lab",
+      "html_path": "unit-3/sims/energy-conversion.html",
+      "css_path": "assets/css/sims/energy-conversion.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": false,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_required_shell",
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "energy-conversion",
+      "evidence_paths": [
+        "assets/css/sims/energy-conversion.css",
+        "unit-3/sims/energy-conversion.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "equation-balancer": {
+      "unit": "unit-1",
+      "title": "Chemical Equation Balancer",
+      "html_path": "unit-1/sims/equation-balancer.html",
+      "css_path": "assets/css/sims/equation-balancer.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": false,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_required_shell",
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "equation-balancer",
+      "evidence_paths": [
+        "assets/css/sims/equation-balancer.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/equation-balancer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "field-superposition": {
+      "unit": "unit-4",
+      "title": "Field Superposition Explorer",
+      "html_path": "unit-4/sims/field-superposition.html",
+      "css_path": "assets/css/sims/field-superposition.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "field-superposition",
+      "evidence_paths": [
+        "assets/css/sims/field-superposition.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/field-superposition.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "force-balance": {
+      "unit": "unit-5",
+      "title": "Force Balance Lab",
+      "html_path": "unit-5/sims/force-balance.html",
+      "css_path": "assets/css/sims/force-balance.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "force-balance",
+      "evidence_paths": [
+        "assets/css/sims/force-balance.css",
+        "assets/css/sims/sim-base.css",
+        "unit-5/sims/force-balance.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "fundamental-forces-compare": {
+      "unit": "unit-1",
+      "title": "Fundamental Forces Compare",
+      "html_path": "unit-1/sims/fundamental-forces-compare.html",
+      "css_path": "assets/css/sims/fundamental-forces-compare.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "fundamental-forces-compare",
+      "evidence_paths": [
+        "assets/css/sims/fundamental-forces-compare.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/fundamental-forces-compare.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "gravity-well": {
+      "unit": "unit-4",
+      "title": "Gravity Well Mapper",
+      "html_path": "unit-4/sims/gravity-well.html",
+      "css_path": "assets/css/sims/gravity-well.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "gravity-well",
+      "evidence_paths": [
+        "assets/css/sims/gravity-well.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/gravity-well.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "impulse-analyzer": {
+      "unit": "unit-6",
+      "title": "Impulse Analyzer",
+      "html_path": "unit-6/sims/impulse-analyzer.html",
+      "css_path": "assets/css/sims/impulse-analyzer.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "impulse-analyzer",
+      "evidence_paths": [
+        "assets/css/sims/impulse-analyzer.css",
+        "assets/css/sims/sim-base.css",
+        "unit-6/sims/impulse-analyzer.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "inverse-square-dual-lab": {
+      "unit": "unit-3",
+      "title": "Inverse-Square Dual Lab",
+      "html_path": "unit-3/sims/inverse-square-dual-lab.html",
+      "css_path": "assets/css/sims/inverse-square-dual-lab.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "inverse-square-dual-lab",
+      "evidence_paths": [
+        "assets/css/sims/inverse-square-dual-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-3/sims/inverse-square-dual-lab.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "keplers-laws-data-lab": {
+      "unit": "unit-3",
+      "title": "Keplers Laws Data Lab",
+      "html_path": "unit-3/sims/keplers-laws-data-lab.html",
+      "css_path": "assets/css/sims/keplers-laws-data-lab.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "keplers-laws-data-lab",
+      "evidence_paths": [
+        "assets/css/sims/keplers-laws-data-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-3/sims/keplers-laws-data-lab.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "lewis-dot": {
+      "unit": "unit-1",
+      "title": "Interactive Lewis Dot Structure Builder",
+      "html_path": "unit-1/sims/lewis-dot.html",
+      "css_path": "assets/css/sims/lewis-dot.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "lewis-dot",
+      "evidence_paths": [
+        "assets/css/sims/lewis-dot.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/lewis-dot.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "magnetic-field-force": {
+      "unit": "unit-4",
+      "title": "Magnetic Field and Force",
+      "html_path": "unit-4/sims/magnetic-field-force.html",
+      "css_path": "assets/css/sims/magnetic-field-force.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "magnetic-field-force",
+      "evidence_paths": [
+        "assets/css/sims/magnetic-field-force.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/magnetic-field-force.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "material-selector": {
+      "unit": "unit-2",
+      "title": "Material Selector Lab",
+      "html_path": "unit-2/sims/material-selector.html",
+      "css_path": "assets/css/sims/material-selector.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": ["has_reset"],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "material-selector",
+      "evidence_paths": [
+        "assets/css/sims/material-selector.css",
+        "assets/css/sims/sim-base.css",
+        "unit-2/sims/material-selector.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "molecular-geometry": {
+      "unit": "unit-1",
+      "title": "Molecular Geometry Builder",
+      "html_path": "unit-1/sims/molecular-geometry.html",
+      "css_path": "assets/css/sims/molecular-geometry.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only"
+      ],
+      "next_actions": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "molecular-geometry",
+      "evidence_paths": [
+        "assets/css/sims/molecular-geometry.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/molecular-geometry.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "molecular-polarity": {
+      "unit": "unit-2",
+      "title": "Molecular Polarity Designer",
+      "html_path": "unit-2/sims/molecular-polarity.html",
+      "css_path": "assets/css/sims/molecular-polarity.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only"
+      ],
+      "next_actions": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "molecular-polarity",
+      "evidence_paths": [
+        "assets/css/sims/molecular-polarity.css",
+        "assets/css/sims/sim-base.css",
+        "unit-2/sims/molecular-polarity.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "motion-graph-lab": {
+      "unit": "unit-5",
+      "title": "Motion Graph Lab",
+      "html_path": "unit-5/sims/motion-graph-lab.html",
+      "css_path": "assets/css/sims/motion-graph-lab.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "motion-graph-lab",
+      "evidence_paths": [
+        "assets/css/sims/motion-graph-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-5/sims/motion-graph-lab.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "newtons-second-law-lab": {
+      "unit": "unit-5",
+      "title": "Newton's 2nd Law Lab",
+      "html_path": "unit-5/sims/newtons-second-law-lab.html",
+      "css_path": "assets/css/sims/newtons-second-law-lab.css",
+      "quality": "gold",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": true,
+        "has_reset": true,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [],
+      "next_actions": [],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "newtons-second-law-lab",
+      "evidence_paths": [
+        "assets/css/sims/newtons-second-law-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-5/sims/newtons-second-law-lab.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "orbital-motion": {
+      "unit": "unit-3",
+      "title": "Orbital Motion Simulator",
+      "html_path": "unit-3/sims/orbital-motion.html",
+      "css_path": "assets/css/sims/orbital-motion.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": false,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_model_panel",
+        "uses_theme_tokens_only"
+      ],
+      "next_actions": [
+        "has_required_shell",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_model_panel"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "orbital-motion",
+      "evidence_paths": [
+        "assets/css/sims/orbital-motion.css",
+        "assets/css/sims/sim-base.css",
+        "unit-3/sims/orbital-motion.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "periodic-trend-explorer": {
+      "unit": "unit-1",
+      "title": "Periodic Trend Explorer",
+      "html_path": "unit-1/sims/periodic-trend-explorer.html",
+      "css_path": "assets/css/sims/periodic-trend-explorer.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "periodic-trend-explorer",
+      "evidence_paths": [
+        "assets/css/sims/periodic-trend-explorer.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/periodic-trend-explorer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "ph-titration": {
+      "unit": "unit-1",
+      "title": "pH & Titration Simulator",
+      "html_path": "unit-1/sims/ph-titration.html",
+      "css_path": "assets/css/sims/ph-titration.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_data_attrs",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "ph-titration",
+      "evidence_paths": [
+        "assets/css/sims/ph-titration.css",
+        "assets/css/sims/sim-base.css",
+        "unit-1/sims/ph-titration.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "qual-vs-quant-sorter": {
+      "unit": "unit-5",
+      "title": "Qualitative vs Quantitative Evidence Sorter",
+      "html_path": "unit-5/sims/qual-vs-quant-sorter.html",
+      "css_path": "assets/css/sims/qual-vs-quant-sorter.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "qual-vs-quant-sorter",
+      "evidence_paths": [
+        "assets/css/sims/qual-vs-quant-sorter.css",
+        "assets/css/sims/sim-base.css",
+        "unit-5/sims/qual-vs-quant-sorter.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "ramp-dynamics": {
+      "unit": "unit-5",
+      "title": "Ramp Dynamics",
+      "html_path": "unit-5/sims/ramp-dynamics.html",
+      "css_path": "assets/css/sims/ramp-dynamics.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": true,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": ["has_presets", "has_reset"],
+      "next_actions": ["has_presets"],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "ramp-dynamics",
+      "evidence_paths": [
+        "assets/css/sims/ramp-dynamics.css",
+        "assets/css/sims/sim-base.css",
+        "unit-5/sims/ramp-dynamics.html"
+      ],
+      "preset_before_workspace_check": "pass"
+    },
+    "redshift-expansion-explorer": {
+      "unit": "unit-4",
+      "title": "Redshift and Expansion Explorer",
+      "html_path": "unit-4/sims/redshift-expansion-explorer.html",
+      "css_path": "assets/css/sims/redshift-expansion-explorer.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "redshift-expansion-explorer",
+      "evidence_paths": [
+        "assets/css/sims/redshift-expansion-explorer.css",
+        "assets/css/sims/sim-base.css",
+        "unit-4/sims/redshift-expansion-explorer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "resonance-lab": {
+      "unit": "unit-3",
+      "title": "Resonance Lab",
+      "html_path": "unit-3/sims/resonance-lab.html",
+      "css_path": "assets/css/sims/resonance-lab.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": false,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": true,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_model_panel",
+        "uses_theme_tokens_only"
+      ],
+      "next_actions": [
+        "has_required_shell",
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "resonance-lab",
+      "evidence_paths": [
+        "assets/css/sims/resonance-lab.css",
+        "assets/css/sims/sim-base.css",
+        "unit-3/sims/resonance-lab.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "solution-mixer": {
+      "unit": "unit-2",
+      "title": "Solution Mixer",
+      "html_path": "unit-2/sims/solution-mixer.html",
+      "css_path": "assets/css/sims/solution-mixer.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": true,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_presets",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_data_attrs",
+        "has_presets",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "solution-mixer",
+      "evidence_paths": [
+        "assets/css/sims/sim-base.css",
+        "assets/css/sims/solution-mixer.css",
+        "unit-2/sims/solution-mixer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "unit-3-test-checklist": {
+      "unit": "unit-3",
+      "title": "Unit 3 Manual Test Checklist",
+      "html_path": "unit-3/sims/unit-3-test-checklist.html",
+      "css_path": "assets/css/sims/energy-conversion.css",
+      "quality": "needs_work",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": false,
+        "has_h1": true,
+        "has_workspace_panels": false,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": false,
+        "does_not_override_generic_controls_in_sim_css": false,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel",
+        "uses_theme_tokens_only",
+        "does_not_override_generic_controls_in_sim_css"
+      ],
+      "next_actions": [
+        "has_required_shell",
+        "has_data_attrs",
+        "has_workspace_panels",
+        "has_presets",
+        "has_reset"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "unit-3-test-checklist",
+      "evidence_paths": [
+        "assets/css/sims/energy-conversion.css",
+        "assets/css/sims/sim-base.css",
+        "unit-3/sims/unit-3-test-checklist.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "valence-shell-builder": {
+      "unit": "unit-1",
+      "title": "Valence Shell Builder",
+      "html_path": "unit-1/sims/valence-shell-builder.html",
+      "css_path": "assets/css/sims/valence-shell-builder.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "valence-shell-builder",
+      "evidence_paths": [
+        "assets/css/sims/sim-base.css",
+        "assets/css/sims/valence-shell-builder.css",
+        "unit-1/sims/valence-shell-builder.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "variables-relationships-graphing-lab": {
+      "unit": "unit-5",
+      "title": "Variables and Relationships Graphing Lab",
+      "html_path": "unit-5/sims/variables-relationships-graphing-lab.html",
+      "css_path": "assets/css/sims/variables-relationships-graphing-lab.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "variables-relationships-graphing-lab",
+      "evidence_paths": [
+        "assets/css/sims/sim-base.css",
+        "assets/css/sims/variables-relationships-graphing-lab.css",
+        "unit-5/sims/variables-relationships-graphing-lab.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "vsepr-studio": {
+      "unit": "unit-2",
+      "title": "Molecular Shape (VSEPR) Studio",
+      "html_path": "unit-2/sims/vsepr-studio.html",
+      "css_path": "assets/css/sims/vsepr-studio.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "vsepr-studio",
+      "evidence_paths": [
+        "assets/css/sims/sim-base.css",
+        "assets/css/sims/vsepr-studio.css",
+        "unit-2/sims/vsepr-studio.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    },
+    "work-energy-explorer": {
+      "unit": "unit-3",
+      "title": "Work Energy Theorem Explorer",
+      "html_path": "unit-3/sims/work-energy-explorer.html",
+      "css_path": "assets/css/sims/work-energy-explorer.css",
+      "quality": "placeholder",
+      "checks": {
+        "has_required_shell": true,
+        "has_data_attrs": true,
+        "has_h1": true,
+        "has_workspace_panels": true,
+        "has_presets": false,
+        "has_reset": false,
+        "has_results_layered": false,
+        "has_model_panel": false,
+        "has_keyboard_focus": true,
+        "no_global_overflow_lock": true,
+        "no_vh_lock": true,
+        "uses_theme_tokens_only": true,
+        "does_not_override_generic_controls_in_sim_css": true,
+        "has_instructions": false,
+        "mobile_breakpoints_present": false
+      },
+      "issues": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "has_model_panel"
+      ],
+      "next_actions": [
+        "has_presets",
+        "has_reset",
+        "has_results_layered",
+        "preset_before_workspace_check"
+      ],
+      "updated_at": "2026-02-11T17:20:54.445115Z",
+      "detected_slug": "work-energy-explorer",
+      "evidence_paths": [
+        "assets/css/sims/sim-base.css",
+        "assets/css/sims/work-energy-explorer.css",
+        "unit-3/sims/work-energy-explorer.html"
+      ],
+      "preset_before_workspace_check": "fail"
+    }
+  },
+  "cursor": {
+    "next_run_focus": "upgrade-existing",
+    "priority_slugs": [
+      "collision-lab",
+      "cosmic-expansion",
+      "energy-conversion"
+    ],
+    "notes": "Quality gate blocked new full builds. Blocking slugs: collision-lab, cosmic-expansion, energy-conversion, equation-balancer, lewis-dot, material-selector, molecular-geometry, molecular-polarity, orbital-motion, ph-titration, ramp-dynamics, resonance-lab, solution-mixer, unit-3-test-checklist"
+  },
+  "chassis_audit": {
+    "runs_completed": 3,
+    "last_run_id": "2026-02-11T17:20:54.445115Z",
+    "last_updated": "2026-02-11T17:20:54.445115Z",
+    "gold_source_scope": [
+      "unit-1/sims/",
+      "unit-2/sims/",
+      "unit-3/sims/",
+      "assets/css/sims/sim-base.css"
+    ],
+    "scanned_files_last_run": [
+      "assets/css/sims/sim-base.css",
+      "unit-1/sims/bond-type-predictor.html",
+      "unit-1/sims/coulombs-law-playground.html",
+      "unit-1/sims/electron-configuration.html",
+      "unit-1/sims/equation-balancer.html",
+      "unit-1/sims/fundamental-forces-compare.html",
+      "unit-1/sims/lewis-dot.html",
+      "unit-1/sims/molecular-geometry.html",
+      "unit-1/sims/periodic-trend-explorer.html",
+      "unit-1/sims/ph-titration.html",
+      "unit-1/sims/valence-shell-builder.html",
+      "unit-2/sims/beam-design-lab.html",
+      "unit-2/sims/constraint-tradeoff-optimizer.html",
+      "unit-2/sims/material-selector.html",
+      "unit-2/sims/molecular-polarity.html",
+      "unit-2/sims/solution-mixer.html",
+      "unit-2/sims/vsepr-studio.html",
+      "unit-3/sims/energy-conversion.html",
+      "unit-3/sims/inverse-square-dual-lab.html",
+      "unit-3/sims/keplers-laws-data-lab.html",
+      "unit-3/sims/orbital-motion.html",
+      "unit-3/sims/resonance-lab.html",
+      "unit-3/sims/unit-3-test-checklist.html",
+      "unit-3/sims/work-energy-explorer.html"
+    ],
+    "patterns": {
+      "workspace_structure": ".workspace with >=2 .panel",
+      "panel_structure": ".panel includes .panel-title",
+      "control_row_pattern": ".slider-row > .slider-label + .slider-value + range input",
+      "range_wrapper_pattern": "input[type=\"range\"] in control rows",
+      "button_classes": ".preset-btn and .btn.btn-reset",
+      "results_pattern": ".result-cards/.result-card/.status-block/.status-label/.status-badge",
+      "focus_affordances": "native controls + keyboard reachable focus",
+      "responsive_rules": "sim-base responsive behavior retained",
+      "preset_reset_placement_rule": "scenario-presets preset-actions before first workspace"
+    },
+    "history": [
+      {
+        "run_id": "2026-02-11T09:43:16.174Z",
+        "runs_completed_after": 1,
+        "summary": "patterns updated",
+        "diff_notes": [
+          "Initialized chassis patterns from full Unit 1-3 scan (previous patterns were missing)."
+        ],
+        "evidence": {
+          "scanned_files": [
+            "unit-1/sims/bond-type-predictor.html",
+            "unit-1/sims/coulombs-law-playground.html",
+            "unit-1/sims/electron-configuration.html",
+            "unit-1/sims/equation-balancer.html",
+            "unit-1/sims/fundamental-forces-compare.html",
+            "unit-1/sims/lewis-dot.html",
+            "unit-1/sims/molecular-geometry.html",
+            "unit-1/sims/periodic-trend-explorer.html",
+            "unit-1/sims/ph-titration.html",
+            "unit-1/sims/valence-shell-builder.html",
+            "unit-2/sims/beam-design-lab.html",
+            "unit-2/sims/constraint-tradeoff-optimizer.html",
+            "unit-2/sims/material-selector.html",
+            "unit-2/sims/molecular-polarity.html",
+            "unit-2/sims/solution-mixer.html",
+            "unit-2/sims/vsepr-studio.html",
+            "unit-3/sims/energy-conversion.html",
+            "unit-3/sims/inverse-square-dual-lab.html",
+            "unit-3/sims/keplers-laws-data-lab.html",
+            "unit-3/sims/orbital-motion.html",
+            "unit-3/sims/resonance-lab.html",
+            "unit-3/sims/unit-3-test-checklist.html",
+            "unit-3/sims/work-energy-explorer.html",
+            "assets/css/sims/sim-base.css"
+          ],
+          "example_gold_files": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "unit-1/sims/electron-configuration.html",
+            "unit-3/sims/orbital-motion.html"
+          ]
+        }
+      },
+      {
+        "run_id": "2026-02-11T09:53:42.954Z",
+        "runs_completed_after": 2,
+        "summary": "patterns unchanged",
+        "diff_notes": [
+          "Rescan required because runs_completed < 3.",
+          "Gold source hash change detected or hashes initialized."
+        ],
+        "evidence": {
+          "scanned_files": [
+            "unit-1/sims/bond-type-predictor.html",
+            "unit-1/sims/coulombs-law-playground.html",
+            "unit-1/sims/electron-configuration.html",
+            "unit-1/sims/equation-balancer.html",
+            "unit-1/sims/fundamental-forces-compare.html",
+            "unit-1/sims/lewis-dot.html",
+            "unit-1/sims/molecular-geometry.html",
+            "unit-1/sims/periodic-trend-explorer.html",
+            "unit-1/sims/ph-titration.html",
+            "unit-1/sims/valence-shell-builder.html",
+            "unit-2/sims/beam-design-lab.html",
+            "unit-2/sims/constraint-tradeoff-optimizer.html",
+            "unit-2/sims/material-selector.html",
+            "unit-2/sims/molecular-polarity.html",
+            "unit-2/sims/solution-mixer.html",
+            "unit-2/sims/vsepr-studio.html",
+            "unit-3/sims/energy-conversion.html",
+            "unit-3/sims/inverse-square-dual-lab.html",
+            "unit-3/sims/keplers-laws-data-lab.html",
+            "unit-3/sims/orbital-motion.html",
+            "unit-3/sims/resonance-lab.html",
+            "unit-3/sims/unit-3-test-checklist.html",
+            "unit-3/sims/work-energy-explorer.html",
+            "assets/css/sims/sim-base.css"
+          ],
+          "example_gold_files": [
+            "unit-1/sims/coulombs-law-playground.html",
+            "unit-1/sims/electron-configuration.html",
+            "unit-3/sims/orbital-motion.html"
+          ]
+        }
+      },
+      {
+        "run_id": "2026-02-11T10:01:33.772655Z",
+        "summary": "patterns refreshed",
+        "runs_completed_after": 3,
+        "diff_notes": [
+          "Rescan required because runs_completed < 3.",
+          "patterns refreshed"
+        ],
+        "evidence": {
+          "scanned_files": [
+            "assets/css/sims/sim-base.css",
+            "unit-1/sims/bond-type-predictor.html",
+            "unit-1/sims/coulombs-law-playground.html",
+            "unit-1/sims/electron-configuration.html",
+            "unit-1/sims/equation-balancer.html",
+            "unit-1/sims/fundamental-forces-compare.html",
+            "unit-1/sims/lewis-dot.html",
+            "unit-1/sims/molecular-geometry.html",
+            "unit-1/sims/periodic-trend-explorer.html",
+            "unit-1/sims/ph-titration.html",
+            "unit-1/sims/valence-shell-builder.html",
+            "unit-2/sims/beam-design-lab.html",
+            "unit-2/sims/constraint-tradeoff-optimizer.html",
+            "unit-2/sims/material-selector.html",
+            "unit-2/sims/molecular-polarity.html",
+            "unit-2/sims/solution-mixer.html",
+            "unit-2/sims/vsepr-studio.html",
+            "unit-3/sims/energy-conversion.html",
+            "unit-3/sims/inverse-square-dual-lab.html",
+            "unit-3/sims/keplers-laws-data-lab.html",
+            "unit-3/sims/orbital-motion.html",
+            "unit-3/sims/resonance-lab.html",
+            "unit-3/sims/unit-3-test-checklist.html",
+            "unit-3/sims/work-energy-explorer.html"
+          ],
+          "example_gold_files": [
+            "assets/css/sims/sim-base.css",
+            "unit-1/sims/bond-type-predictor.html",
+            "unit-1/sims/coulombs-law-playground.html"
+          ]
+        }
+      }
+    ],
+    "source_hashes": {
+      "assets/css/sims/sim-base.css": "104bbc0ed564c3f0840bb68a741abbda9602deb8eb8bbbaf749db6c51d142801",
+      "unit-1/sims/bond-type-predictor.html": "270dfc3ea6324765d0d0dea9001cba987eb4dd8e2dff7e2da55e212a407abac1",
+      "unit-1/sims/coulombs-law-playground.html": "618909ef579dabf8418485ca8d935c3fa4b85e9bfdf17286822fa044ee1322ea",
+      "unit-1/sims/electron-configuration.html": "646f0ac39f61fa25656a31b278c8565e59de0fca3726b320d3ec300ba3e59b2a",
+      "unit-1/sims/equation-balancer.html": "792d22245207e7d0b869ba7d4f9cd99bc6683f169d77c9ff0cb070d4def80dc4",
+      "unit-1/sims/fundamental-forces-compare.html": "f782d9d90ce74308f6a9944e575ea62e3f23acc836c706193ad05c542e691954",
+      "unit-1/sims/lewis-dot.html": "011523d3b7a00f5c26e28bed9fbd7efda3a4b5e7161832860d5ed86140b19db3",
+      "unit-1/sims/molecular-geometry.html": "31e1b927ccac0dfa14f9ae918aceb70f0913d6271217ed593d0c06030031298a",
+      "unit-1/sims/periodic-trend-explorer.html": "df10b4abcf387c4e29cd4c5af46c5073321a710fb022ecf8589f86a4e678f63c",
+      "unit-1/sims/ph-titration.html": "19953fbfb086103ac83cddb197a250d699ada2cc5efa02d18cff7f9fb6505568",
+      "unit-1/sims/valence-shell-builder.html": "f8b893325b681f99e41fd0b3e96e087187cf5220e4d695f096caf6f96fb7fd5e",
+      "unit-2/sims/beam-design-lab.html": "be4cb0f06492c1c92d10f3d8fbc2639cb3ec4a0fef470b04d50e7e7df3d135f7",
+      "unit-2/sims/constraint-tradeoff-optimizer.html": "f36642981d15aba1693435d6d4378796c1e75e28975306327217a49018b9c8af",
+      "unit-2/sims/material-selector.html": "395b2ad96fb35e9eca04f9992685c9680ad68263038c8364be73c7a8c07b95b7",
+      "unit-2/sims/molecular-polarity.html": "017e11ecbf66caa3cd8347068993643afcea484258df382e63e0f379110611f7",
+      "unit-2/sims/solution-mixer.html": "3e0c727c7c211e2ac0e6ce8ecd1371a95c244d3c616dbb0f26ee16f7c37ae01a",
+      "unit-2/sims/vsepr-studio.html": "b3cbebc993697681f6945c4d7ea4fc2eed770a41095ebf009e73faf5bf3171e7",
+      "unit-3/sims/energy-conversion.html": "ead98cba74163936ed669d0252e746f5269a5fda7de3ef9cc0ac704a255f63f2",
+      "unit-3/sims/inverse-square-dual-lab.html": "e11ee4b0a714294a37ab2a9804963f30a59d05be8e84728ba8848a9738850a5a",
+      "unit-3/sims/keplers-laws-data-lab.html": "79cfead080482a21c3509b7cf0042650147ab4b40210afd406141aac48cec88b",
+      "unit-3/sims/orbital-motion.html": "be3c960ccf404bcfa42c4ca844b99e1379521677765073eced8f4b008cac1bc1",
+      "unit-3/sims/resonance-lab.html": "e06642b0152c509744c163a1eedfd1e11a103d70fe800be6812757b87f4f1c98",
+      "unit-3/sims/unit-3-test-checklist.html": "b273319b57ea6625929637b1979df561ef7d5fd85de66ab8c5efea0ea2f07ff1",
+      "unit-3/sims/work-energy-explorer.html": "90760b8028659255203786660a7d4676565f009178d6f0bff003585062c384c8"
+    },
+    "force_rescan": false
+  },
+  "quality_gate": {
+    "triggered": true,
+    "blocked_slugs": [
+      "collision-lab",
+      "cosmic-expansion",
+      "energy-conversion",
+      "equation-balancer",
+      "lewis-dot",
+      "material-selector",
+      "molecular-geometry",
+      "molecular-polarity",
+      "orbital-motion",
+      "ph-titration",
+      "ramp-dynamics",
+      "resonance-lab",
+      "solution-mixer",
+      "unit-3-test-checklist"
+    ],
+    "max_full_sims": 0,
+    "max_upgrade_sims": 2,
+    "reason": "Found sims with quality acceptable/needs_work. Last created_full quality is none."
+  },
+  "last_run_audit_summary": {
+    "generated_at": "2026-02-11T17:20:54.445115Z",
+    "by_quality": {
+      "gold": 10,
+      "acceptable": 0,
+      "needs_work": 14,
+      "placeholder": 16
+    },
+    "blockers": [
+      "collision-lab",
+      "cosmic-expansion",
+      "energy-conversion",
+      "equation-balancer",
+      "lewis-dot",
+      "material-selector",
+      "molecular-geometry",
+      "molecular-polarity",
+      "orbital-motion",
+      "ph-titration",
+      "ramp-dynamics",
+      "resonance-lab",
+      "solution-mixer",
+      "unit-3-test-checklist"
+    ]
+  }
+}

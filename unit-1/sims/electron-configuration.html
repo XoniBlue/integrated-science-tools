@@ -1,301 +1,478 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
-    <script src="../../assets/js/theme-init.js"></script>
-    <title>Electron Configuration Builder | Integrated Science Tools</title>
-    <link rel="stylesheet" href="../../assets/css/site.css">
-    <script src="../../assets/js/site.js" defer></script>
-    <script src="../../assets/js/sim-enhancer.js" defer></script>
-    <link rel="stylesheet" href="../../assets/css/sims/electron-configuration.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../../assets/img/favicon-test-tube.svg">
+  <script src="../../assets/js/theme-init.js"></script>
+  <title>Electron Configuration Builder | Integrated Science Tools</title>
+  <meta name="description" content="Build orbital diagrams, compare electron notation, and check Hund and Aufbau rules.">
+  <link rel="stylesheet" href="../../assets/css/site.css">
+  <link rel="stylesheet" href="../../assets/css/sims/sim-base.css">
+  <script src="../../assets/js/site.js" defer></script>
+  <script src="../../assets/js/sim-enhancer.js" defer></script>
+  <link rel="stylesheet" href="../../assets/css/sims/electron-configuration.css">
 </head>
-<body data-site-root="../.." data-page="unit-1">
-    <header id="site-header" class="site-header"></header>
+<body data-site-root="../.." data-page="unit-1" data-sim-page="electron-configuration">
+  <header id="site-header" class="site-header"></header>
 
-    <main class="page-main">
-      <section class="sim-wrap">
-        <div class="container">
-          <div class="top-actions">
-            <a href="../index.html">Back to Unit 1</a>
-            <a href="../../index.html">Home</a>
-          </div>
+  <main class="page-main">
+    <section class="sim-wrap">
+      <div class="container">
+        <div class="top-actions">
+          <a href="../index.html">Back to Unit 1</a>
+          <a href="../../index.html">Home</a>
+        </div>
+
         <h1>Electron Configuration Builder</h1>
-        <p class="subtitle">Build orbital diagrams and write electron configurations</p>
+        <p class="subtitle">Select an element, build orbitals, and verify quantum filling rules.</p>
 
-        <div class="instructions sim-instructions-panel">
-            <h3 class="sim-instructions-title">📖 How to Use This Simulator</h3>
-            <div class="sim-instructions-body">
-                <strong>1. Select an Element:</strong> Click any element button (H through Ca) to choose which atom to configure.<br>
-                <strong>2. Add Electrons:</strong> Click orbital boxes to add electrons. Each click cycles: empty → up arrow (↑) → both arrows (↑↓) → empty.<br>
-                <strong>3. Follow Hund's Rule:</strong> Fill orbitals with single electrons first before pairing them up.<br>
-                <strong>4. Use Auto-Fill:</strong> Click "Auto-Fill (Aufbau)" to see the correct configuration automatically.<br>
-                <strong>5. Check Your Work:</strong> Click "Check Answer" to validate your configuration against quantum rules.<br>
-                <strong>6. View Notation:</strong> Watch the electron configuration and noble gas notation update as you add electrons.
-            </div>
+        <section class="instructions" aria-label="Instructions">
+          <h2>How To Use</h2>
+          <ol>
+            <li>Choose a starter preset to load an element scenario.</li>
+            <li>Click orbital boxes to cycle empty, one electron, or paired electrons.</li>
+            <li>Use <strong>Auto Fill</strong> to compare your layout with Aufbau filling.</li>
+            <li>Read completion and status to check whether your arrangement is valid.</li>
+          </ol>
+        </section>
+
+        <div class="scenario-presets preset-actions" role="group" aria-label="Preset scenarios">
+          <button class="preset-btn active" type="button" data-preset="starter">Hydrogen Starter</button>
+          <button class="preset-btn" type="button" data-preset="neon">Neon Full Shell</button>
+          <button class="preset-btn" type="button" data-preset="chlorine">Chlorine Practice</button>
+          <button class="preset-btn" type="button" data-preset="calcium">Calcium Challenge</button>
         </div>
 
-        <div class="element-selector" id="elementSelector"></div>
+        <div class="action-buttons">
+          <button id="resetBtn" class="btn btn-reset" type="button">Reset</button>
+        </div>
+
         <div class="workspace">
-            <div class="panel">
-                <h3 class="panel-title">Orbital Diagram</h3>
-                <p class="sim-muted-intro">
-                    Click boxes to add electrons (↑ then ↓)
-                </p>
-                <div class="energy-levels" id="orbitalDiagram"></div>
-                <div class="action-buttons">
-                    <button class="btn btn-fill" id="autoFillBtn">Auto-Fill (Aufbau)</button>
-                    <button class="btn btn-clear" id="clearBtn">Clear All</button>
-                </div>
+          <section class="panel controls" aria-label="Controls">
+            <h2 class="panel-title">Controls</h2>
+            <p class="sim-muted-intro">Pick an element, then build or auto-fill its electron arrangement.</p>
+
+            <div class="element-grid" id="elementSelector" role="group" aria-label="Element selection"></div>
+
+            <div class="control-actions">
+              <button id="autoFillBtn" class="btn btn-check" type="button">Auto Fill (Aufbau)</button>
+              <button id="checkBtn" class="btn btn-hint" type="button">Check Rules</button>
             </div>
-            <div class="panel">
-                <h3 class="panel-title">Element Information</h3>
-                <div class="info-box">
-                    <div class="info-label">Element</div>
-                    <div class="info-value" id="elementName">Hydrogen</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">Atomic Number</div>
-                    <div class="info-value" id="atomicNumber">1</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-label">Electrons Placed</div>
-                    <div class="info-value" id="electronCount">0 / 1</div>
-                </div>
-                <div class="notation-display">
-                    <div class="sim-muted-label">Electron Configuration:</div>
-                    <div class="notation-text" id="configNotation">—</div>
-                </div>
-                <div class="noble-gas-notation">
-                    <div class="noble-gas-label">Noble Gas Notation:</div>
-                    <div class="notation-text" id="nobleGasNotation">—</div>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn btn-check" id="checkBtn">Check Answer</button>
-                </div>
-                <div class="feedback" id="feedback"></div>
+          </section>
+
+          <section class="panel result" aria-label="Results">
+            <h2 class="panel-title">Results</h2>
+
+            <div class="result-cards">
+              <article class="result-card">
+                <p class="result-label">Element</p>
+                <p class="result-value" id="elementName">Hydrogen (H)</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Atomic Number</p>
+                <p class="result-value" id="atomicNumber">1</p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Electrons Placed</p>
+                <p class="result-value"><span id="electronCount">0</span> / <span id="targetCount">1</span></p>
+              </article>
+              <article class="result-card">
+                <p class="result-label">Completion</p>
+                <p class="result-value" id="completion">0%</p>
+              </article>
             </div>
+
+            <div class="notation-stack">
+              <p class="notation-label">Electron Configuration</p>
+              <p class="notation-value" id="configNotation">-</p>
+              <p class="notation-label">Noble Gas Notation</p>
+              <p class="notation-value" id="nobleGasNotation">-</p>
+            </div>
+
+            <div class="status-block">
+              <p class="status-label">Interpretation</p>
+              <p class="status-badge" id="status">Awaiting configuration</p>
+              <p class="status-note" id="note">Place electrons to compare your arrangement against Aufbau and Hund rules.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-label="Model">
+            <h2 class="panel-title">Model</h2>
+            <div class="model-panel orbital-model" aria-label="Orbital diagram model">
+              <div class="energy-levels" id="orbitalDiagram"></div>
+            </div>
+          </section>
         </div>
-        </div>
-      </section>
-    </main>
+      </div>
+    </section>
+  </main>
 
-    <footer id="site-footer" class="site-footer"></footer>
+  <footer id="site-footer" class="site-footer"></footer>
 
-    <script>
-        const elements = [
-            { symbol: "H", name: "Hydrogen", number: 1 },
-            { symbol: "He", name: "Helium", number: 2 },
-            { symbol: "Li", name: "Lithium", number: 3 },
-            { symbol: "Be", name: "Beryllium", number: 4 },
-            { symbol: "B", name: "Boron", number: 5 },
-            { symbol: "C", name: "Carbon", number: 6 },
-            { symbol: "N", name: "Nitrogen", number: 7 },
-            { symbol: "O", name: "Oxygen", number: 8 },
-            { symbol: "F", name: "Fluorine", number: 9 },
-            { symbol: "Ne", name: "Neon", number: 10 },
-            { symbol: "Na", name: "Sodium", number: 11 },
-            { symbol: "Mg", name: "Magnesium", number: 12 },
-            { symbol: "Al", name: "Aluminum", number: 13 },
-            { symbol: "Si", name: "Silicon", number: 14 },
-            { symbol: "P", name: "Phosphorus", number: 15 },
-            { symbol: "S", name: "Sulfur", number: 16 },
-            { symbol: "Cl", name: "Chlorine", number: 17 },
-            { symbol: "Ar", name: "Argon", number: 18 },
-            { symbol: "K", name: "Potassium", number: 19 },
-            { symbol: "Ca", name: "Calcium", number: 20 }
+  <script>
+    (() => {
+      const ELEMENTS = [
+        { symbol: "H", name: "Hydrogen", number: 1 },
+        { symbol: "He", name: "Helium", number: 2 },
+        { symbol: "Li", name: "Lithium", number: 3 },
+        { symbol: "Be", name: "Beryllium", number: 4 },
+        { symbol: "B", name: "Boron", number: 5 },
+        { symbol: "C", name: "Carbon", number: 6 },
+        { symbol: "N", name: "Nitrogen", number: 7 },
+        { symbol: "O", name: "Oxygen", number: 8 },
+        { symbol: "F", name: "Fluorine", number: 9 },
+        { symbol: "Ne", name: "Neon", number: 10 },
+        { symbol: "Na", name: "Sodium", number: 11 },
+        { symbol: "Mg", name: "Magnesium", number: 12 },
+        { symbol: "Al", name: "Aluminum", number: 13 },
+        { symbol: "Si", name: "Silicon", number: 14 },
+        { symbol: "P", name: "Phosphorus", number: 15 },
+        { symbol: "S", name: "Sulfur", number: 16 },
+        { symbol: "Cl", name: "Chlorine", number: 17 },
+        { symbol: "Ar", name: "Argon", number: 18 },
+        { symbol: "K", name: "Potassium", number: 19 },
+        { symbol: "Ca", name: "Calcium", number: 20 }
+      ];
+
+      const ORBITALS = [
+        { label: "1s", boxes: 1 },
+        { label: "2s", boxes: 1 },
+        { label: "2p", boxes: 3 },
+        { label: "3s", boxes: 1 },
+        { label: "3p", boxes: 3 },
+        { label: "4s", boxes: 1 },
+        { label: "3d", boxes: 5 },
+        { label: "4p", boxes: 3 }
+      ];
+
+      const PRESETS = {
+        starter: { symbol: "H", fill: false },
+        neon: { symbol: "Ne", fill: true },
+        chlorine: { symbol: "Cl", fill: false },
+        calcium: { symbol: "Ca", fill: false }
+      };
+
+      const DEFAULT_PRESET = "starter";
+
+      const state = {
+        currentElement: ELEMENTS[0],
+        orbitalStates: Object.create(null)
+      };
+
+      const el = {
+        elementSelector: document.getElementById("elementSelector"),
+        orbitalDiagram: document.getElementById("orbitalDiagram"),
+        elementName: document.getElementById("elementName"),
+        atomicNumber: document.getElementById("atomicNumber"),
+        electronCount: document.getElementById("electronCount"),
+        targetCount: document.getElementById("targetCount"),
+        completion: document.getElementById("completion"),
+        configNotation: document.getElementById("configNotation"),
+        nobleGasNotation: document.getElementById("nobleGasNotation"),
+        status: document.getElementById("status"),
+        note: document.getElementById("note"),
+        autoFillBtn: document.getElementById("autoFillBtn"),
+        checkBtn: document.getElementById("checkBtn"),
+        resetBtn: document.getElementById("resetBtn"),
+        presetButtons: document.querySelectorAll(".preset-btn")
+      };
+
+      function setActivePreset(presetKey) {
+        el.presetButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.preset === presetKey);
+        });
+      }
+
+      function getElementBySymbol(symbol) {
+        return ELEMENTS.find((entry) => entry.symbol === symbol) || ELEMENTS[0];
+      }
+
+      function setElement(symbol) {
+        state.currentElement = getElementBySymbol(symbol);
+        Array.from(el.elementSelector.querySelectorAll(".element-btn")).forEach((button) => {
+          button.classList.toggle("active", button.dataset.symbol === state.currentElement.symbol);
+        });
+        clearOrbitals();
+      }
+
+      function clearOrbitals() {
+        Object.keys(state.orbitalStates).forEach((key) => {
+          state.orbitalStates[key] = 0;
+        });
+        updateOrbitalDisplay();
+        update();
+      }
+
+      function autoFill() {
+        clearOrbitals();
+
+        let remaining = state.currentElement.number;
+        ORBITALS.forEach((orbital) => {
+          for (let i = 0; i < orbital.boxes && remaining > 0; i += 1) {
+            const key = `${orbital.label}-${i}`;
+            state.orbitalStates[key] = 1;
+            remaining -= 1;
+          }
+          for (let i = 0; i < orbital.boxes && remaining > 0; i += 1) {
+            const key = `${orbital.label}-${i}`;
+            if (state.orbitalStates[key] === 1) {
+              state.orbitalStates[key] = 2;
+              remaining -= 1;
+            }
+          }
+        });
+
+        updateOrbitalDisplay();
+        update();
+      }
+
+      function getElectronCount() {
+        return Object.values(state.orbitalStates).reduce((sum, value) => sum + value, 0);
+      }
+
+      function getConfigParts() {
+        const parts = [];
+
+        ORBITALS.forEach((orbital) => {
+          let count = 0;
+          for (let i = 0; i < orbital.boxes; i += 1) {
+            count += state.orbitalStates[`${orbital.label}-${i}`] || 0;
+          }
+          if (count > 0) {
+            parts.push({ orbital: orbital.label, count });
+          }
+        });
+
+        return parts;
+      }
+
+      function formatNotation(parts) {
+        if (!parts.length) return "-";
+        return parts.map((part) => `${part.orbital}${part.count}`).join(" ");
+      }
+
+      function formatNobleGasNotation(parts) {
+        if (!parts.length) return "-";
+
+        const total = parts.reduce((sum, part) => sum + part.count, 0);
+        const nobles = [
+          { symbol: "Ar", electrons: 18 },
+          { symbol: "Ne", electrons: 10 },
+          { symbol: "He", electrons: 2 }
         ];
-        const orbitals = [
-            { label: "1s", boxes: 1 },
-            { label: "2s", boxes: 1 },
-            { label: "2p", boxes: 3 },
-            { label: "3s", boxes: 1 },
-            { label: "3p", boxes: 3 },
-            { label: "4s", boxes: 1 },
-            { label: "3d", boxes: 5 },
-            { label: "4p", boxes: 3 }
-        ];
-        let currentElement = elements[0];
-        let orbitalStates = {};
 
-        function initElements() {
-            const selector = document.getElementById("elementSelector");
-            elements.forEach((el, idx) => {
-                const btn = document.createElement("button");
-                btn.className = "element-btn" + (idx === 0 ? " active" : "");
-                btn.innerHTML = `<div class="element-number">${el.number}</div><div class="element-symbol">${el.symbol}</div>`;
-                btn.addEventListener("click", function() {
-                    currentElement = el;
-                    document.querySelectorAll(".element-btn").forEach(b => b.classList.remove("active"));
-                    btn.classList.add("active");
-                    document.getElementById("elementName").textContent = el.name;
-                    document.getElementById("atomicNumber").textContent = el.number;
-                    clearOrbitals();
-                });
-                selector.appendChild(btn);
+        const noble = nobles.find((entry) => total > entry.electrons);
+        if (!noble) {
+          return formatNotation(parts);
+        }
+
+        let consumed = 0;
+        const remainingParts = [];
+
+        parts.forEach((part) => {
+          if (consumed >= noble.electrons) {
+            remainingParts.push(part);
+            return;
+          }
+
+          if (consumed + part.count <= noble.electrons) {
+            consumed += part.count;
+            return;
+          }
+
+          const remainder = part.count - (noble.electrons - consumed);
+          consumed = noble.electrons;
+          remainingParts.push({ orbital: part.orbital, count: remainder });
+        });
+
+        if (!remainingParts.length) {
+          return `[${noble.symbol}]`;
+        }
+
+        return `[${noble.symbol}] ${formatNotation(remainingParts)}`;
+      }
+
+      function checkHundViolations() {
+        const violations = [];
+
+        ORBITALS.forEach((orbital) => {
+          if (orbital.boxes < 2) return;
+          const occupancy = [];
+          for (let i = 0; i < orbital.boxes; i += 1) {
+            occupancy.push(state.orbitalStates[`${orbital.label}-${i}`] || 0);
+          }
+
+          const hasPair = occupancy.some((value) => value === 2);
+          const hasEmpty = occupancy.some((value) => value === 0);
+          const hasSingle = occupancy.some((value) => value === 1);
+
+          if (hasPair && hasEmpty && hasSingle) {
+            violations.push(orbital.label);
+          }
+        });
+
+        return violations;
+      }
+
+      function setStatus(checkOnly) {
+        const electronsPlaced = getElectronCount();
+        const target = state.currentElement.number;
+        const violations = checkHundViolations();
+
+        if (electronsPlaced !== target) {
+          el.status.textContent = "Electron count mismatch";
+          el.note.textContent = `You placed ${electronsPlaced} electrons, but ${state.currentElement.name} needs ${target}.`;
+          return;
+        }
+
+        if (violations.length) {
+          el.status.textContent = "Hund rule adjustment needed";
+          el.note.textContent = `Pairing appears too early in ${violations.join(", ")} orbitals.`;
+          return;
+        }
+
+        el.status.textContent = checkOnly ? "Rules check passed" : "Configuration complete";
+        el.note.textContent = "Electron count and orbital filling are consistent with Aufbau and Hund patterns.";
+      }
+
+      function updateOrbitalDisplay() {
+        Object.keys(state.orbitalStates).forEach((key) => {
+          const [orbital, index] = key.split("-");
+          const box = el.orbitalDiagram.querySelector(`.orbital-box[data-orbital="${orbital}"][data-box="${index}"]`);
+          if (!box) return;
+
+          box.innerHTML = "";
+          const occupancy = state.orbitalStates[key];
+          if (occupancy >= 1) {
+            const up = document.createElement("span");
+            up.className = "electron-arrow up";
+            up.textContent = "↑";
+            box.appendChild(up);
+          }
+          if (occupancy === 2) {
+            const down = document.createElement("span");
+            down.className = "electron-arrow down";
+            down.textContent = "↓";
+            box.appendChild(down);
+          }
+        });
+      }
+
+      function update() {
+        const electronsPlaced = getElectronCount();
+        const target = state.currentElement.number;
+        const completionPct = target === 0 ? 0 : Math.min(100, (electronsPlaced / target) * 100);
+        const configParts = getConfigParts();
+
+        el.elementName.textContent = `${state.currentElement.name} (${state.currentElement.symbol})`;
+        el.atomicNumber.textContent = String(state.currentElement.number);
+        el.electronCount.textContent = String(electronsPlaced);
+        el.targetCount.textContent = String(target);
+        el.completion.textContent = `${completionPct.toFixed(0)}%`;
+        el.configNotation.textContent = formatNotation(configParts);
+        el.nobleGasNotation.textContent = formatNobleGasNotation(configParts);
+
+        setStatus(false);
+      }
+
+      function applyPreset(presetKey) {
+        const preset = PRESETS[presetKey];
+        if (!preset) return;
+
+        setElement(preset.symbol);
+        if (preset.fill) {
+          autoFill();
+        }
+
+        setActivePreset(presetKey);
+      }
+
+      function initElementButtons() {
+        const fragment = document.createDocumentFragment();
+
+        ELEMENTS.forEach((entry) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "element-btn";
+          button.dataset.symbol = entry.symbol;
+          button.innerHTML = `<span class="element-number">${entry.number}</span><span class="element-symbol">${entry.symbol}</span>`;
+          button.addEventListener("click", () => {
+            setElement(entry.symbol);
+            setActivePreset("");
+          });
+          fragment.appendChild(button);
+        });
+
+        el.elementSelector.innerHTML = "";
+        el.elementSelector.appendChild(fragment);
+      }
+
+      function initOrbitalDiagram() {
+        const fragment = document.createDocumentFragment();
+        state.orbitalStates = Object.create(null);
+
+        ORBITALS.forEach((orbital) => {
+          const row = document.createElement("div");
+          row.className = "orbital-row";
+
+          const label = document.createElement("span");
+          label.className = "orbital-label";
+          label.textContent = orbital.label;
+          row.appendChild(label);
+
+          const boxes = document.createElement("div");
+          boxes.className = "orbital-boxes";
+
+          for (let i = 0; i < orbital.boxes; i += 1) {
+            const key = `${orbital.label}-${i}`;
+            state.orbitalStates[key] = 0;
+
+            const box = document.createElement("button");
+            box.type = "button";
+            box.className = "orbital-box";
+            box.dataset.orbital = orbital.label;
+            box.dataset.box = String(i);
+            box.setAttribute("aria-label", `${orbital.label} orbital ${i + 1}`);
+            box.addEventListener("click", () => {
+              state.orbitalStates[key] = (state.orbitalStates[key] + 1) % 3;
+              updateOrbitalDisplay();
+              update();
             });
-        }
+            boxes.appendChild(box);
+          }
 
-        function initOrbitals() {
-            const diagram = document.getElementById("orbitalDiagram");
-            diagram.innerHTML = "";
-            orbitalStates = {};
-            orbitals.forEach(orbital => {
-                const row = document.createElement("div");
-                row.className = "orbital-row";
-                const label = document.createElement("div");
-                label.className = "orbital-label";
-                label.textContent = orbital.label;
-                row.appendChild(label);
-                const boxes = document.createElement("div");
-                boxes.className = "orbital-boxes";
-                for (let i = 0; i < orbital.boxes; i++) {
-                    const box = document.createElement("div");
-                    box.className = "orbital-box";
-                    box.dataset.orbital = orbital.label;
-                    box.dataset.box = i;
-                    box.addEventListener("click", function() {
-                        const key = `${orbital.label}-${i}`;
-                        orbitalStates[key] = (orbitalStates[key] + 1) % 3;
-                        updateOrbitalDisplay();
-                        updateDisplay();
-                    });
-                    boxes.appendChild(box);
-                    orbitalStates[`${orbital.label}-${i}`] = 0;
-                }
-                row.appendChild(boxes);
-                diagram.appendChild(row);
-            });
-        }
+          row.appendChild(boxes);
+          fragment.appendChild(row);
+        });
 
-        function updateOrbitalDisplay() {
-            Object.keys(orbitalStates).forEach(key => {
-                const [orbital, box] = key.split("-");
-                const boxEl = document.querySelector(`.orbital-box[data-orbital="${orbital}"][data-box="${box}"]`);
-                if (boxEl) {
-                    boxEl.innerHTML = "";
-                    const state = orbitalStates[key];
-                    if (state >= 1) {
-                        const upArrow = document.createElement("div");
-                        upArrow.className = "electron-arrow up";
-                        boxEl.appendChild(upArrow);
-                    }
-                    if (state === 2) {
-                        const downArrow = document.createElement("div");
-                        downArrow.className = "electron-arrow down";
-                        boxEl.appendChild(downArrow);
-                    }
-                }
-            });
-        }
+        el.orbitalDiagram.innerHTML = "";
+        el.orbitalDiagram.appendChild(fragment);
+      }
 
-        function updateDisplay() {
-            const electronCount = Object.values(orbitalStates).reduce((s, st) => s + st, 0);
-            document.getElementById("electronCount").textContent = `${electronCount} / ${currentElement.number}`;
-            const config = [];
-            orbitals.forEach(orbital => {
-                let count = 0;
-                for (let i = 0; i < orbital.boxes; i++) {
-                    count += orbitalStates[`${orbital.label}-${i}`];
-                }
-                if (count > 0) config.push({ orbital: orbital.label, count });
-            });
-            if (config.length === 0) {
-                document.getElementById("configNotation").textContent = "—";
-                document.getElementById("nobleGasNotation").textContent = "—";
-            } else {
-                const notation = config.map(c => `${c.orbital}<span class="electron-count">${c.count}</span>`).join(" ");
-                document.getElementById("configNotation").innerHTML = notation;
-                const totalE = config.reduce((s, c) => s + c.count, 0);
-                let ngNotation = notation;
-                if (totalE > 2) {
-                    const ng = totalE > 18 ? { s: "Ar", e: 18 } : totalE > 10 ? { s: "Ne", e: 10 } : { s: "He", e: 2 };
-                    let eSoFar = 0;
-                    let remaining = [];
-                    for (let c of config) {
-                        if (eSoFar >= ng.e) {
-                            remaining.push(c);
-                        } else if (eSoFar + c.count > ng.e) {
-                            const r = c.count - (ng.e - eSoFar);
-                            remaining.push({ orbital: c.orbital, count: r });
-                        }
-                        eSoFar += c.count;
-                    }
-                    if (remaining.length > 0) {
-                        ngNotation = `[${ng.s}] ` + remaining.map(c => `${c.orbital}<span class="electron-count">${c.count}</span>`).join(" ");
-                    }
-                }
-                document.getElementById("nobleGasNotation").innerHTML = ngNotation;
-            }
-        }
+      el.autoFillBtn.addEventListener("click", () => {
+        autoFill();
+        setActivePreset("");
+      });
 
-        function autoFill() {
-            clearOrbitals();
-            let remaining = currentElement.number;
-            const fillOrder = ["1s", "2s", "2p", "3s", "3p", "4s", "3d", "4p"];
-            for (let orbitalLabel of fillOrder) {
-                if (remaining <= 0) break;
-                const orbital = orbitals.find(o => o.label === orbitalLabel);
-                if (!orbital) continue;
-                for (let box = 0; box < orbital.boxes && remaining > 0; box++) {
-                    orbitalStates[`${orbitalLabel}-${box}`] = 1;
-                    remaining--;
-                }
-                for (let box = 0; box < orbital.boxes && remaining > 0; box++) {
-                    const key = `${orbitalLabel}-${box}`;
-                    if (orbitalStates[key] === 1) {
-                        orbitalStates[key] = 2;
-                        remaining--;
-                    }
-                }
-            }
-            updateOrbitalDisplay();
-            updateDisplay();
-        }
+      el.checkBtn.addEventListener("click", () => {
+        setStatus(true);
+      });
 
-        function clearOrbitals() {
-            Object.keys(orbitalStates).forEach(key => { orbitalStates[key] = 0; });
-            updateOrbitalDisplay();
-            updateDisplay();
-            document.getElementById("feedback").classList.remove("show");
-        }
+      el.presetButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          applyPreset(button.dataset.preset);
+        });
+      });
 
-        function checkConfig() {
-            const electronCount = Object.values(orbitalStates).reduce((s, st) => s + st, 0);
-            const feedback = document.getElementById("feedback");
-            if (electronCount !== currentElement.number) {
-                feedback.className = "feedback incorrect show";
-                feedback.innerHTML = `Incorrect. You have ${electronCount} electrons, but ${currentElement.name} needs ${currentElement.number}.`;
-                return;
-            }
-            let violations = [];
-            orbitals.forEach(orbital => {
-                let unpaired = 0, paired = 0;
-                for (let i = 0; i < orbital.boxes; i++) {
-                    const st = orbitalStates[`${orbital.label}-${i}`];
-                    if (st === 1) unpaired++;
-                    if (st === 2) paired++;
-                }
-                if (paired > 0 && unpaired < orbital.boxes && unpaired > 0) {
-                    violations.push(`Hund's rule violation in ${orbital.label}`);
-                }
-            });
-            if (violations.length > 0) {
-                feedback.className = "feedback incorrect show";
-                feedback.innerHTML = `Electron count correct, but:<br>${violations.join("<br>")}`;
-            } else {
-                feedback.className = "feedback correct show";
-                feedback.innerHTML = "Perfect! Configuration follows all quantum rules.";
-            }
-        }
+      el.resetBtn.addEventListener("click", () => {
+        applyPreset(DEFAULT_PRESET);
+      });
 
-        document.getElementById("autoFillBtn").addEventListener("click", autoFill);
-        document.getElementById("clearBtn").addEventListener("click", clearOrbitals);
-        document.getElementById("checkBtn").addEventListener("click", checkConfig);
-        initElements();
-        initOrbitals();
-        updateDisplay();
-    </script>
+      initElementButtons();
+      initOrbitalDiagram();
+      applyPreset(DEFAULT_PRESET);
+    })();
+  </script>
 </body>
 </html>
